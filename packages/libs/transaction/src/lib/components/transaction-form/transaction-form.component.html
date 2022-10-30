@@ -1,0 +1,51 @@
+<form>
+  <monic-form-layout>
+    <ng-container slot="header">
+      <ion-list-header class="ion-no-padding">
+        <ion-label>
+          <ion-text>Create new expense or income</ion-text>
+        </ion-label>
+      </ion-list-header>
+    </ng-container>
+    <ion-item class="ion-margin-top">
+      <ion-label>Date</ion-label>
+      <ion-datetime-button datetime="datetime" slot="end"></ion-datetime-button>
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime
+            id="datetime"
+            presentation="date"
+            [showDefaultButtons]="true"
+          >
+            <span slot="title">Transaction Date</span>
+          </ion-datetime>
+        </ng-template>
+      </ion-modal>
+    </ion-item>
+    <ion-item>
+      <ion-label>Type</ion-label>
+      <ion-select value="expense">
+        <ion-select-option value="expense">Expense</ion-select-option>
+        <ion-select-option value="income">Income</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Amount</ion-label>
+      <ion-input
+        style="text-align: right; appearance: none"
+        inputmode="numeric"
+        required
+        value="0"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="fixed">Notes</ion-label>
+      <ion-textarea [autoGrow]="true" required rows="2"></ion-textarea>
+    </ion-item>
+    <ng-container slot="footer">
+      <ion-button type="submit" color="success" expand="block">
+        Submit
+      </ion-button>
+    </ng-container>
+  </monic-form-layout>
+</form>

@@ -1,0 +1,26 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2017", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "baseUrl": ".",
+    "paths": {
+      "@monic/libs/auth": ["packages/libs/auth/src/index.ts"],
+      "@monic/libs/profile": ["packages/libs/profile/src/index.ts"],
+      "@monic/libs/transaction": ["packages/libs/transaction/src/index.ts"],
+      "@monic/libs/types": ["packages/libs/types/src/index.ts"],
+      "@monic/libs/ui/base": ["packages/libs/ui/base/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}

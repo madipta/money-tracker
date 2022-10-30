@@ -1,0 +1,80 @@
+<ion-menu contentId="main-content">
+  <ion-header class="home-menu-header ion-no-border">
+    <a href="https://github.com/madipta">
+      <ion-avatar>
+        <img
+          alt="Madipta"
+          src="https://avatars.githubusercontent.com/u/475859?v=4"
+        />
+      </ion-avatar>
+    </a>
+    <div class="header-menu-label">
+      <h3><a href="https://github.com/madipta">Madipta</a></h3>
+      <p>Software Developer</p>
+    </div>
+  </ion-header>
+  <ion-content class="home-menu-content" color="secondary">
+    <ion-list lines="none">
+      <ion-menu-toggle>
+        <ion-item routerLink="/my-account">
+          <ion-icon name="person-outline"></ion-icon>
+          <ion-label>My Account</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item routerLink="/change-password">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <ion-label>Change Password</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+      <ion-menu-toggle>
+        <ion-item routerLink="/login">
+          <ion-icon name="exit-outline"></ion-icon>
+          <ion-label>Logout</ion-label>
+        </ion-item>
+      </ion-menu-toggle>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-buttons slot="primary">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-buttons slot="secondary">
+        <ion-button (click)="router.navigate(['search'])">
+          <ion-icon name="search" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title><p class="ion-no-margin">Money Tracker</p></ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-router-outlet
+      [environmentInjector]="environmentInjector"
+    ></ion-router-outlet>
+    <ion-tabs [environmentInjector]="environmentInjector">
+      <ion-tab-bar slot="top" color="secondary">
+        <ion-tab-button tab="summary">
+          <ion-icon name="home"></ion-icon>
+          <ion-label>Home</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="trans">
+          <ion-icon name="grid"></ion-icon>
+          <ion-label>Transactions</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="budget">
+          <ion-icon name="newspaper-outline"></ion-icon>
+          <ion-label>Budget</ion-label>
+        </ion-tab-button>
+        <ion-tab-button tab="report">
+          <ion-icon name="stats-chart-outline"></ion-icon>
+          <ion-label>Report</ion-label>
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </ion-content>
+</div>
