@@ -232,3 +232,7 @@ ion-grid {
 ion-icon {
   pointer-events: none;
 }
+
+ion-label {
+  --color: var(--ion-color-medium) !important;
+}
