@@ -2,7 +2,11 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ITransaction, ITransactionCreateInput, ITransactionUpdateInput, ITransactionWithoutId } from '@monic/libs/types';
+import {
+  ITransaction,
+  ITransactionCreateInput,
+  ITransactionUpdateInput,
+} from '@monic/libs/types';
 
 @Injectable({
   providedIn: 'root',
@@ -100,7 +104,7 @@ export class TransactionService {
     this.onSavingProcessSubject.next(true);
     this.afs
       .doc(`transactions/${trans.id}`)
-      .set(trans)
+      .update(trans)
       .then(() => this.onUpdateSuccessSubject.next(true))
       .finally(() => this.onSavingProcessSubject.next(false));
   }
