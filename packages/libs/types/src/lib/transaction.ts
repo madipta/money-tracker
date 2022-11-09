@@ -10,10 +10,4 @@ export type ITransaction = {
   date: Timestamp;
 };
 
-export const TransactionDefaultValues: ITransaction = {
-  amount: 0,
-  type: 'expense',
-  notes: '',
-  id: '',
-  date: Timestamp.now(),
-};
+export type ITransactionWithoutId = Omit<ITransaction, 'id'>;
