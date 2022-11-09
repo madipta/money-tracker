@@ -9,7 +9,6 @@ import {
 import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import { TransactionType } from '@monic/libs/types';
 import { FormLayoutComponent } from '@monic/libs/ui/base';
-import { Timestamp } from 'firebase/firestore';
 import { take } from 'rxjs/operators';
 import { TransactionService } from '../../services/transaction-service';
 
@@ -103,7 +102,7 @@ export class TransactionFormComponent implements OnInit {
       return;
     }
     const { date, ...rest } = this.form.getRawValue();
-    const dateToSave = Timestamp.fromDate(new Date(date));
+    const dateToSave = new Date(date);
     if (this.isAdd) {
       this.transactionService.add({
         ...rest,

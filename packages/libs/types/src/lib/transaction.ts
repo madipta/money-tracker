@@ -2,12 +2,31 @@ import { Timestamp } from 'firebase/firestore';
 
 export type TransactionType = 'expense' | 'income';
 
-export type ITransaction = {
+export type ITransactionId = {
+  id: string;
+};
+
+export type ITransactionWithoutId = {
   amount: number;
   type: TransactionType;
   notes: string;
-  id: string;
+};
+
+export type ITransactionDate = {
   date: Timestamp;
 };
 
-export type ITransactionWithoutId = Omit<ITransaction, 'id'>;
+export type ITransactionDateInput = {
+  date: Date;
+};
+
+export type ITransaction = ITransactionId &
+  ITransactionWithoutId &
+  ITransactionDate;
+
+export type ITransactionCreateInput = ITransactionWithoutId &
+  ITransactionDateInput;
+
+export type ITransactionUpdateInput = ITransactionId &
+  Partial<ITransactionWithoutId> &
+  ITransactionDateInput;

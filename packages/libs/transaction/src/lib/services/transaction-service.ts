@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ITransaction, ITransactionWithoutId } from '@monic/libs/types';
+import { ITransaction, ITransactionCreateInput, ITransactionUpdateInput, ITransactionWithoutId } from '@monic/libs/types';
 
 @Injectable({
   providedIn: 'root',
@@ -63,13 +63,12 @@ export class TransactionService {
     );
   }
 
-  add(trans: ITransactionWithoutId) {
-    const { date, ...nodate } = trans;
+  add(trans: ITransactionCreateInput) {
     this.onSavingProcessSubject.next(true);
     this.afs
       .collection('transactions')
       .doc(this.afs.createId())
-      .set({ ...nodate, date: date.toDate() })
+      .set(trans)
       .then(() => this.onAddSuccessSubject.next(true))
       .finally(() => this.onSavingProcessSubject.next(false));
   }
@@ -97,12 +96,11 @@ export class TransactionService {
     this.selectedIdSubject.next('');
   }
 
-  update(trans: ITransaction) {
-    const { date, ...nodate } = trans;
+  update(trans: ITransactionUpdateInput) {
     this.onSavingProcessSubject.next(true);
     this.afs
       .doc(`transactions/${trans.id}`)
-      .set({ ...nodate, date: date.toDate() })
+      .set(trans)
       .then(() => this.onUpdateSuccessSubject.next(true))
       .finally(() => this.onSavingProcessSubject.next(false));
   }
