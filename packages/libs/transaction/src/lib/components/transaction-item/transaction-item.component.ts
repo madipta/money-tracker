@@ -22,7 +22,8 @@ export class TransactionItemComponent {
   ) {}
 
   edit(transaction: ITransaction) {
-    this.router.navigate(['trans-edit', transaction.id]);
+    this.transactionService.select(transaction.id);
+    this.router.navigate(['trans-edit']);
   }
 
   async deleteAlert() {
@@ -37,7 +38,7 @@ export class TransactionItemComponent {
           text: 'Delete',
           role: 'confirm',
           handler: () => {
-            this.transactionService.deleteTransaction(this.transaction.id);
+            this.transactionService.delete(this.transaction.id);
           },
         },
       ],

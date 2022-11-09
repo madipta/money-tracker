@@ -1,13 +1,128 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { IonicModule } from '@ionic/angular';
+import { Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { AlertController, IonicModule, NavController } from '@ionic/angular';
+import { TransactionType } from '@monic/libs/types';
 import { FormLayoutComponent } from '@monic/libs/ui/base';
+import { Timestamp } from 'firebase/firestore';
+import { take } from 'rxjs/operators';
+import { TransactionService } from '../../services/transaction-service';
+
+export type TransactionForm = FormGroup<{
+  amount: FormControl<number>;
+  date: FormControl<string>;
+  notes: FormControl<string>;
+  type: FormControl<TransactionType>;
+}>;
 
 @Component({
-  imports: [CommonModule, FormsModule, IonicModule, FormLayoutComponent],
+  imports: [
+    CommonModule,
+    FormLayoutComponent,
+    IonicModule,
+    ReactiveFormsModule,
+  ],
   selector: 'monic-transaction-form',
   standalone: true,
   templateUrl: './transaction-form.component.html',
 })
-export class TransactionFormComponent {}
+export class TransactionFormComponent implements OnInit {
+  isAdd = true;
+  isOnSavingProcess = this.transactionService.onSavingProcess$;
+  form: TransactionForm;
+  selectedId = '';
+  title = '';
+
+  constructor(
+    private alertController: AlertController,
+    private fb: FormBuilder,
+    private navController: NavController,
+    private transactionService: TransactionService
+  ) {
+    this.form = this.fb.nonNullable.group({
+      amount: this.fb.nonNullable.control(0),
+      date: this.fb.nonNullable.control(''),
+      notes: this.fb.nonNullable.control(''),
+      type: this.fb.nonNullable.control<TransactionType>('expense'),
+    });
+  }
+
+  async ngOnInit(): Promise<void> {
+    this.transactionService.selectedTransaction$
+      .pipe(take(1))
+      .subscribe((trans) => {
+        if (!trans) {
+          this.isAdd = true;
+          this.selectedId = '';
+          this.title = 'Add new transaction';
+          this.form.patchValue({
+            amount: 0,
+            date: new Date().toISOString(),
+            notes: '',
+            type: 'expense',
+          });
+        } else {
+          this.isAdd = false;
+          this.selectedId = trans.id;
+          this.title = 'Edit transaction';
+          const { date, ...tran } = trans;
+          this.form.patchValue({
+            ...tran,
+            date: date.toDate().toISOString(),
+          });
+        }
+      });
+    this.transactionService.onAddSuccess$.pipe(take(1)).subscribe(() => {
+      this.navController.back();
+    });
+    this.transactionService.onUpdateSuccess$.pipe(take(1)).subscribe(() => {
+      this.navController.back();
+    });
+  }
+
+  async errorAlert(message: string) {
+    const alert = await this.alertController.create({
+      buttons: ['OK'],
+      header: 'Error',
+      message,
+    });
+
+    alert.onDidDismiss().then(() => this.navController.back());
+
+    await alert.present();
+  }
+
+  onSubmit() {
+    if (this.form.invalid) {
+      this.errorAlert('Invalid input!');
+      return;
+    }
+    const { date, ...rest } = this.form.getRawValue();
+    const dateToSave = Timestamp.fromDate(new Date(date));
+    if (this.isAdd) {
+      this.transactionService.add({
+        ...rest,
+        date: dateToSave,
+      });
+    } else {
+      this.transactionService.update({
+        ...rest,
+        date: dateToSave,
+        id: this.selectedId,
+      });
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  transDateChange(date: string | any) {
+    if (!date) {
+      return;
+    }
+    this.form.patchValue({ date });
+  }
+}

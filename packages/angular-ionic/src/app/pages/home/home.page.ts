@@ -12,7 +12,7 @@ import { TransactionService } from '@monic/libs/transaction';
   templateUrl: './home.page.html',
 })
 export class HomePage implements OnInit {
-  expenses$ = this.dataService.getTransactions();
+  transactions$ = this.dataService.transactions$;
 
   constructor(
     private dataService: TransactionService,

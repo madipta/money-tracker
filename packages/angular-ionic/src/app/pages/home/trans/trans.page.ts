@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import {
@@ -20,17 +20,23 @@ import {
         ></monic-transaction-item>
       </ion-list>
       <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-        <ion-fab-button (click)="router.navigate(['trans-edit'])" side="end">
+        <ion-fab-button (click)="onAdd()" side="end">
           <ion-icon name="add-outline"></ion-icon>
         </ion-fab-button>
       </ion-fab>
     </ion-content>
   `,
 })
-export class TransPage implements OnInit {
-  transactions$ = this.dataService.getTransactions().pipe();
+export class TransPage {
+  transactions$ = this.transactionService.transactions$;
 
-  constructor(private dataService: TransactionService, public router: Router) {}
+  constructor(
+    private transactionService: TransactionService,
+    public router: Router
+  ) {}
 
-  ngOnInit() {}
+  onAdd() {
+    this.transactionService.unselect();
+    this.router.navigate(['trans-edit']);
+  }
 }

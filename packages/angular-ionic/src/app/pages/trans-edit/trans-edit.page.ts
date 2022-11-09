@@ -1,18 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { TransactionFormComponent } from '@monic/libs/transaction';
 import { PageLayoutComponent } from '@monic/libs/ui/base';
 
 @Component({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    PageLayoutComponent,
-    TransactionFormComponent,
-  ],
+  imports: [IonicModule, PageLayoutComponent, TransactionFormComponent],
   selector: 'monic-trans-edit',
   standalone: true,
   template: `
@@ -22,8 +14,4 @@ import { PageLayoutComponent } from '@monic/libs/ui/base';
     </monic-page-layout>
   `,
 })
-export class TransEditPage implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class TransEditPage {}

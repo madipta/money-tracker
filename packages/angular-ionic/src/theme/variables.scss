@@ -52,12 +52,12 @@
   --ion-color-dark-shade: #1e2023;
   --ion-color-dark-tint: #383a3e;
 
-  --ion-color-medium: #92949c;
-  --ion-color-medium-rgb: 146, 148, 156;
-  --ion-color-medium-contrast: #ffffff;
-  --ion-color-medium-contrast-rgb: 255, 255, 255;
-  --ion-color-medium-shade: #808289;
-  --ion-color-medium-tint: #9d9fa6;
+  --ion-color-medium: #7c8488;
+	--ion-color-medium-rgb: 124,132,136;
+	--ion-color-medium-contrast: #000000;
+	--ion-color-medium-contrast-rgb: 0,0,0;
+	--ion-color-medium-shade: #6d7478;
+	--ion-color-medium-tint: #899094;
 
   --ion-color-light: #f4f5f8;
   --ion-color-light-rgb: 244, 245, 248;
@@ -235,4 +235,8 @@ ion-icon {
 
 ion-label {
   --color: var(--ion-color-medium) !important;
+}
+
+ion-toast.center-text::part(message) {
+  text-align: center;
 }

@@ -1,46 +1,109 @@
 import { Injectable } from '@angular/core';
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-} from '@angular/fire/compat/firestore';
-import { nanoid } from 'nanoid';
-import { map, Observable } from 'rxjs';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ITransaction } from '@monic/libs/types';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
-  transColl: AngularFirestoreCollection<ITransaction>;
-  transItems: Observable<ITransaction[]>;
+  private onAddSuccessSubject = new Subject();
+  readonly onAddSuccess$ = this.onAddSuccessSubject.asObservable();
+  private onDeleteSuccessSubject = new Subject();
+  readonly onDeleteSuccess$ = this.onDeleteSuccessSubject.asObservable();
+  private onUpdateSuccessSubject = new Subject();
+  readonly onUpdateSuccess$ = this.onUpdateSuccessSubject.asObservable();
+  private onSavingProcessSubject = new BehaviorSubject(false);
+  readonly onSavingProcess$ = this.onSavingProcessSubject.asObservable();
+  private searchWordSubject = new BehaviorSubject('');
+  private selectedIdSubject = new BehaviorSubject('');
+  readonly selectedTransaction$: Observable<ITransaction | undefined>;
+  private selectedTypeSubject = new BehaviorSubject('');
+  readonly filteredTransactions$: Observable<ITransaction[]>;
+  readonly transDb = this.afs.collection<ITransaction>('transactions', (ref) =>
+    ref.orderBy('date', 'desc')
+  );
+  readonly transactions$ = this.transDb.snapshotChanges().pipe(
+    map((changes) => {
+      return changes.map((result) => {
+        return {
+          ...result.payload.doc.data(),
+          id: result.payload.doc.id,
+        };
+      });
+    })
+  );
 
-  constructor(private firestore: AngularFirestore) {
-    this.transColl = firestore.collection<ITransaction>('transactions', (ref) =>
-      ref.orderBy('date', 'desc')
+  constructor(private afs: AngularFirestore) {
+    this.filteredTransactions$ = combineLatest([
+      this.transactions$,
+      this.searchWordSubject,
+      this.selectedTypeSubject,
+    ]).pipe(
+      map(([transactions, searchText, transType]) =>
+        transactions.filter((t) => {
+          if (!searchText && !transType) {
+            return true;
+          }
+          const isFilteredByType = !transType || t.type === transType;
+          const isSearchByWord =
+            !searchText || t.notes.indexOf(searchText) > -1;
+          return isSearchByWord && isFilteredByType;
+        })
+      )
     );
-    this.transItems = this.transColl.valueChanges();
+    this.selectedTransaction$ = combineLatest([
+      this.transactions$,
+      this.selectedIdSubject,
+    ]).pipe(
+      map(([trans, id]) => {
+        return !id ? undefined : trans.find((t) => t.id === id);
+      })
+    );
   }
 
-  addTransaction(trans: Omit<ITransaction, 'id'>) {
-    this.transColl.add({ ...trans, id: nanoid() });
+  add(trans: Omit<ITransaction, 'id'>) {
+    const { date, ...nodate } = trans;
+    this.onSavingProcessSubject.next(true);
+    this.afs
+      .collection('transactions')
+      .doc(this.afs.createId())
+      .set({ ...nodate, date: date.toDate() })
+      .then(() => this.onAddSuccessSubject.next(true))
+      .finally(() => this.onSavingProcessSubject.next(false));
   }
 
-  deleteTransaction(id: string) {
-    this.firestore.doc(`transactions/${id}`).delete();
+  delete(id: string) {
+    this.afs
+      .doc(`transactions/${id}`)
+      .delete()
+      .then(() => this.onDeleteSuccessSubject.next(true));
   }
 
-  getTransaction(id: string): Observable<ITransaction | undefined> {
-    return this.firestore
-      .doc<ITransaction>(`transactions/${id}`)
-      .get()
-      .pipe(map((snap) => snap.data()));
+  filterByType(type: string) {
+    this.selectedTypeSubject.next(type);
   }
 
-  getTransactions(): Observable<ITransaction[]> {
-    return this.transItems;
+  filterByWord(word: string) {
+    this.searchWordSubject.next(word);
   }
 
-  updateTransaction(trans: ITransaction) {
-    this.firestore.doc(`transactions/${trans.id}`).set(trans);
+  select(id: string) {
+    this.selectedIdSubject.next(id);
+  }
+
+  unselect() {
+    this.selectedIdSubject.next('');
+  }
+
+  update(trans: ITransaction) {
+    const { date, ...nodate } = trans;
+    this.onSavingProcessSubject.next(true);
+    this.afs
+      .doc(`transactions/${trans.id}`)
+      .set({ ...nodate, date: date.toDate() })
+      .then(() => this.onUpdateSuccessSubject.next(true))
+      .finally(() => this.onSavingProcessSubject.next(false));
   }
 }

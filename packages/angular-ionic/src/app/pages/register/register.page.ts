@@ -1,7 +1,6 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
+import { RegisterFormComponent } from '@monic/libs/auth';
 import {
   HideBackButtonDirective,
   PageLayoutComponent,
@@ -9,17 +8,17 @@ import {
 
 @Component({
   imports: [
-    CommonModule,
-    FormsModule,
     HideBackButtonDirective,
     IonicModule,
     PageLayoutComponent,
+    RegisterFormComponent,
   ],
   selector: 'monic-register',
   standalone: true,
   template: `
     <monic-page-layout monicHideBackButton>
       <p pageTitle>Register</p>
+      <monic-register-form></monic-register-form>
     </monic-page-layout>
   `,
 })
