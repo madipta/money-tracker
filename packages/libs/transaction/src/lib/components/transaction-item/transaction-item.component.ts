@@ -23,7 +23,7 @@ export class TransactionItemComponent {
 
   edit(transaction: ITransaction) {
     this.transactionService.select(transaction.id);
-    this.router.navigate(['trans-edit']);
+    this.router.navigate(['trans/edit']);
   }
 
   async deleteAlert() {
