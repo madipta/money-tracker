@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TransEditPage } from './trans-edit.page';
+import { TransEditPage } from './edit.page';
 
 describe('TransEditPage', () => {
   let component: TransEditPage;

@@ -12,12 +12,12 @@ const authRoute: Route = {
     {
       path: 'login',
       loadComponent: () =>
-        import('./pages/login/login.page').then((c) => c.LoginPage),
+        import('./pages/auth/login/login.page').then((c) => c.LoginPage),
     },
     {
       path: 'register',
       loadComponent: () =>
-        import('./pages/register/register.page').then((c) => c.RegisterPage),
+        import('./pages/auth/register/register.page').then((c) => c.RegisterPage),
     },
   ],
 };
@@ -59,14 +59,14 @@ const userRoute: Route = {
     {
       path: 'change-password',
       loadComponent: () =>
-        import('./pages/change-password/change-password.page').then(
+        import('./pages/user/change-password/change-password.page').then(
           (c) => c.ChangePasswordPage
         ),
     },
     {
       path: 'my-account',
       loadComponent: () =>
-        import('./pages/my-account/my-account.page').then(
+        import('./pages/user/my-account/my-account.page').then(
           (c) => c.MyAccountPage
         ),
     },
@@ -81,19 +81,19 @@ const transactionRoute: Route = {
     {
       path: 'search',
       loadComponent: () =>
-        import('./pages/search/search.page').then((c) => c.SearchPage),
+        import('./pages/trans/search/search.page').then((c) => c.SearchPage),
     },
     {
       path: 'edit/:id',
       loadComponent: () =>
-        import('./pages/trans-edit/trans-edit.page').then(
+        import('./pages/trans/edit/edit.page').then(
           (c) => c.TransEditPage
         ),
     },
     {
       path: 'edit',
       loadComponent: () =>
-        import('./pages/trans-edit/trans-edit.page').then(
+        import('./pages/trans/edit/edit.page').then(
           (c) => c.TransEditPage
         ),
     },
