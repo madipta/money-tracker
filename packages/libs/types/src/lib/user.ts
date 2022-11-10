@@ -1,7 +1,17 @@
-export type IUser = {
+type IAuthId = {
   email: string,
+}
+
+type IUserName = {
   name: string,
+}
+
+export type IUserLogin = IAuthId & {
   password: string,
 };
 
-export type IUserLogin = Omit<IUser, 'name'>;
+export type IUserRegister = IUserLogin & {
+  name: string,
+}
+
+export type IUser = IUserName;
