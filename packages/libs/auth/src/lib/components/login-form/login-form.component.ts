@@ -38,14 +38,25 @@ import { AuthService } from '../../services/auth.service';
         </ion-row>
         <ion-row class="ion-margin-top">
           <ion-col>
-            <ion-button type="submit" color="success" expand="block">
-              Submit
+            <ion-button
+              type="submit"
+              color="success"
+              expand="block"
+              [disabled]="isOnLoginProcess | async"
+            >
+              <ion-text *ngIf="(isOnLoginProcess | async) === false">
+                Submit
+              </ion-text>
+              <ion-spinner
+                name="lines-small"
+                *ngIf="isOnLoginProcess | async"
+              ></ion-spinner>
             </ion-button>
             <ion-button
+              (click)="register()"
               color="warning"
               expand="block"
               fill="clear"
-              (click)="register()"
             >
               Register
             </ion-button>
@@ -57,6 +68,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginFormComponent implements OnInit {
   form: FormGroup;
+  isOnLoginProcess = this.authService.onLoginProcess$;
 
   constructor(
     private authService: AuthService,

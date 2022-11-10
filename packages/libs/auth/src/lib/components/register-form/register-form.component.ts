@@ -46,9 +46,15 @@ import { AuthService } from '../../services/auth.service';
               type="submit"
               color="success"
               expand="block"
-              (click)="register()"
+              [disabled]="isOnRegisterProcess | async"
             >
-              Submit
+              <ion-text *ngIf="(isOnRegisterProcess | async) === false">
+                Submit
+              </ion-text>
+              <ion-spinner
+                name="lines-small"
+                *ngIf="isOnRegisterProcess | async"
+              ></ion-spinner>
             </ion-button>
             <ion-button
               color="danger"
@@ -66,6 +72,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class RegisterFormComponent implements OnInit {
   form: FormGroup;
+  isOnRegisterProcess = this.authService.onRegisterProcess$;
 
   constructor(
     private authService: AuthService,
