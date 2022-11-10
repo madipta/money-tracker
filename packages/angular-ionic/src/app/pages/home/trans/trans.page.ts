@@ -37,6 +37,6 @@ export class TransPage {
 
   onAdd() {
     this.transactionService.unselect();
-    this.router.navigate(['trans-edit']);
+    this.router.navigate(['trans/edit']);
   }
 }

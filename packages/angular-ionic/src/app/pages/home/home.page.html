@@ -16,19 +16,19 @@
   <ion-content class="home-menu-content" color="secondary">
     <ion-list lines="none">
       <ion-menu-toggle>
-        <ion-item routerLink="/my-account">
+        <ion-item routerLink="/user/my-account">
           <ion-icon name="person-outline"></ion-icon>
           <ion-label>My Account</ion-label>
         </ion-item>
       </ion-menu-toggle>
       <ion-menu-toggle>
-        <ion-item routerLink="/change-password">
+        <ion-item routerLink="/user/change-password">
           <ion-icon name="shield-checkmark-outline"></ion-icon>
           <ion-label>Change Password</ion-label>
         </ion-item>
       </ion-menu-toggle>
       <ion-menu-toggle>
-        <ion-item routerLink="/login">
+        <ion-item routerLink="/auth/login">
           <ion-icon name="exit-outline"></ion-icon>
           <ion-label>Logout</ion-label>
         </ion-item>
@@ -44,7 +44,7 @@
         <ion-menu-button></ion-menu-button>
       </ion-buttons>
       <ion-buttons slot="secondary">
-        <ion-button (click)="router.navigate(['search'])">
+        <ion-button (click)="router.navigate(['trans/search'])">
           <ion-icon name="search" slot="icon-only"></ion-icon>
         </ion-button>
       </ion-buttons>

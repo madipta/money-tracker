@@ -1,8 +1,31 @@
 import { Route, Routes } from '@angular/router';
+import {
+  canActivate,
+  redirectUnauthorizedTo,
+} from '@angular/fire/compat/auth-guard';
+
+const redirectTLogin = () => redirectUnauthorizedTo(['auth/login']);
+
+const authRoute: Route = {
+  path: 'auth',
+  children: [
+    {
+      path: 'login',
+      loadComponent: () =>
+        import('./pages/login/login.page').then((c) => c.LoginPage),
+    },
+    {
+      path: 'register',
+      loadComponent: () =>
+        import('./pages/register/register.page').then((c) => c.RegisterPage),
+    },
+  ],
+};
 
 const homeRoute: Route = {
   path: 'home',
   loadComponent: () => import('./pages/home/home.page').then((c) => c.HomePage),
+  ...canActivate(redirectTLogin),
   children: [
     { path: '', redirectTo: 'summary', pathMatch: 'full' },
     {
@@ -28,56 +51,59 @@ const homeRoute: Route = {
   ],
 };
 
-const accountRoutes: Routes = [
-  {
-    path: 'change-password',
-    loadComponent: () =>
-      import('./pages/change-password/change-password.page').then(
-        (c) => c.ChangePasswordPage
-      ),
-  },
-  {
-    path: 'my-account',
-    loadComponent: () =>
-      import('./pages/my-account/my-account.page').then((c) => c.MyAccountPage),
-  },
-];
+const userRoute: Route = {
+  path: 'user',
+  ...canActivate(redirectTLogin),
+  children: [
+    { path: '', redirectTo: 'my-account', pathMatch: 'full' },
+    {
+      path: 'change-password',
+      loadComponent: () =>
+        import('./pages/change-password/change-password.page').then(
+          (c) => c.ChangePasswordPage
+        ),
+    },
+    {
+      path: 'my-account',
+      loadComponent: () =>
+        import('./pages/my-account/my-account.page').then(
+          (c) => c.MyAccountPage
+        ),
+    },
+  ],
+};
 
-const transRoutes: Routes = [
-  {
-    path: 'search',
-    loadComponent: () =>
-      import('./pages/search/search.page').then((c) => c.SearchPage),
-  },
-  {
-    path: 'trans-edit/:id',
-    loadComponent: () =>
-      import('./pages/trans-edit/trans-edit.page').then((c) => c.TransEditPage),
-  },
-  {
-    path: 'trans-edit',
-    loadComponent: () =>
-      import('./pages/trans-edit/trans-edit.page').then((c) => c.TransEditPage),
-  },
-];
-
-const authRoutes: Routes = [
-  {
-    path: 'login',
-    loadComponent: () =>
-      import('./pages/login/login.page').then((c) => c.LoginPage),
-  },
-  {
-    path: 'register',
-    loadComponent: () =>
-      import('./pages/register/register.page').then((c) => c.RegisterPage),
-  },
-];
+const transactionRoute: Route = {
+  path: 'trans',
+  ...canActivate(redirectTLogin),
+  children: [
+    { path: '', redirectTo: 'search', pathMatch: 'full' },
+    {
+      path: 'search',
+      loadComponent: () =>
+        import('./pages/search/search.page').then((c) => c.SearchPage),
+    },
+    {
+      path: 'edit/:id',
+      loadComponent: () =>
+        import('./pages/trans-edit/trans-edit.page').then(
+          (c) => c.TransEditPage
+        ),
+    },
+    {
+      path: 'edit',
+      loadComponent: () =>
+        import('./pages/trans-edit/trans-edit.page').then(
+          (c) => c.TransEditPage
+        ),
+    },
+  ],
+};
 
 export const AppRoutes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
+  authRoute,
   homeRoute,
-  ...accountRoutes,
-  ...authRoutes,
-  ...transRoutes,
+  userRoute,
+  transactionRoute,
 ];
