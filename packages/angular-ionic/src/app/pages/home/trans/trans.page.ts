@@ -13,11 +13,35 @@ import {
   standalone: true,
   template: `
     <ion-content>
-      <ion-list>
-        <monic-transaction-item
-          [transaction]="exp"
-          *ngFor="let exp of transactions$ | async"
-        ></monic-transaction-item>
+      <ion-list style="padding-bottom: 72px;">
+        <ng-container
+          *ngIf="transactions$ | async as transactions; else skeleton"
+        >
+          <monic-transaction-item
+            [transaction]="exp"
+            *ngFor="let exp of transactions"
+          ></monic-transaction-item>
+        </ng-container>
+        <ng-template #skeleton>
+          <ion-item>
+            <ion-grid>
+              <ion-row *ngFor="let s of skeletons">
+                <ion-col>
+                  <ion-skeleton-text
+                    [animated]="true"
+                    class="ion-padding-vertical"
+                  ></ion-skeleton-text
+                ></ion-col>
+                <ion-col size="10">
+                  <ion-skeleton-text
+                    [animated]="true"
+                    class="ion-padding-vertical"
+                  ></ion-skeleton-text
+                ></ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ng-template>
       </ion-list>
       <ion-fab vertical="bottom" horizontal="center" slot="fixed">
         <ion-fab-button (click)="onAdd()" side="end">
@@ -29,6 +53,7 @@ import {
 })
 export class TransPage {
   transactions$ = this.transactionService.transactions$;
+  skeletons = new Array(10);
 
   constructor(
     private transactionService: TransactionService,

@@ -38,7 +38,7 @@ export class TransactionItemComponent {
           text: 'Delete',
           role: 'confirm',
           handler: () => {
-            this.transactionService.delete(this.transaction.id);
+            this.transactionService.delete(this.transaction);
           },
         },
       ],

@@ -28,5 +28,5 @@ export type ITransactionCreateInput = ITransactionWithoutId &
   ITransactionDateInput;
 
 export type ITransactionUpdateInput = ITransactionId &
-  Partial<ITransactionWithoutId> &
+  ITransactionWithoutId &
   ITransactionDateInput;

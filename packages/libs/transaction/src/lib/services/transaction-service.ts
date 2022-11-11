@@ -1,12 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import {
   ITransaction,
   ITransactionCreateInput,
   ITransactionUpdateInput,
+  TransactionType,
 } from '@monic/libs/types';
+
+type sumTransactionType = {
+  sumIncome: number;
+  sumExpense: number;
+};
 
 @Injectable({
   providedIn: 'root',
@@ -38,6 +44,12 @@ export class TransactionService {
       });
     })
   );
+  private sum: sumTransactionType = {
+    sumIncome: 0,
+    sumExpense: 0,
+  };
+  private sumSubject = new BehaviorSubject<sumTransactionType>(this.sum);
+  readonly sum$ = this.sumSubject.asObservable();
 
   constructor(private afs: AngularFirestore) {
     this.filteredTransactions$ = combineLatest([
@@ -65,6 +77,23 @@ export class TransactionService {
         return !id ? undefined : trans.find((t) => t.id === id);
       })
     );
+    this.transactions$.pipe(take(1)).subscribe((trans) => {
+      let sumIncome = 0;
+      let sumExpense = 0;
+      trans.forEach((t) => {
+        const amount = Number(t.amount);
+        if (t.type === 'expense') {
+          sumExpense += amount;
+        } else {
+          sumIncome += amount;
+        }
+      });
+      this.sum = {
+        sumIncome,
+        sumExpense,
+      };
+      this.sumSubject.next(this.sum);
+    });
   }
 
   add(trans: ITransactionCreateInput) {
@@ -73,15 +102,32 @@ export class TransactionService {
       .collection('transactions')
       .doc(this.afs.createId())
       .set(trans)
-      .then(() => this.onAddSuccessSubject.next(true))
+      .then(() => {
+        this.onAddSuccessSubject.next(true);
+        this.calculateSum(trans.type, Number(trans.amount));
+      })
       .finally(() => this.onSavingProcessSubject.next(false));
   }
 
-  delete(id: string) {
+  private calculateSum(transType: TransactionType, amount: number) {
+    const sum = this.sum;
+    if (transType === 'expense') {
+      sum.sumExpense += amount;
+    } else {
+      sum.sumIncome += amount;
+    }
+    this.sumSubject.next(sum);
+    return sum;
+  }
+
+  delete(trans: ITransaction) {
     this.afs
-      .doc(`transactions/${id}`)
+      .doc(`transactions/${trans.id}`)
       .delete()
-      .then(() => this.onDeleteSuccessSubject.next(true));
+      .then(() => {
+        this.onDeleteSuccessSubject.next(true);
+        this.calculateSum(trans.type, Number(trans.amount) * -1);
+      });
   }
 
   filterByType(type: string) {
@@ -104,8 +150,19 @@ export class TransactionService {
     this.onSavingProcessSubject.next(true);
     this.afs
       .doc(`transactions/${trans.id}`)
-      .update(trans)
-      .then(() => this.onUpdateSuccessSubject.next(true))
-      .finally(() => this.onSavingProcessSubject.next(false));
+      .get()
+      .pipe(take(1))
+      .subscribe((old) => {
+        const oldTrans = old.data() as ITransaction;
+        this.calculateSum(oldTrans.type, Number(oldTrans.amount) * -1);
+        this.afs
+          .doc(`transactions/${trans.id}`)
+          .update(trans)
+          .then(() => {
+            this.calculateSum(trans.type, Number(trans.amount));
+            this.onUpdateSuccessSubject.next(true);
+            this.onSavingProcessSubject.next(false);
+          });
+      });
   }
 }
