@@ -12,12 +12,12 @@ const authRoute: Route = {
     {
       path: 'login',
       loadComponent: () =>
-        import('./pages/auth/login/login.page').then((c) => c.LoginPage),
+        import('@monic/libs/auth').then((c) => c.LoginFormComponent),
     },
     {
       path: 'register',
       loadComponent: () =>
-        import('./pages/auth/register/register.page').then((c) => c.RegisterPage),
+        import('@monic/libs/auth').then((c) => c.RegisterFormComponent),
     },
   ],
 };
@@ -86,16 +86,12 @@ const transactionRoute: Route = {
     {
       path: 'edit/:id',
       loadComponent: () =>
-        import('./pages/trans/edit/edit.page').then(
-          (c) => c.TransEditPage
-        ),
+        import('./pages/trans/edit/edit.page').then((c) => c.TransEditPage),
     },
     {
       path: 'edit',
       loadComponent: () =>
-        import('./pages/trans/edit/edit.page').then(
-          (c) => c.TransEditPage
-        ),
+        import('./pages/trans/edit/edit.page').then((c) => c.TransEditPage),
     },
   ],
 };

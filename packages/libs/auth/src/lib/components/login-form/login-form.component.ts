@@ -8,62 +8,75 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import {
+  HideBackButtonDirective,
+  PageLayoutComponent,
+} from '@monic/libs/ui/base';
 import { take } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  imports: [CommonModule, IonicModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    HideBackButtonDirective,
+    IonicModule,
+    PageLayoutComponent,
+    ReactiveFormsModule,
+  ],
   selector: 'monic-login-form',
   standalone: true,
   template: `
-    <form [formGroup]="form" (ngSubmit)="login()">
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <ion-list>
-              <ion-item class="ion-margin-top">
-                <ion-label position="floating">Email</ion-label>
-                <ion-input formControlName="email" required></ion-input>
-              </ion-item>
-              <ion-item>
-                <ion-label position="floating">Password</ion-label>
-                <ion-input
-                  formControlName="password"
-                  required
-                  type="password"
-                ></ion-input>
-              </ion-item>
-            </ion-list>
-          </ion-col>
-        </ion-row>
-        <ion-row class="ion-margin-top">
-          <ion-col>
-            <ion-button
-              type="submit"
-              color="success"
-              expand="block"
-              [disabled]="isOnLoginProcess | async"
-            >
-              <ion-text *ngIf="(isOnLoginProcess | async) === false">
-                Submit
-              </ion-text>
-              <ion-spinner
-                name="lines-small"
-                *ngIf="isOnLoginProcess | async"
-              ></ion-spinner>
-            </ion-button>
-            <ion-button
-              (click)="register()"
-              color="warning"
-              expand="block"
-              fill="clear"
-            >
-              Register
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </form>
+    <monic-page-layout monicHideBackButton>
+      <p pageTitle>User Login</p>
+      <form [formGroup]="form" (ngSubmit)="login()">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-list>
+                <ion-item class="ion-margin-top">
+                  <ion-label position="floating">Email</ion-label>
+                  <ion-input formControlName="email" required></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Password</ion-label>
+                  <ion-input
+                    formControlName="password"
+                    required
+                    type="password"
+                  ></ion-input>
+                </ion-item>
+              </ion-list>
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-margin-top">
+            <ion-col>
+              <ion-button
+                type="submit"
+                color="success"
+                expand="block"
+                [disabled]="isOnLoginProcess | async"
+              >
+                <ion-text *ngIf="(isOnLoginProcess | async) === false">
+                  Submit
+                </ion-text>
+                <ion-spinner
+                  name="lines-small"
+                  *ngIf="isOnLoginProcess | async"
+                ></ion-spinner>
+              </ion-button>
+              <ion-button
+                (click)="register()"
+                color="warning"
+                expand="block"
+                fill="clear"
+              >
+                Register
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </monic-page-layout>
   `,
 })
 export class LoginFormComponent implements OnInit {
