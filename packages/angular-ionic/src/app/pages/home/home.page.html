@@ -28,7 +28,9 @@
         </ion-item>
       </ion-menu-toggle>
       <ion-menu-toggle>
-        <ion-item routerLink="/auth/login">
+        <ion-item
+          (click)="router.navigate(['/auth/login'], { replaceUrl: true })"
+        >
           <ion-icon name="exit-outline"></ion-icon>
           <ion-label>Logout</ion-label>
         </ion-item>

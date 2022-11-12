@@ -97,7 +97,7 @@ export class LoginFormComponent implements OnInit {
   ngOnInit(): void {
     this.authService.logout();
     this.authService.onLoginSucccess$.pipe(take(1)).subscribe(() => {
-      this.router.navigate(['home']);
+      this.router.navigate(['home'], { replaceUrl: true });
     });
   }
 
