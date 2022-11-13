@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import { TransactionType } from '@monic/libs/types';
-import { FormLayoutComponent } from '@monic/libs/ui/base';
+import { FormLayoutComponent, PageLayoutComponent } from '@monic/libs/ui/base';
 import { take } from 'rxjs/operators';
 import { TransactionService } from '../../services/transaction-service';
 
@@ -24,6 +24,7 @@ export type TransactionForm = FormGroup<{
     CommonModule,
     FormLayoutComponent,
     IonicModule,
+    PageLayoutComponent,
     ReactiveFormsModule,
   ],
   selector: 'monic-transaction-form',

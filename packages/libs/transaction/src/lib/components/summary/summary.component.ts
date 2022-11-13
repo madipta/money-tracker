@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
-import { TransactionService } from '@monic/libs/transaction';
 import { TabContentLayoutComponent } from '@monic/libs/ui/base';
+import { TransactionService } from '../../services/transaction-service';
 
 @Component({
   imports: [CommonModule, IonicModule, TabContentLayoutComponent],
   selector: 'monic-summary',
   standalone: true,
+  styles: [],
   template: `
     <monic-tab-content-layout title="Summary">
       <ng-container *ngIf="sum$ | async as sum">
@@ -57,10 +58,8 @@ import { TabContentLayoutComponent } from '@monic/libs/ui/base';
     </monic-tab-content-layout>
   `,
 })
-export class SummaryPage implements OnInit {
+export class SummaryComponent {
   sum$ = this.transService.sum$;
 
   constructor(private transService: TransactionService) {}
-
-  ngOnInit() {}
 }

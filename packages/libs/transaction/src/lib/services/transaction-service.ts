@@ -57,14 +57,14 @@ export class TransactionService {
       this.searchWordSubject,
       this.selectedTypeSubject,
     ]).pipe(
-      map(([transactions, searchText, transType]) =>
+      map(([transactions, searchWord, transType]) =>
         transactions.filter((t) => {
-          if (!searchText && !transType) {
+          if (!searchWord && !transType) {
             return true;
           }
           const isFilteredByType = !transType || t.type === transType;
           const isSearchByWord =
-            !searchText || t.notes.indexOf(searchText) > -1;
+            !searchWord || t.notes.indexOf(searchWord) > -1;
           return isSearchByWord && isFilteredByType;
         })
       )

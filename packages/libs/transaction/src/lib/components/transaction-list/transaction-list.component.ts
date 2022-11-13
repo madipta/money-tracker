@@ -2,14 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import {
-  TransactionItemComponent,
-  TransactionService,
-} from '@monic/libs/transaction';
+import { TransactionService } from '../../services/transaction-service';
+import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
 
 @Component({
   imports: [CommonModule, IonicModule, TransactionItemComponent],
-  selector: 'monic-trans',
+  selector: 'monic-transaction-list',
   standalone: true,
   template: `
     <ion-content>
@@ -51,7 +49,7 @@ import {
     </ion-content>
   `,
 })
-export class TransPage {
+export class TransactionListComponent {
   transactions$ = this.transactionService.transactions$;
   skeletons = new Array(10);
 

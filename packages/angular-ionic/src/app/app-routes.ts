@@ -10,6 +10,11 @@ const authRoute: Route = {
   path: 'auth',
   children: [
     {
+      path: 'change-password',
+      loadComponent: () =>
+        import('@monic/libs/auth').then((c) => c.ChangePasswordComponent),
+    },
+    {
       path: 'login',
       loadComponent: () =>
         import('@monic/libs/auth').then((c) => c.LoginFormComponent),
@@ -24,29 +29,31 @@ const authRoute: Route = {
 
 const homeRoute: Route = {
   path: 'home',
-  loadComponent: () => import('./pages/home/home.page').then((c) => c.HomePage),
+  loadComponent: () => import('./home/home.page').then((c) => c.HomePage),
   ...canActivate(redirectTLogin),
   children: [
     { path: '', redirectTo: 'summary', pathMatch: 'full' },
     {
       path: 'budget',
       loadComponent: () =>
-        import('./pages/home/budget/budget.page').then((c) => c.BudgetPage),
+        import('./home/budget/budget.page').then((c) => c.BudgetPage),
     },
     {
       path: 'report',
       loadComponent: () =>
-        import('./pages/home/report/report.page').then((c) => c.ReportPage),
+        import('./home/report/report.page').then((c) => c.ReportPage),
     },
     {
       path: 'summary',
       loadComponent: () =>
-        import('./pages/home/summary/summary.page').then((c) => c.SummaryPage),
+        import('@monic/libs/transaction').then((c) => c.SummaryComponent),
     },
     {
       path: 'trans',
       loadComponent: () =>
-        import('./pages/home/trans/trans.page').then((c) => c.TransPage),
+        import('@monic/libs/transaction').then(
+          (c) => c.TransactionListComponent
+        ),
     },
   ],
 };
@@ -57,18 +64,9 @@ const userRoute: Route = {
   children: [
     { path: '', redirectTo: 'my-account', pathMatch: 'full' },
     {
-      path: 'change-password',
-      loadComponent: () =>
-        import('./pages/user/change-password/change-password.page').then(
-          (c) => c.ChangePasswordPage
-        ),
-    },
-    {
       path: 'my-account',
       loadComponent: () =>
-        import('./pages/user/my-account/my-account.page').then(
-          (c) => c.MyAccountPage
-        ),
+        import('@monic/libs/user').then((c) => c.AccountFormComponent),
     },
   ],
 };
@@ -81,17 +79,21 @@ const transactionRoute: Route = {
     {
       path: 'search',
       loadComponent: () =>
-        import('./pages/trans/search/search.page').then((c) => c.SearchPage),
+        import('@monic/libs/transaction').then((c) => c.SearchComponent),
     },
     {
       path: 'edit/:id',
       loadComponent: () =>
-        import('./pages/trans/edit/edit.page').then((c) => c.TransEditPage),
+        import('@monic/libs/transaction').then(
+          (c) => c.TransactionFormComponent
+        ),
     },
     {
       path: 'edit',
       loadComponent: () =>
-        import('./pages/trans/edit/edit.page').then((c) => c.TransEditPage),
+        import('@monic/libs/transaction').then(
+          (c) => c.TransactionFormComponent
+        ),
     },
   ],
 };

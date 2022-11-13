@@ -22,7 +22,7 @@
         </ion-item>
       </ion-menu-toggle>
       <ion-menu-toggle>
-        <ion-item routerLink="/user/change-password">
+        <ion-item routerLink="/auth/change-password">
           <ion-icon name="shield-checkmark-outline"></ion-icon>
           <ion-label>Change Password</ion-label>
         </ion-item>
@@ -55,9 +55,7 @@
   </ion-header>
 
   <ion-content>
-    <ion-router-outlet
-      [environmentInjector]="environmentInjector"
-    ></ion-router-outlet>
+    <ion-router-outlet></ion-router-outlet>
     <ion-tabs [environmentInjector]="environmentInjector">
       <ion-tab-bar slot="top" color="secondary">
         <ion-tab-button tab="summary">
