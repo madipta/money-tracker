@@ -98,16 +98,16 @@ export class AccountFormComponent implements OnInit, OnDestroy {
 
   constructor(
     private alertCtrl: AlertController,
-    private fb: FormBuilder,
+    fb: FormBuilder,
     private nav: NavController,
     private userService: UserService
   ) {
-    this.form = this.fb.nonNullable.group({
-      address: this.fb.nonNullable.control(''),
-      city: this.fb.nonNullable.control(''),
-      country: this.fb.nonNullable.control(''),
-      name: this.fb.nonNullable.control('', [Validators.required]),
-      phone: this.fb.nonNullable.control(''),
+    this.form = fb.nonNullable.group({
+      address: fb.nonNullable.control(''),
+      city: fb.nonNullable.control(''),
+      country: fb.nonNullable.control(''),
+      name: fb.nonNullable.control('', [Validators.required]),
+      phone: fb.nonNullable.control(''),
     });
   }
 
