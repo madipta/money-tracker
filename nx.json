@@ -25,6 +25,9 @@
       "unitTestRunner": "jest"
     },
     "@nrwl/angular:component": {
+      "inlineStyle": true,
+      "inlineTemplate": true,
+      "standalone": true,
       "style": "scss"
     }
   },
