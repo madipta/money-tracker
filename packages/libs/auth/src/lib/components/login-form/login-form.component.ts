@@ -81,7 +81,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class LoginFormComponent implements OnInit {
   form: FormGroup;
-  isOnLoginProcess = this.authService.onLoginProcess$;
+  isOnLoginProcess = this.authService.loginOnLoad$;
 
   constructor(
     private authService: AuthService,
@@ -109,7 +109,7 @@ export class LoginFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.logout();
-    this.authService.onLoginSucccess$.pipe(take(1)).subscribe(() => {
+    this.authService.loginResult$.pipe(take(1)).subscribe(() => {
       this.router.navigate(['home'], { replaceUrl: true });
     });
   }

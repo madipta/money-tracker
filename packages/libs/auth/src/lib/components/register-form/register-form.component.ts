@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -12,7 +12,7 @@ import {
   HideBackButtonDirective,
   PageLayoutComponent,
 } from '@monic/libs/ui/base';
-import { take } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -58,14 +58,14 @@ import { AuthService } from '../../services/auth.service';
                 type="submit"
                 color="success"
                 expand="block"
-                [disabled]="isOnRegisterProcess | async"
+                [disabled]="isOnLoad | async"
               >
-                <ion-text *ngIf="(isOnRegisterProcess | async) === false">
+                <ion-text *ngIf="(isOnLoad | async) === false">
                   Submit
                 </ion-text>
                 <ion-spinner
                   name="lines-small"
-                  *ngIf="isOnRegisterProcess | async"
+                  *ngIf="isOnLoad | async"
                 ></ion-spinner>
               </ion-button>
               <ion-button
@@ -83,9 +83,10 @@ import { AuthService } from '../../services/auth.service';
     </monic-page-layout>
   `,
 })
-export class RegisterFormComponent implements OnInit {
+export class RegisterFormComponent implements OnDestroy, OnInit {
+  destroy$ = new Subject<boolean>();
   form: FormGroup;
-  isOnRegisterProcess = this.authService.onRegisterProcess$;
+  isOnLoad = this.authService.registerOnLoad$;
 
   constructor(
     private authService: AuthService,
@@ -109,11 +110,20 @@ export class RegisterFormComponent implements OnInit {
     this.router.navigate(['auth/login']);
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
   ngOnInit(): void {
     this.authService.logout();
-    this.authService.onRegisterSuccess$.pipe(take(1)).subscribe(() => {
-      this.router.navigate(['auth/login']);
-    });
+    this.authService.registerResult$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((uid) => {
+        if (uid) {
+          this.router.navigate(['auth/login']);
+        }
+      });
   }
 
   register() {

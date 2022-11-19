@@ -10,9 +10,9 @@ const authRoute: Route = {
   path: 'auth',
   children: [
     {
-      path: 'change-password',
+      path: 'reset-password',
       loadComponent: () =>
-        import('@monic/libs/auth').then((c) => c.ChangePasswordComponent),
+        import('@monic/libs/auth').then((c) => c.ResetPasswordComponent),
     },
     {
       path: 'login',
