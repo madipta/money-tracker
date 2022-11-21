@@ -12,7 +12,7 @@ import { FormLayoutComponent, PageLayoutComponent } from '@monic/libs/ui/base';
 import { take } from 'rxjs/operators';
 import { TransactionService } from '../../services/transaction-service';
 
-export type TransactionForm = FormGroup<{
+type TransactionForm = FormGroup<{
   amount: FormControl<number>;
   date: FormControl<string>;
   notes: FormControl<string>;
@@ -33,7 +33,7 @@ export type TransactionForm = FormGroup<{
 })
 export class TransactionFormComponent implements OnInit {
   isAdd = true;
-  isOnSavingProcess = this.transactionService.onSavingProcess$;
+  isOnSavingProcess = this.transactionService.saveOnProcess$;
   form: TransactionForm;
   selectedId = '';
   title = '';
@@ -77,10 +77,10 @@ export class TransactionFormComponent implements OnInit {
           });
         }
       });
-    this.transactionService.onAddSuccess$.pipe(take(1)).subscribe(() => {
+    this.transactionService.addResult$.pipe(take(1)).subscribe(() => {
       this.navController.back();
     });
-    this.transactionService.onUpdateSuccess$.pipe(take(1)).subscribe(() => {
+    this.transactionService.updateResult$.pipe(take(1)).subscribe(() => {
       this.navController.back();
     });
   }

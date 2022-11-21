@@ -1,141 +1,162 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, of, Subject } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import {
   ITransaction,
   ITransactionCreateInput,
   ITransactionUpdateInput,
-  TransactionType,
 } from '@monic/libs/types';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
-type sumTransactionType = {
-  sumIncome: number;
-  sumExpense: number;
+type TransactionFilter = {
+  month: number;
+  type: string | null;
+  word: string | null;
+  year: number;
 };
 
 @Injectable({
   providedIn: 'root',
 })
 export class TransactionService {
-  private onAddSuccessSubject = new Subject();
-  readonly onAddSuccess$ = this.onAddSuccessSubject.asObservable();
-  private onDeleteSuccessSubject = new Subject();
-  readonly onDeleteSuccess$ = this.onDeleteSuccessSubject.asObservable();
-  private onUpdateSuccessSubject = new Subject();
-  readonly onUpdateSuccess$ = this.onUpdateSuccessSubject.asObservable();
-  private onSavingProcessSubject = new BehaviorSubject(false);
-  readonly onSavingProcess$ = this.onSavingProcessSubject.asObservable();
-  private searchWordSubject = new BehaviorSubject('');
-  private selectedIdSubject = new BehaviorSubject('');
-  readonly selectedTransaction$: Observable<ITransaction | undefined>;
-  private selectedTypeSubject = new BehaviorSubject('');
-  readonly filteredTransactions$: Observable<ITransaction[]>;
-  readonly transDb = this.afs.collection<ITransaction>('transactions', (ref) =>
-    ref.orderBy('date', 'desc')
-  );
-  readonly transactions$ = this.transDb.snapshotChanges().pipe(
-    map((changes) => {
-      return changes.map((result) => {
-        return {
-          ...result.payload.doc.data(),
-          id: result.payload.doc.id,
-        };
-      });
-    })
-  );
-  private sum: sumTransactionType = {
-    sumIncome: 0,
-    sumExpense: 0,
-  };
-  private sumSubject = new BehaviorSubject<sumTransactionType>(this.sum);
-  readonly sum$ = this.sumSubject.asObservable();
-
-  constructor(private afs: AngularFirestore) {
-    this.filteredTransactions$ = combineLatest([
-      this.transactions$,
-      this.searchWordSubject,
-      this.selectedTypeSubject,
-    ]).pipe(
-      map(([transactions, searchWord, transType]) =>
-        transactions.filter((t) => {
-          if (!searchWord && !transType) {
-            return true;
-          }
-          const isFilteredByType = !transType || t.type === transType;
-          const isSearchByWord =
-            !searchWord || t.notes.indexOf(searchWord) > -1;
-          return isSearchByWord && isFilteredByType;
+  private addResultSubject = new Subject();
+  readonly addResult$ = this.addResultSubject.asObservable();
+  private deleteResultSubject = new Subject();
+  readonly deleteResult$ = this.deleteResultSubject.asObservable();
+  private deleteOnProcessSubject = new BehaviorSubject(false);
+  readonly deleteOnProcess$ = this.deleteOnProcessSubject.asObservable();
+  private updateResultSubject = new Subject();
+  readonly updateResult$ = this.updateResultSubject.asObservable();
+  private saveOnProcessSubject = new BehaviorSubject(false);
+  readonly saveOnProcess$ = this.saveOnProcessSubject.asObservable();
+  readonly sum$ = this.fireauth.user.pipe(
+    switchMap((userAuth) =>
+      of(
+        this.firestore.collection<ITransaction>('transactions', (ref) =>
+          ref.where('userId', '==', userAuth?.uid).orderBy('date', 'desc')
+        )
+      )
+    ),
+    switchMap((db) =>
+      db.valueChanges().pipe(
+        switchMap((trans) => {
+          let sumIncome = 0;
+          let sumExpense = 0;
+          trans.forEach((t) => {
+            const amount = Number(t.amount);
+            if (t.type === 'expense') {
+              sumExpense += amount;
+            } else {
+              sumIncome += amount;
+            }
+          });
+          return of({
+            sumIncome,
+            sumExpense,
+          });
         })
       )
-    );
-    this.selectedTransaction$ = combineLatest([
-      this.transactions$,
-      this.selectedIdSubject,
-    ]).pipe(
-      map(([trans, id]) => {
-        return !id ? undefined : trans.find((t) => t.id === id);
+    )
+  );
+  private filterValue: TransactionFilter = {
+    month: new Date().getMonth(),
+    type: '',
+    word: '',
+    year: new Date().getFullYear(),
+  };
+  private filterSubject = new BehaviorSubject<TransactionFilter>(
+    this.filterValue
+  );
+  readonly filter$ = this.filterSubject
+    .asObservable()
+    .pipe(tap((v) => (this.filterValue = v)));
+
+  private transDB = combineLatest([this.fireauth.user, this.filterSubject])
+    .pipe(
+      switchMap(([userAuth, filter]) => {
+        const startDate = new Date(filter.year, filter.month, 1);
+        const endDate = new Date(filter.year, filter.month + 1, 1);
+        return of(
+          this.firestore.collection<ITransaction>('transactions', (ref) =>
+            ref
+              .where('userId', '==', userAuth?.uid)
+              .where('date', '>=', startDate)
+              .where('date', '<', endDate)
+              .orderBy('date', 'desc')
+          )
+        );
       })
+    )
+    .pipe(
+      switchMap((db) =>
+        db.snapshotChanges().pipe(
+          map((changes) => {
+            return changes.map((result) => {
+              return {
+                ...result.payload.doc.data(),
+                id: result.payload.doc.id,
+              };
+            });
+          })
+        )
+      )
     );
-    this.transactions$.pipe(take(1)).subscribe((trans) => {
-      let sumIncome = 0;
-      let sumExpense = 0;
-      trans.forEach((t) => {
-        const amount = Number(t.amount);
-        if (t.type === 'expense') {
-          sumExpense += amount;
-        } else {
-          sumIncome += amount;
-        }
-      });
-      this.sum = {
-        sumIncome,
-        sumExpense,
-      };
-      this.sumSubject.next(this.sum);
-    });
-  }
+  readonly filteredTransactions$ = combineLatest([
+    this.transDB,
+    this.filterSubject,
+  ]).pipe(
+    switchMap(([transactions, filter]) => {
+      const { type, word } = filter;
+      return of(
+        transactions.filter((t) => {
+          const filterText =
+            !word ||
+            t.notes.toLocaleLowerCase().indexOf(word.toLocaleLowerCase()) > -1;
+          const filterType = !type || t.type === type;
+          return filterText && filterType;
+        })
+      );
+    })
+  );
+  private selectedIdSubject = new BehaviorSubject('');
+  readonly selectedTransaction$ = combineLatest([
+    this.transDB,
+    this.selectedIdSubject,
+  ]).pipe(
+    map(([trans, id]) => {
+      return !id ? undefined : trans.find((t) => t.id === id);
+    })
+  );
+
+  constructor(
+    private firestore: AngularFirestore,
+    private fireauth: AngularFireAuth
+  ) {}
 
   add(trans: ITransactionCreateInput) {
-    this.onSavingProcessSubject.next(true);
-    this.afs
+    this.saveOnProcessSubject.next(true);
+    this.firestore
       .collection('transactions')
-      .doc(this.afs.createId())
+      .doc(this.firestore.createId())
       .set(trans)
-      .then(() => {
-        this.onAddSuccessSubject.next(true);
-        this.calculateSum(trans.type, Number(trans.amount));
-      })
-      .finally(() => this.onSavingProcessSubject.next(false));
-  }
-
-  private calculateSum(transType: TransactionType, amount: number) {
-    const sum = this.sum;
-    if (transType === 'expense') {
-      sum.sumExpense += amount;
-    } else {
-      sum.sumIncome += amount;
-    }
-    this.sumSubject.next(sum);
-    return sum;
+      .then(() => this.addResultSubject.next(true))
+      .finally(() => this.saveOnProcessSubject.next(false));
   }
 
   delete(trans: ITransaction) {
-    this.afs
+    this.deleteOnProcessSubject.next(true);
+    this.firestore
       .doc(`transactions/${trans.id}`)
       .delete()
       .then(() => {
-        this.onDeleteSuccessSubject.next(true);
-        this.calculateSum(trans.type, Number(trans.amount) * -1);
-      });
+        this.deleteResultSubject.next(true);
+      })
+      .finally(() => this.deleteOnProcessSubject.next(false));
   }
 
-  filterByType(type: string) {
-    this.selectedTypeSubject.next(type);
-  }
-
-  filterByWord(word: string) {
-    this.searchWordSubject.next(word);
+  filter(filter: Partial<TransactionFilter>) {
+    this.filterSubject.next({ ...this.filterValue, ...filter });
   }
 
   select(id: string) {
@@ -147,22 +168,13 @@ export class TransactionService {
   }
 
   update(trans: ITransactionUpdateInput) {
-    this.onSavingProcessSubject.next(true);
-    this.afs
+    this.saveOnProcessSubject.next(true);
+    this.firestore
       .doc(`transactions/${trans.id}`)
-      .get()
-      .pipe(take(1))
-      .subscribe((old) => {
-        const oldTrans = old.data() as ITransaction;
-        this.calculateSum(oldTrans.type, Number(oldTrans.amount) * -1);
-        this.afs
-          .doc(`transactions/${trans.id}`)
-          .update(trans)
-          .then(() => {
-            this.calculateSum(trans.type, Number(trans.amount));
-            this.onUpdateSuccessSubject.next(true);
-            this.onSavingProcessSubject.next(false);
-          });
+      .update(trans)
+      .then(() => {
+        this.updateResultSubject.next(true);
+        this.saveOnProcessSubject.next(false);
       });
   }
 }

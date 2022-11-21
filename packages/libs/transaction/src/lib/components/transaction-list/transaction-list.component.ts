@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
+import { of, switchMap } from 'rxjs';
 import { TransactionService } from '../../services/transaction-service';
 import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
 
@@ -10,6 +11,17 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
   selector: 'monic-transaction-list',
   standalone: true,
   template: `
+    <ion-segment [value]="filter" *ngIf="filter$ | async as filter">
+      <ion-segment-button value="current" (click)="current()">
+        <ion-label>This Month</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="last" (click)="last()">
+        <ion-label>Last Month</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="prev" (click)="prev()">
+        <ion-label>Previous</ion-label>
+      </ion-segment-button>
+    </ion-segment>
     <ion-content>
       <ion-list style="padding-bottom: 72px;">
         <ng-container
@@ -50,13 +62,55 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
   `,
 })
 export class TransactionListComponent {
-  transactions$ = this.transactionService.transactions$;
+  filter$ = this.transactionService.filter$.pipe(
+    switchMap((f) => {
+      const current = new Date();
+      const currentMonth = current.getMonth();
+      const currentYear = current.getFullYear();
+      const last = new Date(currentYear, currentMonth - 1, 1);
+      const lastMonth = last.getMonth();
+      const lastYear = last.getFullYear();
+      if (f.year === currentYear && f.month === currentMonth) {
+        return of('current');
+      } else if (f.year === lastYear && f.month === lastMonth) {
+        return of('last');
+      }
+      return of('prev');
+    })
+  );
   skeletons = new Array(10);
+  transactions$ = this.transactionService.filteredTransactions$;
 
   constructor(
     private transactionService: TransactionService,
     public router: Router
   ) {}
+
+  current() {
+    const current = new Date();
+    this.transactionService.filter({
+      month: current.getMonth(),
+      year: current.getFullYear(),
+    });
+  }
+
+  last() {
+    const current = new Date();
+    const last = new Date(current.getFullYear(), current.getMonth() - 1, 1);
+    this.transactionService.filter({
+      month: last.getMonth(),
+      year: last.getFullYear(),
+    });
+  }
+
+  prev() {
+    const current = new Date();
+    const prev = new Date(current.getFullYear(), current.getMonth() - 2, 1);
+    this.transactionService.filter({
+      month: prev.getMonth(),
+      year: prev.getFullYear(),
+    });
+  }
 
   onAdd() {
     this.transactionService.unselect();
