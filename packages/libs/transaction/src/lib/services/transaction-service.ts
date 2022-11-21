@@ -136,12 +136,20 @@ export class TransactionService {
 
   add(trans: ITransactionCreateInput) {
     this.saveOnProcessSubject.next(true);
-    this.firestore
+    this.fireauth.user.subscribe(user=> {
+      if (!user) {
+        this.addResultSubject.next(false);
+        this.saveOnProcessSubject.next(false);
+        return;
+      }
+      const data = { ...trans, userId: user.uid};
+      this.firestore
       .collection('transactions')
       .doc(this.firestore.createId())
-      .set(trans)
+      .set(data)
       .then(() => this.addResultSubject.next(true))
       .finally(() => this.saveOnProcessSubject.next(false));
+    });
   }
 
   delete(trans: ITransaction) {
