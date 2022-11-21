@@ -8,12 +8,16 @@ export type ITransactionId = {
 
 export type ITransactionWithoutId = {
   amount: number;
-  type: TransactionType;
   notes: string;
+  type: TransactionType;
 };
 
 export type ITransactionDate = {
   date: Timestamp;
+};
+
+export type ITransactionUserId = {
+  userId: string;
 };
 
 export type ITransactionDateInput = {
@@ -22,7 +26,8 @@ export type ITransactionDateInput = {
 
 export type ITransaction = ITransactionId &
   ITransactionWithoutId &
-  ITransactionDate;
+  ITransactionDate &
+  ITransactionUserId;
 
 export type ITransactionCreateInput = ITransactionWithoutId &
   ITransactionDateInput;
