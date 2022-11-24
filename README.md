@@ -9,11 +9,11 @@ Tools: VS.Code, Nx Monorepo
 ## Install
 
 install node_modules packages
-`npm install or yarn`   
+`npm install` or `yarn`   
 
 ## Run on Web
 
-run web server `npx nx serve or yarn nx serve` then open browser http://localhost:4200   
+run web server `npx nx serve` or `yarn nx serve` then open browser http://localhost:4200   
 
 ## Run on Mobile
 
