@@ -18,11 +18,11 @@ run web server `npx nx serve or yarn nx serve` then open browser http://localhos
 ## Run on Mobile
 
 ### create android/ios folder
-`npx nx run angular-ionic:add:android or yarn nx run angular-ionic:add:android` (Android)   
-`npx nx run angular-ionic:add:ios or yarn nx run angular-ionic:add:ios` (IOS)   
+`npx nx run angular-ionic:add:android` or `yarn nx run angular-ionic:add:android` (Android)   
+`npx nx run angular-ionic:add:ios` or `yarn nx run angular-ionic:add:ios` (IOS)   
 
 ### run on emulator
-`npx nx run angular-ionic:run:android or yarn nx run angular-ionic:run:android` (Android)   
-`npx nx run angular-ionic:run:ios or yarn nx run angular-ionic:run:ios` (IOS)   
+`npx nx run angular-ionic:run:android` or `yarn nx run angular-ionic:run:android` (Android)   
+`npx nx run angular-ionic:run:ios` or `yarn nx run angular-ionic:run:ios` (IOS)   
 
 <p><i>To run on mobile please check Ionic website for prior installation</i></p>
