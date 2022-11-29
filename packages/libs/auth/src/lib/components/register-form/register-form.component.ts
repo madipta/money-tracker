@@ -25,9 +25,25 @@ import { AuthService } from '../../services/auth.service';
   ],
   selector: 'monic-register-form',
   standalone: true,
+  styles: [
+    `
+      .register-logo {
+        text-align: center;
+
+        ion-icon {
+          color: var(--ion-color-tertiary);
+          font-size: 128px;
+          margin-top: 24px;
+        }
+      }
+    `,
+  ],
   template: `
     <monic-page-layout monicHideBackButton>
       <p pageTitle>Register</p>
+      <div class="register-logo">
+        <ion-icon name="sparkles-outline"></ion-icon>
+      </div>
       <form [formGroup]="form" (ngSubmit)="register()">
         <ion-grid>
           <ion-row class="ion-margin-top">
