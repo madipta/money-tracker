@@ -40,10 +40,7 @@ import { AuthService } from '../../services/auth.service';
   ],
   template: `
     <monic-page-layout monicHideBackButton>
-      <div pageTitle>
-        <ion-icon name="person-circle-outline"></ion-icon>
-        User Login
-      </div>
+      <p pageTitle>User Login</p>
       <div class="login-logo">
         <ion-icon name="finger-print-outline"></ion-icon>
       </div>
