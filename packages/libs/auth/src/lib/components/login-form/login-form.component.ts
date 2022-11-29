@@ -82,7 +82,7 @@ import { AuthService } from '../../services/auth.service';
               </ion-button>
               <ion-button
                 (click)="register()"
-                color="danger"
+                color="tertiary"
                 expand="block"
                 fill="clear"
               >

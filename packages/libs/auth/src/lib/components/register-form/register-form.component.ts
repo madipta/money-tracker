@@ -85,7 +85,7 @@ import { AuthService } from '../../services/auth.service';
                 ></ion-spinner>
               </ion-button>
               <ion-button
-                color="danger"
+                color="tertiary"
                 expand="block"
                 fill="clear"
                 (click)="login()"
