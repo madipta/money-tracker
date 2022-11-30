@@ -34,7 +34,7 @@ export class TransactionService {
     switchMap((userAuth) =>
       of(
         this.firestore.collection<ITransaction>('transactions', (ref) =>
-          ref.where('userId', '==', userAuth?.uid).orderBy('date', 'desc')
+          ref.where('userId', '==', userAuth?.uid)
         )
       )
     ),
