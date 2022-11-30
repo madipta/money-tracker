@@ -1,11 +1,11 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, DecimalPipe, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import { TabContentLayoutComponent } from '@monic/libs/ui/base';
 import { TransactionService } from '../../services/transaction-service';
 
 @Component({
-  imports: [CommonModule, IonicModule, TabContentLayoutComponent],
+  imports: [AsyncPipe, DecimalPipe, IonicModule, NgIf, TabContentLayoutComponent],
   selector: 'monic-summary',
   standalone: true,
   styles: [],

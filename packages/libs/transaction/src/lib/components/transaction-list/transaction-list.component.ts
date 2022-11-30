@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
@@ -7,7 +7,7 @@ import { TransactionService } from '../../services/transaction-service';
 import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
 
 @Component({
-  imports: [CommonModule, IonicModule, TransactionItemComponent],
+  imports: [AsyncPipe, IonicModule, NgFor, NgIf, TransactionItemComponent],
   selector: 'monic-transaction-list',
   standalone: true,
   template: `

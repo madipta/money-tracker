@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -17,9 +17,10 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   imports: [
-    CommonModule,
+    AsyncPipe,
     HideBackButtonDirective,
     IonicModule,
+    NgIf,
     PageLayoutComponent,
     ReactiveFormsModule,
   ],

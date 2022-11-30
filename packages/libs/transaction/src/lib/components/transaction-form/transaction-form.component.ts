@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -21,9 +21,11 @@ type TransactionForm = FormGroup<{
 
 @Component({
   imports: [
-    CommonModule,
+    AsyncPipe,
+    DatePipe,
     FormLayoutComponent,
     IonicModule,
+    NgIf,
     PageLayoutComponent,
     ReactiveFormsModule,
   ],

@@ -1,5 +1,5 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormControl,
@@ -7,11 +7,11 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { FormLayoutComponent, PageLayoutComponent } from '@monic/libs/ui/base';
 import { Subject, takeUntil } from 'rxjs';
 import { TransactionService } from '../../services/transaction-service';
-import { Router } from '@angular/router';
 
 type SearchForm = FormGroup<{
   month: FormControl<number>;
@@ -22,9 +22,10 @@ type SearchForm = FormGroup<{
 
 @Component({
   imports: [
-    CommonModule,
+    AsyncPipe,
     FormLayoutComponent,
     IonicModule,
+    NgIf,
     PageLayoutComponent,
     ReactiveFormsModule,
   ],

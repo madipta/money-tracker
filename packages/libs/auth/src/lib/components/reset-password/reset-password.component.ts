@@ -1,23 +1,30 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { PageLayoutComponent } from '@monic/libs/ui/base';
-import { AuthService } from '../../services/auth.service';
 import {
   FormGroup,
   FormControl,
+  ReactiveFormsModule,
   FormBuilder,
   Validators,
-  ReactiveFormsModule,
 } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
-import { IonicModule } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { IonicModule } from '@ionic/angular';
+import { PageLayoutComponent } from '@monic/libs/ui/base';
+import { Subject, takeUntil } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 type ResetPasswordForm = FormGroup<{
   email: FormControl<string>;
 }>;
 
 @Component({
+  imports: [
+    AsyncPipe,
+    IonicModule,
+    NgIf,
+    PageLayoutComponent,
+    ReactiveFormsModule,
+  ],
   selector: 'monic-reset-password',
   standalone: true,
   template: `
@@ -64,12 +71,6 @@ type ResetPasswordForm = FormGroup<{
       </form>
     </monic-page-layout>
   `,
-  imports: [
-    CommonModule,
-    IonicModule,
-    PageLayoutComponent,
-    ReactiveFormsModule,
-  ],
 })
 export class ResetPasswordComponent implements OnDestroy, OnInit {
   destroy = new Subject();

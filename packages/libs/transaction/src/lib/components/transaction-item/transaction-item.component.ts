@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, IonicModule } from '@ionic/angular';
@@ -6,7 +6,7 @@ import { ITransaction } from '@monic/libs/types';
 import { TransactionService } from '../../services/transaction-service';
 
 @Component({
-  imports: [CommonModule, IonicModule],
+  imports: [DatePipe, DecimalPipe, IonicModule],
   selector: 'monic-transaction-item',
   standalone: true,
   styleUrls: ['./transaction-item.component.scss'],

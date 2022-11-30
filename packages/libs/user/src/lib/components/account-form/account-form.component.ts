@@ -1,16 +1,16 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
   FormGroup,
+  FormControl,
   ReactiveFormsModule,
+  FormBuilder,
   Validators,
 } from '@angular/forms';
-import { AlertController, IonicModule, NavController } from '@ionic/angular';
+import { IonicModule, AlertController, NavController } from '@ionic/angular';
 import { PageLayoutComponent } from '@monic/libs/ui/base';
-import { UserService } from '../../services/user.service';
 import { Subject, take, takeUntil } from 'rxjs';
+import { UserService } from '../../services/user.service';
 
 export type UserForm = FormGroup<{
   address: FormControl<string>;
@@ -22,8 +22,9 @@ export type UserForm = FormGroup<{
 
 @Component({
   imports: [
-    CommonModule,
+    AsyncPipe,
     IonicModule,
+    NgIf,
     PageLayoutComponent,
     ReactiveFormsModule,
   ],
