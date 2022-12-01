@@ -31,7 +31,7 @@
       "style": "scss"
     }
   },
-  "defaultProject": "angular-ionic",
+  "defaultProject": "angular",
   "targetDefaults": {
     "e2e": {
       "inputs": ["default", "^default"]

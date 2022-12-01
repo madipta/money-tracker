@@ -12,24 +12,23 @@
 
     h3 {
       font-size: 1.14rem;
-      margin:  0 0 2px;
+      margin: 0 0 2px;
 
       a {
         color: var(--ion-color-primary-contrast);
         text-decoration: none;
-        opacity: .9;
+        opacity: 0.9;
       }
     }
 
     p {
-      font-size: .8rem;
+      font-size: 0.8rem;
       font-weight: 600;
       margin: 0;
-      opacity: .6;
+      opacity: 0.6;
     }
   }
 }
-
 
 .home-menu-content {
   --ion-background-color: var(--ion-color-secondary);
@@ -37,8 +36,8 @@
   --ion-text-color-rgb: var(--ion-color-secondary-contrast-rgb);
 
   ion-item {
-    font-size: .84rem;
-    letter-spacing: .03em;
+    font-size: 0.84rem;
+    letter-spacing: 0.03em;
   }
 
   ion-label {

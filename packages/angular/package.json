@@ -1,5 +1,5 @@
 {
-  "name": "angular-ionic",
+  "name": "@monic/angular",
   "version": "0.0.1",
   "devDependencies": {
     "@capacitor/cli": "^3.6.0"

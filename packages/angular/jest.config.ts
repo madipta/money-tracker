@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'angular-ionic',
+  displayName: 'angular',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -9,7 +9,7 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/packages/angular-ionic',
+  coverageDirectory: '../../coverage/packages/angular',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

@@ -1,21 +1,22 @@
 {
-  "name": "angular-ionic",
+  "name": "angular",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "packages/angular-ionic/src",
+  "sourceRoot": "packages/angular/src",
   "prefix": "monic",
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/packages/angular-ionic",
-        "index": "packages/angular-ionic/src/index.html",
-        "main": "packages/angular-ionic/src/main.ts",
-        "polyfills": "packages/angular-ionic/src/polyfills.ts",
-        "tsConfig": "packages/angular-ionic/tsconfig.app.json",
+        "outputPath": "dist/packages/angular",
+        "index": "packages/angular/src/index.html",
+        "main": "packages/angular/src/main.ts",
+        "polyfills": "packages/angular/src/polyfills.ts",
+        "tsConfig": "packages/angular/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
-          "packages/angular-ionic/src/assets",
+          "packages/angular/src/assets",
           {
             "glob": "**/*.svg",
             "input": "node_modules/ionicons/dist/ionicons/svg",
@@ -23,9 +24,9 @@
           }
         ],
         "styles": [
-          "packages/angular-ionic/src/styles.scss",
+          "packages/angular/src/styles.scss",
           {
-            "input": "packages/angular-ionic/src/theme/variables.scss"
+            "input": "packages/angular/src/theme/variables.scss"
           }
         ],
         "scripts": []
@@ -46,8 +47,8 @@
           ],
           "fileReplacements": [
             {
-              "replace": "packages/angular-ionic/src/environments/environment.ts",
-              "with": "packages/angular-ionic/src/environments/environment.prod.ts"
+              "replace": "packages/angular/src/environments/environment.ts",
+              "with": "packages/angular/src/environments/environment.prod.ts"
             }
           ],
           "outputHashing": "all"
@@ -67,10 +68,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "angular-ionic:build:production"
+          "browserTarget": "angular:build:production"
         },
         "development": {
-          "browserTarget": "angular-ionic:build:development"
+          "browserTarget": "angular:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -78,23 +79,23 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "angular-ionic:build"
+        "browserTarget": "angular:build"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "packages/angular-ionic/**/*.ts",
-          "packages/angular-ionic/**/*.html"
+          "packages/angular/**/*.ts",
+          "packages/angular/**/*.html"
         ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/packages/angular-ionic"],
+      "outputs": ["{workspaceRoot}/coverage/packages/angular"],
       "options": {
-        "jestConfig": "packages/angular-ionic/jest.config.ts",
+        "jestConfig": "packages/angular/jest.config.ts",
         "passWithNoTests": true
       }
     },
