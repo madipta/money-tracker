@@ -15,11 +15,18 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@monic/libs/auth": ["packages/libs/auth/src/index.ts"],
-      "@monic/libs/transaction": ["packages/libs/transaction/src/index.ts"],
-      "@monic/libs/types": ["packages/libs/types/src/index.ts"],
-      "@monic/libs/ui/base": ["packages/libs/ui/base/src/index.ts"],
-      "@monic/libs/user": ["packages/libs/user/src/index.ts"]
+      "@monic/libs/angular/auth": ["packages/libs/angular/auth/src/index.ts"],
+      "@monic/libs/angular/budget": [
+        "packages/libs/angular/budget/src/index.ts"
+      ],
+      "@monic/libs/angular/transaction": [
+        "packages/libs/angular/transaction/src/index.ts"
+      ],
+      "@monic/libs/angular/ui-base": [
+        "packages/libs/angular/ui-base/src/index.ts"
+      ],
+      "@monic/libs/angular/user": ["packages/libs/angular/user/src/index.ts"],
+      "@monic/libs/types": ["packages/libs/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

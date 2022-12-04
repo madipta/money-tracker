@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { TabContentLayoutComponent } from '@monic/libs/ui/base';
+import { IonicModule } from '@ionic/angular';
 
 @Component({
-  imports: [TabContentLayoutComponent],
+  imports: [IonicModule],
   selector: 'monic-report',
   standalone: true,
   template: `
-    <monic-tab-content-layout title="Report"></monic-tab-content-layout>
+    <ion-content>
+      <div class="form-title ion-padding">Report</div>
+    </ion-content>
   `,
 })
 export class ReportPage implements OnInit {

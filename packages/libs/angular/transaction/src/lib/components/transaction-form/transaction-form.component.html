@@ -1,0 +1,70 @@
+<monic-page-layout>
+  <p pageTitle>Transaction</p>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <monic-form-layout>
+      <ng-container slot="header">
+        <ion-list-header class="ion-no-padding">
+          <ion-label>
+            <ion-text>{{ title }}</ion-text>
+          </ion-label>
+        </ion-list-header>
+      </ng-container>
+      <ion-item id="dateItem">
+        <ion-label>Date</ion-label>
+        <ion-text>{{ form.value.date | date : 'mediumDate' }}</ion-text>
+        <ion-modal [keepContentsMounted]="true" trigger="dateItem">
+          <ng-template>
+            <ion-datetime
+              id="transDate"
+              (ionChange)="transDateChange(transDate.value)"
+              presentation="date"
+              [showDefaultButtons]="true"
+              [value]="form.value.date"
+              #transDate
+            >
+              <span slot="title">Transaction Date</span>
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+      <ion-item>
+        <ion-label>Type</ion-label>
+        <ion-select formControlName="type">
+          <ion-select-option value="expense">Expense</ion-select-option>
+          <ion-select-option value="income">Income</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="fixed">Amount</ion-label>
+        <ion-input
+          inputmode="numeric"
+          min="0"
+          formControlName="amount"
+          pattern="\d*[.]?\d*"
+          required
+          style="text-align: right; appearance: none"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="fixed">Notes</ion-label>
+        <ion-input formControlName="notes" required></ion-input>
+      </ion-item>
+      <ng-container slot="footer">
+        <ion-button
+          type="submit"
+          color="success"
+          expand="block"
+          [disabled]="isOnSavingProcess | async"
+        >
+          <ion-text *ngIf="(isOnSavingProcess | async) === false">
+            Submit
+          </ion-text>
+          <ion-spinner
+            name="lines-small"
+            *ngIf="isOnSavingProcess | async"
+          ></ion-spinner>
+        </ion-button>
+      </ng-container>
+    </monic-form-layout>
+  </form>
+</monic-page-layout>

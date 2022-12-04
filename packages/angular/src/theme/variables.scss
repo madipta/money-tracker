@@ -65,6 +65,8 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  --ion-item-color: rgba(var(--ion-color-secondary-rgb), .9);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -234,9 +236,19 @@ ion-icon {
 }
 
 ion-label {
-  --color: var(--ion-color-medium) !important;
+  --color: var(--ion-color-dark) !important;
 }
 
 ion-toast.center-text::part(message) {
   text-align: center;
+}
+
+
+.form-title {
+  background: rgba(var(--ion-color-secondary-rgb), .03);
+  color: var(--ion-color-primary);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
