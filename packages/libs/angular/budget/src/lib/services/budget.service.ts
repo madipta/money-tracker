@@ -63,16 +63,40 @@ export class BudgetService {
           of(budgets.find((b) => b.category === budget.category))
         )
       ),
-    ]).subscribe(([user, found]) => {
-      if (user && !found) {
-        this.firestore
-          .collection('budgets')
-          .doc(this.firestore.createId())
-          .set({ ...budget, userId: user.uid })
-          .then(() => this.saveResultSubject.next(true))
-          .finally(() => this.saveOnProcessSubject.next(false));
-      }
-    });
+    ])
+      .pipe(take(1))
+      .subscribe(([user, found]) => {
+        if (!user || found) {
+          this.saveResultSubject.next(false);
+          this.saveOnProcessSubject.next(false);
+        } else {
+          this.firestore
+            .collection('budgets')
+            .doc(this.firestore.createId())
+            .set({ ...budget, userId: user.uid })
+            .then(() => this.saveResultSubject.next(true))
+            .finally(() => this.saveOnProcessSubject.next(false));
+        }
+      });
+  }
+
+  remove(id: string) {
+    this.saveOnProcessSubject.next(true);
+    this.budget$
+      .pipe(switchMap((budgets) => of(budgets.find((b) => b.id === id))))
+      .pipe(take(1))
+      .subscribe((found) => {
+        if (!found) {
+          this.saveResultSubject.next(false);
+          this.saveOnProcessSubject.next(false);
+        } else {
+          this.firestore
+            .doc(`budgets/${id}`)
+            .delete()
+            .then(() => this.saveResultSubject.next(true))
+            .finally(() => this.saveOnProcessSubject.next(false));
+        }
+      });
   }
 
   select(id?: string) {
@@ -85,12 +109,13 @@ export class BudgetService {
   update(budget: IBudgetUpdate) {
     this.saveOnProcessSubject.next(true);
     this.budget$
-      .pipe(
-        take(1),
-        switchMap((budgets) => of(budgets.find((b) => b.id === budget.id)))
-      )
+      .pipe(switchMap((budgets) => of(budgets.find((b) => b.id === budget.id))))
+      .pipe(take(1))
       .subscribe((found) => {
-        if (found) {
+        if (!found) {
+          this.saveResultSubject.next(false);
+          this.saveOnProcessSubject.next(false);
+        } else {
           this.firestore
             .doc(`budgets/${found.id}`)
             .update({

@@ -1,7 +1,7 @@
 import { AsyncPipe, DecimalPipe, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { AlertController, IonicModule } from '@ionic/angular';
 import { IBudgetWithId } from '@monic/libs/types';
 import { BudgetService } from '../../services/budget.service';
 
@@ -9,29 +9,41 @@ import { BudgetService } from '../../services/budget.service';
   imports: [AsyncPipe, DecimalPipe, IonicModule, NgFor],
   selector: 'monic-budget',
   standalone: true,
+  styles: [`
+    .budget-amount {
+      font-size: .9rem;
+      text-align: right;
+    }
+  `],
   template: `
     <ion-content>
       <div class="form-title ion-padding">Budget</div>
-      <ion-grid class="ion-padding-horizontal">
-        <ion-row>
-          <ion-col>
-            <form>
-              <ion-list>
-                <ion-item
-                  button
-                  (click)="onEdit(budget)"
-                  *ngFor="let budget of budget$ | async"
-                >
-                  <ion-label>{{ budget.category }}</ion-label>
-                  <ion-text slot="end" class="ion-text-right">{{
-                    budget.amount | number
-                  }}</ion-text>
-                </ion-item>
-              </ion-list>
-            </form>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
+      <ion-list>
+        <ion-item-sliding *ngFor="let budget of budget$ | async">
+          <ion-item>
+            <ion-label>{{ budget.category }}</ion-label>
+            <ion-text slot="end" class="budget-amount">{{
+              budget.amount | number
+            }}</ion-text>
+          </ion-item>
+          <ion-item-options side="end">
+            <ion-item-option
+              (click)="onEdit(budget)"
+              color="tertiary"
+              title="Edit"
+            >
+              <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+            </ion-item-option>
+            <ion-item-option
+              (click)="deleteAlert(budget)"
+              color="tertiary"
+              title="Delete"
+            >
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
       <ion-fab vertical="bottom" horizontal="center" slot="fixed">
         <ion-fab-button (click)="onAdd()" side="end">
           <ion-icon name="add-outline"></ion-icon>
@@ -43,7 +55,32 @@ import { BudgetService } from '../../services/budget.service';
 export class BudgetListComponent {
   budget$ = this.budgetService.budget$;
 
-  constructor(private budgetService: BudgetService, public router: Router) {}
+  constructor(
+    private alertController: AlertController,
+    private budgetService: BudgetService,
+    public router: Router
+  ) {}
+
+  async deleteAlert(budget: IBudgetWithId) {
+    const alert = await this.alertController.create({
+      header: `Delete ${budget.category} budget?`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Delete',
+          role: 'confirm',
+          handler: () => {
+            this.budgetService.remove(budget.id);
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
 
   onAdd() {
     this.router.navigate(['budget/add']);
