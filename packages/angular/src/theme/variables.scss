@@ -252,3 +252,12 @@ ion-toast.center-text::part(message) {
   letter-spacing: 2px;
   text-transform: uppercase;
 }
+
+.budget-logo {
+  align-items: center;
+  color: rgba(var(--ion-color-tertiary-rgb), 0.2);
+  display: flex;
+  flex-direction: column;
+  font-size: 8rem;
+  padding-bottom: 16px;
+}
