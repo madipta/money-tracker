@@ -41,20 +41,16 @@ export class TransactionService {
     switchMap((db) =>
       db.valueChanges().pipe(
         switchMap((trans) => {
-          let sumIncome = 0;
-          let sumExpense = 0;
+          let sum = 0;
           trans.forEach((t) => {
             const amount = Number(t.amount);
             if (t.type === 'expense') {
-              sumExpense += amount;
+              sum -= amount;
             } else {
-              sumIncome += amount;
+              sum += amount;
             }
           });
-          return of({
-            sumIncome,
-            sumExpense,
-          });
+          return of(sum);
         })
       )
     )

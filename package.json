@@ -57,6 +57,7 @@
     "@angular/router": "14.2.5",
     "@capacitor/core": "^3.6.0",
     "@ionic/angular": "^6.1.4",
+    "echarts": "^5.4.0",
     "firebase": "^9.13.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
