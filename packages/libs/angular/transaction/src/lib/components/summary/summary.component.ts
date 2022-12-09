@@ -105,9 +105,6 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
     this.summaryService.ioChartData$
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
-        console.log('====================================');
-        console.log(data);
-        console.log('====================================');
         this.loadChart(data.months, data.incomes, data.outcomes);
       });
   }
