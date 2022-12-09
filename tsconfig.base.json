@@ -26,7 +26,8 @@
         "packages/libs/angular/ui-base/src/index.ts"
       ],
       "@monic/libs/angular/user": ["packages/libs/angular/user/src/index.ts"],
-      "@monic/libs/types": ["packages/libs/types/src/index.ts"]
+      "@monic/libs/types": ["packages/libs/types/src/index.ts"],
+      "@monic/libs/util": ["packages/libs/util/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
