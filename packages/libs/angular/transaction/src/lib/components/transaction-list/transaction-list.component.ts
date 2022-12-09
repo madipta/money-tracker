@@ -10,6 +10,14 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
   imports: [AsyncPipe, IonicModule, NgFor, NgIf, TransactionItemComponent],
   selector: 'monic-transaction-list',
   standalone: true,
+  styles: [
+    `
+      ion-segment-button ion-label {
+        font-size: 0.74rem;
+        letter-spacing: normal;
+      }
+    `,
+  ],
   template: `
     <ion-segment [value]="filter" *ngIf="filter$ | async as filter">
       <ion-segment-button value="current" (click)="current()">
@@ -21,6 +29,9 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
       <ion-segment-button value="prev" (click)="prev()">
         <ion-label>Previous</ion-label>
       </ion-segment-button>
+      <ion-button (click)="search()" color="tertiary" fill="clear">
+        <ion-icon name="search" slot="icon-only"></ion-icon>
+      </ion-button>
     </ion-segment>
     <ion-content>
       <ion-list style="padding-bottom: 72px;">
@@ -110,6 +121,10 @@ export class TransactionListComponent {
       month: prev.getMonth(),
       year: prev.getFullYear(),
     });
+  }
+
+  search() {
+    this.router.navigate(['trans/search']);
   }
 
   onAdd() {

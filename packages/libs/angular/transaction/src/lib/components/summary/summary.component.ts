@@ -46,13 +46,13 @@ echarts.use([
         align-items: center;
         display: flex;
         flex-direction: column;
-        margin: 24px 16px 48px;
+        margin: 16px;
         min-height: 62px;
 
         p {
-          color: rgba(var(--ion-color-secondary-rgb), 0.6);
-          font-size: 0.8rem;
-          margin: 0 0 8px;
+          color: rgba(var(--ion-color-secondary-rgb), 0.5);
+          font-size: 0.78rem;
+          margin: 0 0 4px;
         }
 
         h1 {
@@ -64,13 +64,36 @@ echarts.use([
         }
       }
 
+      ion-segment-button {
+        --indicator-height: 0;
+        --padding-end: 10px;
+        --padding-start: 10px;
+        --border-radius: 16px;
+        flex: none;
+        font-size: 0.8rem;
+        letter-spacing: normal;
+        margin: 0 1px;
+        min-height: 26px;
+        min-width: 0;
+        overflow: hidden;
+
+        &.segment-button-checked {
+          background-color: rgba(var(--ion-color-primary-rgb), 0.06);
+          color: rgba(var(--ion-color-primary-rgb), 0.9);
+        }
+
+        ion-label {
+          margin: 0;
+          text-transform: none;
+        }
+      }
+
       .chart-outer {
-        background-color: rgba(var(--ion-color-light-rgb), 0.6);
-        border: 1px solid rgba(var(--ion-color-light-rgb), 0.9);
-        border-radius: 16px;
+        box-shadow: 1px 5px 50px rgba(var(--ion-color-primary-rgb), 0.15);
+        border-radius: 24px;
         box-sizing: border-box;
         padding: 16px 0 0 16px;
-        margin: 16px;
+        margin: 8px 16px;
 
         div.canvas {
           height: 70vw;
@@ -84,6 +107,17 @@ echarts.use([
         <p>Current Balance</p>
         <h1>{{ sum$ | async | number }}</h1>
       </div>
+      <ion-segment value="6">
+        <ion-segment-button value="3">
+          <ion-label>3 month</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="6">
+          <ion-label>6 month</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="12">
+          <ion-label>1 year</ion-label>
+        </ion-segment-button>
+      </ion-segment>
       <div class="chart-outer">
         <div class="canvas" #sumEcharts></div>
       </div>
@@ -114,11 +148,7 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
     this.destroy$.unsubscribe();
   }
 
-  loadChart(
-    months: string[],
-    income: number[],
-    outcome: number[]
-  ) {
+  loadChart(months: string[], income: number[], outcome: number[]) {
     const option = {
       legend: {
         data: ['income', 'outcome'],
