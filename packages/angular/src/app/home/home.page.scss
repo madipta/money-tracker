@@ -34,17 +34,19 @@ ion-toolbar ion-title.md {
   }
 }
 
-.home-menu-content {
-  --ion-background-color: var(--ion-color-secondary);
+ion-content.home-menu-content {
+  --ion-background-color: rgba(var(--ion-color-secondary-rgb), .95);
+  --ion-item-background: transparent;
   --ion-item-color: var(--ion-color-secondary-contrast);
   --ion-text-color-rgb: var(--ion-color-secondary-contrast-rgb);
 
-  ion-item {
+  ion-item.item {
     font-size: 0.84rem;
     letter-spacing: 0.03em;
-  }
 
-  ion-label {
-    padding-left: 8px;
+    ion-label {
+      color: rgba(var(--ion-color-secondary-contrast-rgb), .8);
+      padding-left: 8px;
+    }
   }
 }

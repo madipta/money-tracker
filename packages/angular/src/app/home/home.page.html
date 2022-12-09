@@ -13,7 +13,7 @@
       <p>Software Developer</p>
     </div>
   </ion-header>
-  <ion-content class="home-menu-content" color="secondary">
+  <ion-content class="home-menu-content">
     <ion-list lines="none">
       <ion-menu-toggle>
         <ion-item routerLink="/user/my-account">
@@ -28,7 +28,7 @@
         </ion-item>
       </ion-menu-toggle>
       <ion-menu-toggle>
-        <ion-item
+        <ion-item button
           (click)="router.navigate(['/auth/login'], { replaceUrl: true })"
         >
           <ion-icon name="exit-outline"></ion-icon>
