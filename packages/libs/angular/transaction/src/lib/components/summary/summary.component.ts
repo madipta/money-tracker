@@ -64,6 +64,10 @@ echarts.use([
         }
       }
 
+      ion-segment {
+        background: transparent;
+      }
+
       ion-segment-button {
         --indicator-height: 0;
         --padding-end: 10px;
