@@ -107,7 +107,7 @@ echarts.use([
         <p>Current Balance</p>
         <h1>{{ sum$ | async | number }}</h1>
       </div>
-      <ion-segment value="6">
+      <ion-segment value="6" (ionChange)="periodeChange($event)">
         <ion-segment-button value="3">
           <ion-label>3 month</ion-label>
         </ion-segment-button>
@@ -181,5 +181,10 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
     };
 
     this.chart.setOption(option);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  periodeChange(e: any) {
+    this.summaryService.ioChartFilterChange(e.detail.value);
   }
 }
