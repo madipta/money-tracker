@@ -1,5 +1,11 @@
 import { AsyncPipe, DecimalPipe, NgIf } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { IonicModule } from '@ionic/angular';
 import * as echarts from 'echarts/core';
 import { LineChart } from 'echarts/charts';
@@ -13,8 +19,9 @@ import {
 } from 'echarts/components';
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
-import { TransactionService } from '../../services/transaction-service';
-import { abbreviate } from '../../services/util';
+import { numberShorten } from '@monic/libs/util';
+import { SummaryService } from '../../services/summary.service';
+import { Subject, takeUntil } from 'rxjs';
 
 echarts.use([
   CanvasRenderer,
@@ -83,24 +90,37 @@ echarts.use([
     </ion-content>
   `,
 })
-export class SummaryComponent implements AfterViewInit {
+export class SummaryComponent implements AfterViewInit, OnDestroy {
   @ViewChild('sumEcharts', { static: false }) private sumEcharts!: ElementRef;
   chart!: echarts.ECharts;
-  sum$ = this.transService.sum$;
+  destroy$ = new Subject<boolean>();
+  sum$ = this.summaryService.sum$;
 
-  constructor(private transService: TransactionService) {}
+  constructor(private summaryService: SummaryService) {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.chart = echarts.init(this.sumEcharts.nativeElement);
-      this.loadChart();
     }, 100);
+    this.summaryService.ioChartData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        console.log('====================================');
+        console.log(data);
+        console.log('====================================');
+        this.loadChart(data.months, data.incomes, data.outcomes);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(false);
+    this.destroy$.unsubscribe();
   }
 
   loadChart(
-    months = ['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
-    income = [2500000, 2800000, 3000000, 3000000, 3600000, 2900000],
-    outcome = [1500000, 1400000, 2100000, 2600000, 1600000, 1800000]
+    months: string[],
+    income: number[],
+    outcome: number[]
   ) {
     const option = {
       legend: {
@@ -113,7 +133,7 @@ export class SummaryComponent implements AfterViewInit {
       yAxis: {
         axisLabel: {
           formatter: function (val: string | number) {
-            return abbreviate(+val);
+            return numberShorten(+val);
           },
         },
       },

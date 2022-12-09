@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { BehaviorSubject, combineLatest, of, Subject } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
@@ -7,14 +8,7 @@ import {
   ITransactionCreateInput,
   ITransactionUpdateInput,
 } from '@monic/libs/types';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-
-type TransactionFilter = {
-  month: number;
-  type: string | null;
-  word: string | null;
-  year: number;
-};
+import { getDefaultTransactionFilter, TransactionFilter } from './types';
 
 @Injectable({
   providedIn: 'root',
@@ -30,44 +24,13 @@ export class TransactionService {
   readonly updateResult$ = this.updateResultSubject.asObservable();
   private saveOnProcessSubject = new BehaviorSubject(false);
   readonly saveOnProcess$ = this.saveOnProcessSubject.asObservable();
-  readonly sum$ = this.fireauth.user.pipe(
-    switchMap((userAuth) =>
-      of(
-        this.firestore.collection<ITransaction>('transactions', (ref) =>
-          ref.where('userId', '==', userAuth?.uid)
-        )
-      )
-    ),
-    switchMap((db) =>
-      db.valueChanges().pipe(
-        switchMap((trans) => {
-          let sum = 0;
-          trans.forEach((t) => {
-            const amount = Number(t.amount);
-            if (t.type === 'expense') {
-              sum -= amount;
-            } else {
-              sum += amount;
-            }
-          });
-          return of(sum);
-        })
-      )
-    )
-  );
-  private filterValue: TransactionFilter = {
-    month: new Date().getMonth(),
-    type: '',
-    word: '',
-    year: new Date().getFullYear(),
-  };
+  private filterValue: TransactionFilter = getDefaultTransactionFilter();
   private filterSubject = new BehaviorSubject<TransactionFilter>(
     this.filterValue
   );
   readonly filter$ = this.filterSubject
     .asObservable()
     .pipe(tap((v) => (this.filterValue = v)));
-
   private transDB = combineLatest([this.fireauth.user, this.filterSubject])
     .pipe(
       switchMap(([userAuth, filter]) => {
