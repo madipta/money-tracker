@@ -2,7 +2,7 @@ import { AsyncPipe, DecimalPipe, NgFor } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, IonicModule } from '@ionic/angular';
-import { IBudgetWithId } from '@monic/libs/types';
+import { CategoryIcons, IBudgetWithId } from '@monic/libs/types';
 import { BudgetService } from '../../services/budget.service';
 
 @Component({
@@ -21,10 +21,11 @@ import { BudgetService } from '../../services/budget.service';
       <ion-list>
         <ion-item-sliding *ngFor="let budget of budget$ | async">
           <ion-item>
+            <ion-icon color="secondary" [name]="categoryIcons[budget.category]" slot="start"></ion-icon>
             <ion-label>{{ budget.category }}</ion-label>
-            <ion-text slot="end" class="budget-amount">{{
-              budget.amount | number
-            }}</ion-text>
+            <ion-text slot="end" class="budget-amount">
+              {{ budget.amount | number }}
+            </ion-text>
           </ion-item>
           <ion-item-options side="end">
             <ion-item-option
@@ -54,6 +55,7 @@ import { BudgetService } from '../../services/budget.service';
 })
 export class BudgetListComponent {
   budget$ = this.budgetService.budget$;
+  categoryIcons = CategoryIcons;
 
   constructor(
     private alertController: AlertController,
