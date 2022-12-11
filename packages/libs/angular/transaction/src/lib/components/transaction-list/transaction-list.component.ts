@@ -20,14 +20,6 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
         font-size: 0.74rem;
         letter-spacing: normal;
       }
-
-      ion-list :nth-child(even) {
-        --ion-background-color: linear-gradient(
-          to bottom,
-          rgba(var(--ion-color-primary-rgb), 0.2),
-          rgba(var(--ion-color-primary-rgb), 0.7)
-        );
-      }
     `,
   ],
   template: `

@@ -5,12 +5,11 @@
 }
 
 ion-item.trans-item {
-  --ion-background-color: transparent;
-  --inner-padding-end: 14px;
-  --padding-start: 14px;
+  --inner-padding-end: 12px;
+  --padding-start: 12px;
   --min-height: 0;
   border-bottom: 1px solid rgba(var(--ion-color-medium-rgb), 0.15);
-  padding: 2px 0;
+  padding: 4px 0;
 }
 
 .trans-date {

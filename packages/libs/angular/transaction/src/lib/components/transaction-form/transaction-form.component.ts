@@ -111,18 +111,25 @@ export class TransactionFormComponent implements OnInit {
       this.errorAlert('Invalid input!');
       return;
     }
-    const { date, ...rest } = this.form.getRawValue();
+    const { date, type, ...rest } = this.form.getRawValue();
     const dateToSave = new Date(date);
     if (this.isAdd) {
       this.transactionService.add({
         ...rest,
         date: dateToSave,
+        type,
       });
     } else {
+      let budget = rest.budget;
+      if (type === 'income') {
+        budget = '';
+      }
       this.transactionService.update({
         ...rest,
+        budget,
         date: dateToSave,
         id: this.selectedId,
+        type,
       });
     }
   }
