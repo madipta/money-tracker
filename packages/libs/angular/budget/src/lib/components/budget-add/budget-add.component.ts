@@ -1,17 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import {
-  FormGroup,
-  FormControl,
-  ReactiveFormsModule,
   FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { IonicModule, NavController } from '@ionic/angular';
 import { PageLayoutComponent } from '@monic/libs/angular/ui-base';
-import { BudgetService } from '../../services/budget.service';
-import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { BudgetService } from '../../services/budget.service';
 
 type BudgetForm = FormGroup<{
   amount: FormControl<number>;
@@ -64,7 +63,7 @@ type BudgetForm = FormGroup<{
             ></ion-input>
           </ion-item>
         </ion-list>
-        <div class="ion-margin-top">
+        <div class="form-buttons">
           <ion-button
             type="submit"
             color="success"

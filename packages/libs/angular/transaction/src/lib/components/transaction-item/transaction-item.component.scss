@@ -1,21 +1,59 @@
-.trans-item {
-  border-bottom: 1px solid #f0f0f0;
-  padding: 6px 0 10px;
+:host {
+  display: flex;
+  margin: 0;
+  padding: 0;
 }
 
-.trans-day {
-  font-size: 1.5rem;
-  font-weight: 600;
-  padding-right: 5px;
+ion-item.trans-item {
+  --ion-background-color: transparent;
+  --inner-padding-end: 14px;
+  --padding-start: 14px;
+  --min-height: 0;
+  border-bottom: 1px solid rgba(var(--ion-color-medium-rgb), 0.15);
+  padding: 2px 0;
 }
 
 .trans-date {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  line-height: 1rem;
+  padding-top: 3px;
+
+  .trans-day {
+    color: rgba(var(--ion-color-tertiary-rgb), 0.5);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .trans-month {
+    color: rgba(var(--ion-color-medium-rgb), 0.6);
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+  }
+}
+
+.trans-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.trans-budget,
+.trans-income {
+  color: rgba(var(--ion-color-dark-rgb), 0.67);
   font-size: 0.7rem;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.trans-income {
+  color: rgba(var(--ion-color-primary-rgb), 0.8);
 }
 
 .trans-notes {
-  font-size: 0.9rem;
-  margin: 2px 0 0 0;
+  color: rgba(var(--ion-color-dark-rgb), 0.9);
+  font-size: 0.92rem;
+  margin: 0;
 }
 
 .trans-amount {

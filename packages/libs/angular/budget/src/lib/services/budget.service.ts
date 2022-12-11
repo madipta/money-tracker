@@ -35,6 +35,7 @@ export class BudgetService {
       })
     )
   );
+  readonly allCategories = CategoryNames;
   readonly availableCategories$ = this.budget$.pipe(
     switchMap((budgets) =>
       of(

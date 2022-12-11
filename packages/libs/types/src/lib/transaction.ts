@@ -8,6 +8,7 @@ export type ITransactionId = {
 
 export type ITransactionWithoutId = {
   amount: number;
+  budget: string;
   notes: string;
   type: TransactionType;
 };

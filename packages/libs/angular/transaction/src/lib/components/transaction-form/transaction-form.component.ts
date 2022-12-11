@@ -1,5 +1,5 @@
-import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,16 +7,18 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { AlertController, IonicModule, NavController } from '@ionic/angular';
-import { TransactionType } from '@monic/libs/types';
+import { BudgetService } from '@monic/libs/angular/budget';
 import {
   FormLayoutComponent,
   PageLayoutComponent,
 } from '@monic/libs/angular/ui-base';
-import { take } from 'rxjs/operators';
+import { TransactionType } from '@monic/libs/types';
+import { take } from 'rxjs';
 import { TransactionService } from '../../services/transaction-service';
 
 type TransactionForm = FormGroup<{
   amount: FormControl<number>;
+  budget: FormControl<string>;
   date: FormControl<string>;
   notes: FormControl<string>;
   type: FormControl<TransactionType>;
@@ -28,6 +30,7 @@ type TransactionForm = FormGroup<{
     DatePipe,
     FormLayoutComponent,
     IonicModule,
+    NgFor,
     NgIf,
     PageLayoutComponent,
     ReactiveFormsModule,
@@ -37,20 +40,21 @@ type TransactionForm = FormGroup<{
   templateUrl: './transaction-form.component.html',
 })
 export class TransactionFormComponent implements OnInit {
+  private alertController = inject(AlertController);
+  private budgetService = inject(BudgetService);
+  private navController = inject(NavController);
+  private transactionService = inject(TransactionService);
+  budgetCategories = this.budgetService.allCategories;
   isAdd = true;
   isOnSavingProcess = this.transactionService.saveOnProcess$;
   form: TransactionForm;
   selectedId = '';
   title = '';
 
-  constructor(
-    private alertController: AlertController,
-    fb: FormBuilder,
-    private navController: NavController,
-    private transactionService: TransactionService
-  ) {
+  constructor(fb: FormBuilder) {
     this.form = fb.nonNullable.group({
       amount: fb.nonNullable.control(0),
+      budget: fb.nonNullable.control(''),
       date: fb.nonNullable.control(''),
       notes: fb.nonNullable.control(''),
       type: fb.nonNullable.control<TransactionType>('expense'),

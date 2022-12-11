@@ -23,9 +23,22 @@ import { IonicModule } from '@ionic/angular';
         </ion-title>
       </ion-toolbar>
     </ion-header>
-    <ion-grid class="ion-padding">
+    <ion-grid class="ion-no-padding">
       <ion-row>
         <ion-col
+          sizeSm="8"
+          offsetSm="2"
+          sizeMd="6"
+          offsetMd="3"
+          sizeLg="4"
+          offsetLg="4"
+        >
+          <ng-content select=".form-title"></ng-content>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col
+          class="ion-padding"
           sizeSm="8"
           offsetSm="2"
           sizeMd="6"

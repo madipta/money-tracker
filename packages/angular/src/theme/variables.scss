@@ -239,6 +239,10 @@ ion-label {
   --color: var(--ion-color-dark) !important;
 }
 
+ion-select {
+  max-width: none;
+}
+
 ion-toast.center-text::part(message) {
   text-align: center;
 }
@@ -251,6 +255,10 @@ ion-toast.center-text::part(message) {
   font-weight: 600;
   letter-spacing: 2px;
   text-transform: uppercase;
+}
+
+.form-buttons {
+  margin-top: 32px;
 }
 
 .budget-logo {
