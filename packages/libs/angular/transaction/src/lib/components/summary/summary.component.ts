@@ -25,6 +25,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { SummaryService } from '../../services/summary.service';
 import { TransactionService } from '../../services/transaction-service';
 import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
+import { Router } from '@angular/router';
 
 echarts.use([
   CanvasRenderer,
@@ -74,7 +75,7 @@ echarts.use([
       </div>
       <div class="history">
         <div class="header">Last Transactions</div>
-        <button>
+        <button (click)="addNew()">
           <ion-icon name="add-circle-outline"></ion-icon>
           <span>AddNew</span>
         </button>
@@ -97,6 +98,7 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
   transactions$ = this.transactionService.filteredTransactions$;
 
   constructor(
+    private router: Router,
     private summaryService: SummaryService,
     private transactionService: TransactionService
   ) {}
@@ -115,6 +117,10 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next(false);
     this.destroy$.unsubscribe();
+  }
+
+  addNew() {
+    this.router.navigate(['trans/edit']);
   }
 
   loadInOutcomeChart(months: string[], income: number[], outcome: number[]) {
