@@ -105,11 +105,11 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
     setTimeout(() => {
       this.sumChart = echarts.init(this.sumEcharts.nativeElement);
     }, 100);
-    // this.summaryService.ioChartData$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((data) => {
-    //     this.loadInOutcomeChart(data.months, data.incomes, data.outcomes);
-    //   });
+    this.summaryService.ioChartData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.loadInOutcomeChart(data.months, data.incomes, data.outcomes);
+      });
   }
 
   ngOnDestroy(): void {
