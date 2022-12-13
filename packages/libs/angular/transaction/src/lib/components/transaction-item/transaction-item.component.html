@@ -24,10 +24,7 @@
           </div>
         </ion-col>
         <ion-col class="ion-align-self-center ion-no-inner-padding" size="auto">
-          <ion-text
-            class="trans-amount"
-            [color]="transaction.type === 'expense' ? 'danger' : 'dark'"
-          >
+          <ion-text class="trans-amount" [ngClass]="transaction.type">
             {{ transaction.amount | number }}
           </ion-text>
         </ion-col>

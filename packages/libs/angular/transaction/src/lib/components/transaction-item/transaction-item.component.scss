@@ -50,11 +50,19 @@ ion-item.trans-item {
 }
 
 .trans-notes {
-  color: rgba(var(--ion-color-dark-rgb), 0.8);
+  color: rgba(var(--ion-color-dark-rgb), 0.85);
   font-size: 0.8rem;
   margin: 0;
 }
 
 .trans-amount {
   font-size: 0.8rem;
+
+  &.expense {
+    color: rgba(var(--ion-color-danger-rgb), 1);
+  }
+
+  &.income {
+    color: rgba(var(--ion-color-success-rgb), 1);
+  }
 }

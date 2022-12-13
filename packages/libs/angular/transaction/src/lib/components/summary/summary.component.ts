@@ -95,7 +95,7 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
   sumChart!: echarts.ECharts;
   destroy$ = new Subject<boolean>();
   sum$ = this.summaryService.sum$;
-  transactions$ = this.transactionService.filteredTransactions$;
+  transactions$ = this.summaryService.last3$;
 
   constructor(
     private router: Router,
@@ -141,12 +141,14 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
       },
       series: [
         {
+          color: ['#00a7dd'],
           data: income,
           name: 'income',
           type: 'line',
           smooth: true,
         },
         {
+          color: ['#ee399d'],
           data: outcome,
           name: 'outcome',
           type: 'line',

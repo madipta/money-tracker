@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { ITransaction } from '@monic/libs/types';
-import { BehaviorSubject, combineLatest, of, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, of, switchMap } from 'rxjs';
 import { IOChartFilterType, monthlyChartNames } from './types';
 
 @Injectable({
@@ -92,6 +92,41 @@ export class SummaryService {
       )
     )
   );
+
+  readonly last3$ = this.fireauth.user
+    .pipe(
+      switchMap((userAuth) => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = now.getMonth();
+        const startDate = new Date(year, month, 1);
+        const endDate = new Date(year, month + 1, 1);
+        return of(
+          this.firestore.collection<ITransaction>('transactions', (ref) =>
+            ref
+              .where('userId', '==', userAuth?.uid)
+              .where('date', '>=', startDate)
+              .where('date', '<', endDate)
+              .orderBy('date', 'desc')
+              .limit(3)
+          )
+        );
+      })
+    )
+    .pipe(
+      switchMap((db) =>
+        db.snapshotChanges().pipe(
+          map((changes) => {
+            return changes.map((result) => {
+              return {
+                ...result.payload.doc.data(),
+                id: result.payload.doc.id,
+              };
+            });
+          })
+        )
+      )
+    );
 
   constructor(
     private firestore: AngularFirestore,
