@@ -20,6 +20,18 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
         font-size: 0.74rem;
         letter-spacing: normal;
       }
+
+      div.loading {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+        z-index: 10;
+      }
     `,
   ],
   template: `
@@ -38,35 +50,16 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
       </ion-button>
     </ion-segment>
     <ion-content>
+      <div class="loading" *ngIf="transOnLoad$ | async">
+        <ion-spinner color="medium" name="lines"></ion-spinner>
+      </div>
       <ion-list style="padding-bottom: 72px;">
-        <ng-container
-          *ngIf="transactions$ | async as transactions; else skeleton"
-        >
+        <ng-container *ngIf="transactions$ | async as transactions">
           <monic-transaction-item
             [transaction]="exp"
-            *ngFor="let exp of transactions"
+            *ngFor="let exp of transactions$ | async"
           ></monic-transaction-item>
         </ng-container>
-        <ng-template #skeleton>
-          <ion-item>
-            <ion-grid>
-              <ion-row *ngFor="let s of skeletons">
-                <ion-col>
-                  <ion-skeleton-text
-                    [animated]="true"
-                    class="ion-padding-vertical"
-                  ></ion-skeleton-text
-                ></ion-col>
-                <ion-col size="10">
-                  <ion-skeleton-text
-                    [animated]="true"
-                    class="ion-padding-vertical"
-                  ></ion-skeleton-text
-                ></ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-        </ng-template>
       </ion-list>
       <ion-fab vertical="bottom" horizontal="center" slot="fixed">
         <ion-fab-button (click)="onAdd()" side="end">
@@ -95,6 +88,7 @@ export class TransactionListComponent {
   );
   skeletons = new Array(10);
   transactions$ = this.transactionService.filteredTransactions$;
+  transOnLoad$ = this.transactionService.transOnLoad$;
 
   constructor(
     private transactionService: TransactionService,

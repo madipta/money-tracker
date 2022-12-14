@@ -31,9 +31,12 @@ export class TransactionService {
   readonly filter$ = this.filterSubject
     .asObservable()
     .pipe(tap((v) => (this.filterValue = v)));
+  private transOnLoadSubject = new BehaviorSubject(false);
+  readonly transOnLoad$ = this.transOnLoadSubject.asObservable();
   private transDB = combineLatest([this.fireauth.user, this.filterSubject])
     .pipe(
       switchMap(([userAuth, filter]) => {
+        this.transOnLoadSubject.next(true);
         const startDate = new Date(filter.year, filter.month, 1);
         const endDate = new Date(filter.year, filter.month + 1, 1);
         return of(
@@ -60,7 +63,8 @@ export class TransactionService {
           })
         )
       )
-    );
+    )
+    .pipe(tap(() => this.transOnLoadSubject.next(false)));
   readonly filteredTransactions$ = combineLatest([
     this.transDB,
     this.filterSubject,
