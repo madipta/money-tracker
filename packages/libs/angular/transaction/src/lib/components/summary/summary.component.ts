@@ -7,6 +7,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { numberShorten } from '@monic/libs/util';
 import * as echarts from 'echarts/core';
@@ -15,17 +16,13 @@ import {
   DatasetComponent,
   GridComponent,
   LegendComponent,
-  TitleComponent,
-  TooltipComponent,
   TransformComponent,
 } from 'echarts/components';
 import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { Subject, takeUntil } from 'rxjs';
 import { SummaryService } from '../../services/summary.service';
-import { TransactionService } from '../../services/transaction-service';
 import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
-import { Router } from '@angular/router';
 
 echarts.use([
   CanvasRenderer,
@@ -34,8 +31,6 @@ echarts.use([
   LabelLayout,
   LegendComponent,
   LineChart,
-  TitleComponent,
-  TooltipComponent,
   TransformComponent,
   UniversalTransition,
 ]);
@@ -97,11 +92,7 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
   sum$ = this.summaryService.sum$;
   transactions$ = this.summaryService.last3$;
 
-  constructor(
-    private router: Router,
-    private summaryService: SummaryService,
-    private transactionService: TransactionService
-  ) {}
+  constructor(private router: Router, private summaryService: SummaryService) {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
