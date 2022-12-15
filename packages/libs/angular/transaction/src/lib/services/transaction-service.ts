@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { BehaviorSubject, combineLatest, of, Subject } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
 import {
   ITransaction,
   ITransactionCreateInput,
   ITransactionUpdateInput,
 } from '@monic/libs/types';
+import { BehaviorSubject, combineLatest, of, Subject } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { getDefaultTransactionFilter, TransactionFilter } from './types';
 
 @Injectable({
@@ -39,30 +39,26 @@ export class TransactionService {
         this.transOnLoadSubject.next(true);
         const startDate = new Date(filter.year, filter.month, 1);
         const endDate = new Date(filter.year, filter.month + 1, 1);
-        return of(
-          this.firestore.collection<ITransaction>('transactions', (ref) =>
+        return this.firestore
+          .collection<ITransaction>('transactions', (ref) =>
             ref
               .where('userId', '==', userAuth?.uid)
               .where('date', '>=', startDate)
               .where('date', '<', endDate)
               .orderBy('date', 'desc')
           )
-        );
+          .snapshotChanges();
       })
     )
     .pipe(
-      switchMap((db) =>
-        db.snapshotChanges().pipe(
-          map((changes) => {
-            return changes.map((result) => {
-              return {
-                ...result.payload.doc.data(),
-                id: result.payload.doc.id,
-              };
-            });
-          })
-        )
-      )
+      map((changes) => {
+        return changes.map((result) => {
+          return {
+            ...result.payload.doc.data(),
+            id: result.payload.doc.id,
+          };
+        });
+      })
     )
     .pipe(tap(() => this.transOnLoadSubject.next(false)));
   readonly filteredTransactions$ = combineLatest([
