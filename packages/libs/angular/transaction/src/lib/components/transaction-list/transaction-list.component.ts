@@ -33,7 +33,7 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
         z-index: 10;
 
         ion-spinner {
-          color: rgba(var(--ion-color-primary-rgb), .9);
+          color: rgba(var(--ion-color-primary-rgb), 0.9);
           height: 48px;
           width: 48px;
           margin-bottom: 56px;
@@ -57,9 +57,6 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
       </ion-button>
     </ion-segment>
     <ion-content>
-      <div class="loading" *ngIf="transOnLoad$ | async">
-        <ion-spinner name="lines"></ion-spinner>
-      </div>
       <ion-list style="padding-bottom: 72px;">
         <ng-container *ngIf="transactions$ | async as transactions">
           <monic-transaction-item
@@ -74,6 +71,9 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
         </ion-fab-button>
       </ion-fab>
     </ion-content>
+    <div class="loading" *ngIf="transOnLoad$ | async">
+      <ion-spinner name="lines"></ion-spinner>
+    </div>
   `,
 })
 export class TransactionListComponent {
