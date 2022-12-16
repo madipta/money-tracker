@@ -17,15 +17,14 @@ import { map, switchMap, take } from 'rxjs/operators';
 export class BudgetService {
   private budgetDB = this.fireauth.user.pipe(
     switchMap((user) =>
-      of(
-        this.firestore.collection<IBudget>('budgets', (ref) =>
-          ref.where('userId', '==', user?.uid)
+      this.firestore
+        .collection<IBudget>('budgets', (ref) =>
+          ref.where('userId', '==', user?.uid).orderBy('amount', 'desc')
         )
-      )
+        .snapshotChanges()
     )
   );
   readonly budget$ = this.budgetDB.pipe(
-    switchMap((budgets) => budgets.snapshotChanges()),
     map((changes) =>
       changes.map((b) => {
         return {
