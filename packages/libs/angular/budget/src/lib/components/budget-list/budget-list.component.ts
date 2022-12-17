@@ -14,6 +14,7 @@ import { PieChart } from 'echarts/charts';
 import {
   DatasetComponent,
   LegendComponent,
+  TitleComponent,
   TooltipComponent,
   TransformComponent,
 } from 'echarts/components';
@@ -29,6 +30,7 @@ echarts.use([
   LabelLayout,
   LegendComponent,
   PieChart,
+  TitleComponent,
   TooltipComponent,
   TransformComponent,
   UniversalTransition,
@@ -159,25 +161,31 @@ export class BudgetListComponent implements AfterViewInit, OnDestroy {
   }
 
   loadChart(data: { value: number; name: string }[]) {
+    let sum = 0;
+    data.forEach((d) => {
+      sum += +d.value;
+    });
     const option = {
+      title: {
+        text: sum.toLocaleString(),
+        left: 'center',
+        top: 'center',
+      },
       series: [
         {
           name: 'Budget',
           type: 'pie',
-          radius: ['20%', '50%'],
+          radius: ['55%', '72%'],
           center: ['50%', '50%'],
-          itemStyle: {
-            borderRadius: 10,
-          },
           avoidLabelOverlap: true,
           label: {
             show: true,
             formatter: '{name|{b}}',
             rich: {
               name: {
-                color: '#96afb8'
-              }
-            }
+                color: '#96afb8',
+              },
+            },
           },
           data,
         },
