@@ -43,11 +43,14 @@ echarts.use([
       ion-content {
         --padding-bottom: 64px;
       }
+      ion-list {
+        --ion-item-background: transparent;
+      }
       .charts-outer {
         box-shadow: 1px 5px 50px rgba(var(--ion-color-primary-rgb), 0.15);
         border-radius: 24px;
         box-sizing: border-box;
-        margin: 16px;
+        margin: 16px 16px 24px;
         padding: 16px;
 
         div.canvas {
