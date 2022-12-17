@@ -23,6 +23,7 @@ import { CanvasRenderer } from 'echarts/renderers';
 import { Subject, takeUntil } from 'rxjs';
 import { SummaryService } from '../../services/summary.service';
 import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
+import { TransactionService } from '../../services/transaction-service';
 
 echarts.use([
   CanvasRenderer,
@@ -92,7 +93,11 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
   sum$ = this.summaryService.sum$;
   transactions$ = this.summaryService.last3$;
 
-  constructor(private router: Router, private summaryService: SummaryService) {}
+  constructor(
+    private router: Router,
+    private summaryService: SummaryService,
+    private transService: TransactionService
+  ) {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -111,6 +116,7 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
   }
 
   addNew() {
+    this.transService.unselect();
     this.router.navigate(['trans/edit']);
   }
 
