@@ -161,22 +161,20 @@ export class BudgetListComponent implements AfterViewInit, OnDestroy {
         {
           name: 'Budget',
           type: 'pie',
-          radius: ['30%', '90%'],
+          radius: ['20%', '50%'],
           center: ['50%', '50%'],
           itemStyle: {
-            borderRadius: 20,
+            borderRadius: 10,
           },
-          avoidLabelOverlap: false,
+          avoidLabelOverlap: true,
           label: {
-            show: false,
-            position: 'center',
-          },
-          emphasis: {
-            label: {
-              show: true,
-              fontSize: 30,
-              fontWeight: 'bold',
-            },
+            show: true,
+            formatter: '{name|{b}}',
+            rich: {
+              name: {
+                color: '#96afb8'
+              }
+            }
           },
           data,
         },
