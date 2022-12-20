@@ -128,10 +128,10 @@ export class BudgetListComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.charts = echarts.init(this.canvas.nativeElement);
+      this.chatService.budgetChart$
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((budgets) => this.loadChart(budgets));
     }, 100);
-    this.chatService.budgetChart$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((budgets) => this.loadChart(budgets));
   }
 
   ngOnDestroy(): void {
@@ -175,15 +175,15 @@ export class BudgetListComponent implements AfterViewInit, OnDestroy {
         {
           name: 'Budget',
           type: 'pie',
-          radius: ['55%', '72%'],
+          radius: ['52%', '73%'],
           center: ['50%', '50%'],
-          avoidLabelOverlap: true,
+          avoidLabelOverlap: false,
           label: {
             show: true,
             formatter: '{name|{b}}',
             rich: {
               name: {
-                color: '#96afb8',
+                color: '#467f98',
               },
             },
           },
