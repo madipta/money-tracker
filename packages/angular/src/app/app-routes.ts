@@ -61,7 +61,7 @@ const homeRoute: Route = {
     {
       path: 'report',
       loadComponent: () =>
-        import('./home/report/report.page').then((c) => c.ReportPage),
+        import('@monic/libs/angular/report').then((c) => c.ReportComponent),
     },
     {
       path: 'summary',
