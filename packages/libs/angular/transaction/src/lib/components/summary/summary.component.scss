@@ -57,7 +57,9 @@ ion-segment-button {
   margin: 10px 16px 0;
 
   div.canvas {
-    height: 70vw;
+    height: 300px;
+    margin: 0 auto;
+    max-width: 768px;
   }
 }
 

@@ -25,14 +25,7 @@ import { IonicModule } from '@ionic/angular';
     </ion-header>
     <ion-grid class="ion-no-padding">
       <ion-row>
-        <ion-col
-          sizeSm="8"
-          offsetSm="2"
-          sizeMd="6"
-          offsetMd="3"
-          sizeLg="4"
-          offsetLg="4"
-        >
+        <ion-col>
           <ng-content select=".form-title"></ng-content>
         </ion-col>
       </ion-row>
@@ -43,8 +36,6 @@ import { IonicModule } from '@ionic/angular';
           offsetSm="2"
           sizeMd="6"
           offsetMd="3"
-          sizeLg="4"
-          offsetLg="4"
         >
           <ng-content></ng-content>
         </ion-col>

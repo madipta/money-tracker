@@ -225,6 +225,11 @@
   }
 }
 
+ion-app {
+  max-width: 1024px;
+  margin: 0 auto;
+}
+
 ion-grid {
   --ion-grid-padding: 0;
 }
