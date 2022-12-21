@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
 import { AsyncPipe, NgIf } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormControl,
@@ -8,8 +8,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, NavController } from '@ionic/angular';
 import { PageLayoutComponent } from '@monic/libs/angular/ui-base';
+import { Subject, takeUntil } from 'rxjs';
 import { BudgetService } from '../../services/budget.service';
 
 type BudgetForm = FormGroup<{
@@ -68,7 +69,8 @@ type BudgetForm = FormGroup<{
     </form>
   `,
 })
-export class BudgetEditComponent implements OnInit {
+export class BudgetEditComponent implements OnDestroy, OnInit {
+  destroy$ = new Subject<boolean>();
   form: BudgetForm;
   isOnSavingProcess = this.budgetService.saveOnProcess$;
   selectedId!: string;
@@ -76,12 +78,18 @@ export class BudgetEditComponent implements OnInit {
   constructor(
     private activeRoute: ActivatedRoute,
     private budgetService: BudgetService,
-    fb: FormBuilder
+    fb: FormBuilder,
+    private navController: NavController
   ) {
     this.form = fb.nonNullable.group({
       amount: fb.nonNullable.control(0, [Validators.required]),
       category: fb.nonNullable.control('', [Validators.required]),
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -93,6 +101,13 @@ export class BudgetEditComponent implements OnInit {
         category: b?.category,
       })
     );
+    this.budgetService.saveResult$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((success) => {
+        if (success) {
+          this.navController.back();
+        }
+      });
   }
 
   onSubmit() {
