@@ -1,6 +1,6 @@
 # Money Tracker
 
-Simple web and mobile app built with Ionic, Angular and Firebase
+Simple web and mobile app built with Ionic, Angular, ECharts and Firebase
 
 Tools: VS.Code, Nx Monorepo
 
