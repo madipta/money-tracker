@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { PageLayoutComponent } from '@monic/libs/angular/ui-base';
+import { PageLayoutComponent } from '@monic/libs/angular/base';
 import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 

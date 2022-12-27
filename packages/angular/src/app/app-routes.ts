@@ -49,7 +49,7 @@ const budgetRoute: Route = {
 
 const homeRoute: Route = {
   path: 'home',
-  loadComponent: () => import('./home/home.page').then((c) => c.HomePage),
+  loadComponent: () => import('@monic/libs/angular/dashboard').then((c) => c.HomeComponent),
   ...canActivate(redirectTLogin),
   children: [
     { path: '', redirectTo: 'summary', pathMatch: 'full' },

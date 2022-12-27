@@ -6,10 +6,10 @@ import { IonicModule } from '@ionic/angular';
   imports: [IonicModule, RouterModule],
   selector: 'monic-home',
   standalone: true,
-  styleUrls: ['./home.page.scss'],
-  templateUrl: './home.page.html',
+  styleUrls: ['./home.component.scss'],
+  templateUrl: './home.component.html',
 })
-export class HomePage {
+export class HomeComponent {
   constructor(
     public environmentInjector: EnvironmentInjector,
     public router: Router

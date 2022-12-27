@@ -12,7 +12,7 @@ import { IonicModule } from '@ionic/angular';
 import {
   FormLayoutComponent,
   PageLayoutComponent,
-} from '@monic/libs/angular/ui-base';
+} from '@monic/libs/angular/base';
 import { Subject, takeUntil } from 'rxjs';
 import { TransactionService } from '../../services/transaction-service';
 

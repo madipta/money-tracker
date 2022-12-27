@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { IonicModule, AlertController, NavController } from '@ionic/angular';
-import { PageLayoutComponent } from '@monic/libs/angular/ui-base';
+import { PageLayoutComponent } from '@monic/libs/angular/base';
 import { Subject, take, takeUntil } from 'rxjs';
 import { UserService } from '../../services/user.service';
 

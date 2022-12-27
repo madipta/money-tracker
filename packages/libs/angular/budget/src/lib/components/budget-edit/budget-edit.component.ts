@@ -9,7 +9,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { IonicModule, NavController } from '@ionic/angular';
-import { PageLayoutComponent } from '@monic/libs/angular/ui-base';
+import { PageLayoutComponent } from '@monic/libs/angular/base';
 import { Subject, takeUntil } from 'rxjs';
 import { BudgetService } from '../../services/budget.service';
 

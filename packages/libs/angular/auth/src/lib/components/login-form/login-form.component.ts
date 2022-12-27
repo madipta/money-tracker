@@ -11,7 +11,7 @@ import { IonicModule } from '@ionic/angular';
 import {
   HideBackButtonDirective,
   PageLayoutComponent,
-} from '@monic/libs/angular/ui-base';
+} from '@monic/libs/angular/base';
 import { take } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 

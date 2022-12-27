@@ -11,7 +11,7 @@ import { BudgetService } from '@monic/libs/angular/budget';
 import {
   FormLayoutComponent,
   PageLayoutComponent,
-} from '@monic/libs/angular/ui-base';
+} from '@monic/libs/angular/base';
 import { TransactionType } from '@monic/libs/types';
 import { take } from 'rxjs';
 import { TransactionService } from '../../services/transaction-service';
