@@ -34,8 +34,12 @@ ion-toolbar ion-title.md {
   }
 }
 
+ion-header.ios {
+  margin-bottom: 14px;
+}
+
 ion-content.home-menu-content {
-  --ion-background-color: rgba(var(--ion-color-secondary-rgb), .95);
+  --ion-background-color: rgba(var(--ion-color-secondary-rgb), 0.95);
   --ion-item-background: transparent;
   --ion-item-color: var(--ion-color-secondary-contrast);
   --ion-text-color-rgb: var(--ion-color-secondary-contrast-rgb);
@@ -45,8 +49,32 @@ ion-content.home-menu-content {
     letter-spacing: 0.03em;
 
     ion-label {
-      color: rgba(var(--ion-color-secondary-contrast-rgb), .8);
+      color: rgba(var(--ion-color-secondary-contrast-rgb), 0.8);
       padding-left: 8px;
     }
   }
+}
+
+.wave {
+  background-color: var(--ion-color-secondary);
+  position: absolute;
+  top: 43px;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  z-index: 100;
+}
+
+.wave svg {
+  position: relative;
+  display: block;
+  width: calc(176% + 1.3px);
+  height: 15px;
+  transform: rotateY(180deg);
+}
+
+.wave .shape-fill {
+  fill: #ffffff;
+  fill: var(--ion-color-primary);
 }
