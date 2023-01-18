@@ -29,13 +29,17 @@ import { AuthService } from '../../services/auth.service';
   styles: [
     `
       .register-logo {
+        margin: 48px 0 32px;
         text-align: center;
 
         ion-icon {
           color: var(--ion-color-tertiary);
           font-size: 128px;
-          margin-top: 24px;
         }
+      }
+
+      ion-grid {
+        max-width: 340px;
       }
     `,
   ],

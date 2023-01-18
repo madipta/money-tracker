@@ -29,13 +29,17 @@ import { AuthService } from '../../services/auth.service';
   styles: [
     `
       .login-logo {
+        margin: 48px 0 32px;
         text-align: center;
 
         ion-icon {
           color: var(--ion-color-tertiary);
           font-size: 128px;
-          margin-top: 24px;
         }
+      }
+
+      ion-grid {
+        max-width: 340px;
       }
     `,
   ],
@@ -52,12 +56,17 @@ import { AuthService } from '../../services/auth.service';
               <ion-list>
                 <ion-item class="ion-margin-top">
                   <ion-label position="floating">Email</ion-label>
-                  <ion-input formControlName="email" required></ion-input>
+                  <ion-input
+                    formControlName="email"
+                    placeholder="user@mail.com"
+                    required
+                  ></ion-input>
                 </ion-item>
                 <ion-item>
                   <ion-label position="floating">Password</ion-label>
                   <ion-input
                     formControlName="password"
+                    placeholder="123456"
                     required
                     type="password"
                   ></ion-input>
