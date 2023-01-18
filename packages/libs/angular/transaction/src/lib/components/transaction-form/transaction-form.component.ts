@@ -5,6 +5,7 @@ import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import { BudgetService } from '@monic/libs/angular/budget';
@@ -53,9 +54,9 @@ export class TransactionFormComponent implements OnInit {
 
   constructor(fb: FormBuilder) {
     this.form = fb.nonNullable.group({
-      amount: fb.nonNullable.control(0),
-      budget: fb.nonNullable.control(''),
-      date: fb.nonNullable.control(''),
+      amount: fb.nonNullable.control(0, [Validators.required]),
+      budget: fb.nonNullable.control('', [Validators.required]),
+      date: fb.nonNullable.control('', [Validators.required]),
       notes: fb.nonNullable.control(''),
       type: fb.nonNullable.control<TransactionType>('expense'),
     });
@@ -100,8 +101,6 @@ export class TransactionFormComponent implements OnInit {
       header: 'Error',
       message,
     });
-
-    alert.onDidDismiss().then(() => this.navController.back());
 
     await alert.present();
   }

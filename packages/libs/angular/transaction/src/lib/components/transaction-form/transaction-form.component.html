@@ -2,57 +2,59 @@
   <monic-page-layout>
     <p pageTitle>Transaction</p>
     <div class="form-title ion-padding">{{ title }}</div>
-    <ion-item id="dateItem">
-      <ion-label>Date</ion-label>
-      <ion-text>{{ form.value.date | date : 'mediumDate' }}</ion-text>
-      <ion-modal [keepContentsMounted]="true" trigger="dateItem">
-        <ng-template>
-          <ion-datetime
-            id="transDate"
-            (ionChange)="transDateChange(transDate.value)"
-            presentation="date"
-            [showDefaultButtons]="true"
-            [value]="form.value.date"
-            #transDate
+    <ion-list class="ion-margin-top">
+      <ion-item id="dateItem">
+        <ion-label>Date</ion-label>
+        <ion-text>{{ form.value.date | date : 'mediumDate' }}</ion-text>
+        <ion-modal [keepContentsMounted]="true" trigger="dateItem">
+          <ng-template>
+            <ion-datetime
+              id="transDate"
+              (ionChange)="transDateChange(transDate.value)"
+              presentation="date"
+              [showDefaultButtons]="true"
+              [value]="form.value.date"
+              #transDate
+            >
+              <span slot="title">Transaction Date</span>
+            </ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+      <ion-item>
+        <ion-label>Type</ion-label>
+        <ion-select formControlName="type" #transType>
+          <ion-select-option value="expense">Expense</ion-select-option>
+          <ion-select-option value="income">Income</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="transType.value === 'expense'">
+        <ion-label>Budget</ion-label>
+        <ion-select formControlName="budget">
+          <ion-select-option
+            [value]="category"
+            *ngFor="let category of budgetCategories"
           >
-            <span slot="title">Transaction Date</span>
-          </ion-datetime>
-        </ng-template>
-      </ion-modal>
-    </ion-item>
-    <ion-item>
-      <ion-label>Type</ion-label>
-      <ion-select formControlName="type" #transType>
-        <ion-select-option value="expense">Expense</ion-select-option>
-        <ion-select-option value="income">Income</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item *ngIf="transType.value === 'expense'">
-      <ion-label>Budget</ion-label>
-      <ion-select formControlName="budget">
-        <ion-select-option
-          [value]="category"
-          *ngFor="let category of budgetCategories"
-        >
-          {{ category }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Amount</ion-label>
-      <ion-input
-        inputmode="numeric"
-        min="0"
-        formControlName="amount"
-        pattern="\d*[.]?\d*"
-        required
-        style="text-align: right; appearance: none"
-      ></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label position="fixed">Notes</ion-label>
-      <ion-input formControlName="notes" required></ion-input>
-    </ion-item>
+            {{ category }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label position="fixed">Amount</ion-label>
+        <ion-input
+          inputmode="numeric"
+          min="0"
+          formControlName="amount"
+          pattern="\d*[.]?\d*"
+          required
+          style="text-align: right; appearance: none"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label position="fixed">Notes</ion-label>
+        <ion-input formControlName="notes"></ion-input>
+      </ion-item>
+    </ion-list>
     <div class="form-buttons">
       <ion-button
         type="submit"
