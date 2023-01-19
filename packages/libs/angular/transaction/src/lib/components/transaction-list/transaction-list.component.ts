@@ -10,37 +10,7 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
   imports: [AsyncPipe, IonicModule, NgFor, NgIf, TransactionItemComponent],
   selector: 'monic-transaction-list',
   standalone: true,
-  styles: [
-    `
-      ion-segment {
-        margin-bottom: 16px;
-      }
-
-      ion-segment-button ion-label {
-        font-size: 0.74rem;
-        letter-spacing: normal;
-      }
-
-      div.loading {
-        align-items: center;
-        display: flex;
-        justify-content: center;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        top: 0;
-        z-index: 10;
-
-        ion-spinner {
-          color: rgba(var(--ion-color-primary-rgb), 0.9);
-          height: 48px;
-          width: 48px;
-          margin-bottom: 56px;
-        }
-      }
-    `,
-  ],
+  styleUrls: ['./transaction-list.component.scss'],
   template: `
     <ion-segment [value]="filter" *ngIf="filter$ | async as filter">
       <ion-segment-button value="current" (click)="current()">
@@ -57,13 +27,11 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
       </ion-button>
     </ion-segment>
     <ion-content>
-      <ion-list style="padding-bottom: 72px;">
-        <ng-container *ngIf="transactions$ | async as transactions">
-          <monic-transaction-item
-            [transaction]="exp"
-            *ngFor="let exp of transactions$ | async"
-          ></monic-transaction-item>
-        </ng-container>
+      <ion-list *ngIf="transactions$ | async as transactions">
+        <monic-transaction-item
+          [transaction]="exp"
+          *ngFor="let exp of transactions"
+        ></monic-transaction-item>
       </ion-list>
       <ion-fab vertical="bottom" horizontal="center" slot="fixed">
         <ion-fab-button (click)="onAdd()" side="end">

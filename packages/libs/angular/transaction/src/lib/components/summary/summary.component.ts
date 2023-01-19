@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
+  NgZone,
   OnDestroy,
   ViewChild,
 } from '@angular/core';
@@ -22,8 +23,8 @@ import { LabelLayout, UniversalTransition } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import { Subject, takeUntil } from 'rxjs';
 import { SummaryService } from '../../services/summary.service';
-import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
 import { TransactionService } from '../../services/transaction-service';
+import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
 
 echarts.use([
   CanvasRenderer,
@@ -52,8 +53,10 @@ echarts.use([
   template: `
     <ion-content>
       <div class="total-saldo">
-        <p>Current Balance</p>
-        <h1>{{ sum$ | async | number }}</h1>
+        <div *ngIf="sum$ | async as sum">
+          <p>Current Balance</p>
+          <h1>{{ sum | number }}</h1>
+        </div>
       </div>
       <ion-segment value="6" (ionChange)="periodeChange($event)">
         <ion-segment-button value="3">
@@ -69,25 +72,24 @@ echarts.use([
       <div class="sum-charts-outer">
         <div class="canvas" #sumEcharts></div>
       </div>
-      <div class="history">
+      <div class="trans">
         <div class="header">Last Transactions</div>
         <button (click)="addNew()">
           <ion-icon name="add-circle-outline"></ion-icon>
           <span>AddNew</span>
         </button>
       </div>
-      <ng-container *ngIf="transactions$ | async as transactions">
+      <div class="history" *ngIf="transactions$ | async as transactions">
         <monic-transaction-item
           [transaction]="exp"
           *ngFor="let exp of transactions"
         ></monic-transaction-item>
-      </ng-container>
+      </div>
     </ion-content>
   `,
 })
 export class SummaryComponent implements AfterViewInit, OnDestroy {
   @ViewChild('sumEcharts', { static: false }) private sumEcharts!: ElementRef;
-  budgetChart!: echarts.ECharts;
   sumChart!: echarts.ECharts;
   destroy$ = new Subject<boolean>();
   sum$ = this.summaryService.sum$;
@@ -96,12 +98,15 @@ export class SummaryComponent implements AfterViewInit, OnDestroy {
   constructor(
     private router: Router,
     private summaryService: SummaryService,
-    private transService: TransactionService
+    private transService: TransactionService,
+    private zone: NgZone
   ) {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.sumChart = echarts.init(this.sumEcharts.nativeElement);
+      this.zone.runOutsideAngular(() => {
+        this.sumChart = echarts.init(this.sumEcharts.nativeElement);
+      });
     }, 100);
     this.summaryService.ioChartData$
       .pipe(takeUntil(this.destroy$))

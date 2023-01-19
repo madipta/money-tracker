@@ -58,20 +58,20 @@ ion-content.home-menu-content {
 .wave {
   background-color: var(--ion-color-secondary);
   position: absolute;
-  top: 45px;
+  top: 40px;
   left: 0;
   width: 100%;
   overflow: hidden;
   line-height: 0;
-  z-index: 100;
-}
+  z-index: 20;
 
-.wave svg {
-  position: relative;
-  display: block;
-  width: calc(176% + 1.3px);
-  height: 16px;
-  transform: rotateY(180deg);
+  svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 19px;
+    transform: rotateY(180deg);
+  }
 }
 
 .wave .shape-fill {

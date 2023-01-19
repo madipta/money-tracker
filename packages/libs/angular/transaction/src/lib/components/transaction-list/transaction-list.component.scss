@@ -1,0 +1,44 @@
+ion-segment {
+  margin-bottom: 16px;
+}
+
+ion-segment-button ion-label {
+  font-size: 0.74rem;
+  letter-spacing: normal;
+}
+
+ion-list {
+  animation-duration: 800ms;
+  animation-name: trans-list-anim;
+  animation-timing-function: ease-out;
+  padding-bottom: 72px;
+  position: relative;
+}
+
+@keyframes trans-list-anim {
+  from {
+    left: 80%;
+  }
+  to {
+    left: 0;
+  }
+}
+
+div.loading {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  z-index: 10;
+
+  ion-spinner {
+    color: rgba(var(--ion-color-primary-rgb), 0.9);
+    height: 48px;
+    width: 48px;
+    margin-bottom: 56px;
+  }
+}

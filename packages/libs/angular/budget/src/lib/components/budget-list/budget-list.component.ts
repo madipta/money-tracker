@@ -1,8 +1,9 @@
-import { AsyncPipe, DecimalPipe, NgFor } from '@angular/common';
+import { AsyncPipe, DecimalPipe, NgFor, NgIf } from '@angular/common';
 import {
   AfterViewInit,
   Component,
   ElementRef,
+  NgZone,
   OnDestroy,
   ViewChild,
 } from '@angular/core';
@@ -37,71 +38,49 @@ echarts.use([
 ]);
 
 @Component({
-  imports: [AsyncPipe, DecimalPipe, IonicModule, NgFor],
+  imports: [AsyncPipe, DecimalPipe, IonicModule, NgFor, NgIf],
   selector: 'monic-budget',
   standalone: true,
-  styles: [
-    `
-      ion-content {
-        --padding-bottom: 64px;
-      }
-      ion-list {
-        --ion-item-background: transparent;
-      }
-      .charts-outer {
-        box-shadow: 1px 5px 50px rgba(var(--ion-color-primary-rgb), 0.15);
-        border-radius: 24px;
-        box-sizing: border-box;
-        margin: 16px 16px 24px;
-        padding: 16px;
-
-        div.canvas {
-          height: 200px;
-        }
-      }
-      .budget-amount {
-        font-size: 0.9rem;
-        text-align: right;
-      }
-    `,
-  ],
+  styleUrls: ['./budget-list.component.scss'],
   template: `
     <ion-content>
       <div class="form-title ion-padding">Budget</div>
       <div class="charts-outer">
         <div class="canvas" #canvas></div>
       </div>
-      <ion-list>
-        <ion-item-sliding *ngFor="let budget of budget$ | async">
-          <ion-item>
-            <ion-icon
-              color="secondary"
-              [name]="categoryIcons[budget.category]"
-              slot="start"
-            ></ion-icon>
-            <ion-label>{{ budget.category }}</ion-label>
-            <ion-text slot="end" class="budget-amount">
-              {{ budget.amount | number }}
-            </ion-text>
-          </ion-item>
-          <ion-item-options side="end">
-            <ion-item-option
-              (click)="onEdit(budget)"
-              color="tertiary"
-              title="Edit"
-            >
-              <ion-icon name="create-outline" slot="icon-only"></ion-icon>
-            </ion-item-option>
-            <ion-item-option
-              (click)="deleteAlert(budget)"
-              color="tertiary"
-              title="Delete"
-            >
-              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list>
+      <div class="budget-list" *ngIf="budget$ | async as budgets">
+        <ion-list>
+          <ion-item-sliding *ngFor="let budget of budgets">
+            <ion-item>
+              <ion-icon
+                color="secondary"
+                [name]="categoryIcons[budget.category]"
+                slot="start"
+              ></ion-icon>
+              <ion-label>{{ budget.category }}</ion-label>
+              <ion-text slot="end">
+                {{ budget.amount | number }}
+              </ion-text>
+            </ion-item>
+            <ion-item-options side="end">
+              <ion-item-option
+                (click)="onEdit(budget)"
+                color="tertiary"
+                title="Edit"
+              >
+                <ion-icon name="create-outline" slot="icon-only"></ion-icon>
+              </ion-item-option>
+              <ion-item-option
+                (click)="deleteAlert(budget)"
+                color="tertiary"
+                title="Delete"
+              >
+                <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </div>
       <ion-fab vertical="bottom" horizontal="center" slot="fixed">
         <ion-fab-button (click)="onAdd()" side="end">
           <ion-icon name="add-outline"></ion-icon>
@@ -122,15 +101,18 @@ export class BudgetListComponent implements AfterViewInit, OnDestroy {
     private alertController: AlertController,
     private chatService: BudgetChartService,
     private budgetService: BudgetService,
-    public router: Router
+    public router: Router,
+    private zone: NgZone
   ) {}
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.charts = echarts.init(this.canvas.nativeElement);
-      this.chatService.budgetChart$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((budgets) => this.loadChart(budgets));
+      this.zone.runOutsideAngular(() => {
+        this.charts = echarts.init(this.canvas.nativeElement);
+        this.chatService.budgetChart$
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((budgets) => this.loadChart(budgets));
+      });
     }, 100);
   }
 

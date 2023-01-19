@@ -3,8 +3,8 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  NgZone,
   OnDestroy,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import {
@@ -52,53 +52,7 @@ echarts.use([
   imports: [AsyncPipe, IonicModule, ReactiveFormsModule],
   selector: 'monic-report',
   standalone: true,
-  styles: [
-    `
-      form {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        font-size: 0.8rem;
-        padding: 24px 0 0;
-      }
-
-      ion-datetime-button::part(native) {
-        background: rgba(var(--ion-color-success-rgb), 0.8);
-        border-radius: 16px;
-        color: var(--ion-color-success-contrast);
-        padding: 6px 12px 6px 10px;
-      }
-
-      .year-month {
-        align-items: center;
-        display: flex;
-        font-size: 0.75rem;
-        font-weight: 600;
-        gap: 6px;
-
-        ion-icon {
-          height: 1rem;
-          width: 1rem;
-        }
-      }
-
-      .chart-outer {
-        box-shadow: 1px 5px 50px rgba(var(--ion-color-primary-rgb), 0.15);
-        border-radius: 24px;
-        box-sizing: border-box;
-        margin: 24px 16px 16px;
-        padding: 16px;
-      }
-
-      .pieCanvas {
-        height: 200px;
-      }
-
-      .barCanvas {
-        height: 600px;
-      }
-    `,
-  ],
+  styleUrls: ['./report.component.scss'],
   template: `
     <ion-content>
       <div class="form-title ion-padding">Report</div>
@@ -122,16 +76,16 @@ echarts.use([
           </ng-template>
         </ion-modal>
       </form>
-      <div class="chart-outer">
+      <div class="chart-outer sumCharts">
         <div class="pieCanvas" #pieCanvas></div>
       </div>
-      <div class="chart-outer">
+      <div class="chart-outer compCharts">
         <div class="barCanvas" #barCanvas></div>
       </div>
     </ion-content>
   `,
 })
-export class ReportComponent implements AfterViewInit, OnDestroy, OnInit {
+export class ReportComponent implements AfterViewInit, OnDestroy {
   @ViewChild('barCanvas', { static: false }) barCanvas!: ElementRef;
   barChart!: echarts.ECharts;
   @ViewChild('pieCanvas', { static: false }) pieCanvas!: ElementRef;
@@ -140,7 +94,11 @@ export class ReportComponent implements AfterViewInit, OnDestroy, OnInit {
   form: ReportForm;
   selectedPeriode = '';
 
-  constructor(fb: FormBuilder, private reportService: ReportService) {
+  constructor(
+    fb: FormBuilder,
+    private reportService: ReportService,
+    private zone: NgZone
+  ) {
     this.form = fb.nonNullable.group({
       periode: fb.nonNullable.control(new Date().toISOString()),
     });
@@ -148,28 +106,27 @@ export class ReportComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      this.pieChart = echarts.init(this.pieCanvas.nativeElement);
-      this.barChart = echarts.init(this.barCanvas.nativeElement);
+      this.zone.runOutsideAngular(() => {
+        this.pieChart = echarts.init(this.pieCanvas.nativeElement);
+        this.barChart = echarts.init(this.barCanvas.nativeElement);
+        this.reportService.summary$
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((sum) =>
+            this.loadPieChart(sum.income, sum.outcome, sum.budget)
+          );
+        this.reportService.expenseVsBudget$
+          .pipe(takeUntil(this.destroy$))
+          .subscribe((sum) =>
+            this.loadBarChart(sum.categories, sum.expenses, sum.budgets)
+          );
+        this.periodeChange(new Date().toISOString());
+      });
     }, 100);
   }
 
   ngOnDestroy(): void {
     this.destroy$.next(true);
     this.destroy$.unsubscribe();
-  }
-
-  ngOnInit(): void {
-    this.reportService.summary$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((sum) =>
-        this.loadPieChart(sum.income, sum.outcome, sum.budget)
-      );
-    this.reportService.expenseVsBudget$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((sum) =>
-        this.loadBarChart(sum.categories, sum.expenses, sum.budgets)
-      );
-    this.periodeChange(new Date().toISOString());
   }
 
   loadBarChart(categories: string[], expenses: number[], budget: number[]) {
