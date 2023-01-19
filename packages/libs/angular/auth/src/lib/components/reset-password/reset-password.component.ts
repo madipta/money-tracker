@@ -27,18 +27,31 @@ type ResetPasswordForm = FormGroup<{
   ],
   selector: 'monic-reset-password',
   standalone: true,
+  styles: [
+    `
+      .reset-logo {
+        margin: 48px 0 32px;
+        text-align: center;
+
+        ion-icon {
+          color: var(--ion-color-tertiary);
+          font-size: 128px;
+        }
+      }
+
+      ion-grid {
+        max-width: 340px;
+      }
+    `,
+  ],
   template: `
     <monic-page-layout>
       <p pageTitle>Password Reset</p>
+      <div class="reset-logo">
+        <ion-icon name="mail-outline"></ion-icon>
+      </div>
       <form [formGroup]="form" (ngSubmit)="send()">
         <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-label color="secondary">
-                <small>Password reset request</small>
-              </ion-label>
-            </ion-col>
-          </ion-row>
           <ion-row>
             <ion-col>
               <ion-list>

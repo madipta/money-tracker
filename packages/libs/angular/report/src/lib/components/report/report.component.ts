@@ -14,7 +14,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-import { numberShorten } from '@monic/libs/util';
+import { numberShorten, yearMonth } from '@monic/libs/util';
 import * as echarts from 'echarts/core';
 import { BarChart, PieChart } from 'echarts/charts';
 import {
@@ -59,14 +59,34 @@ echarts.use([
         display: flex;
         flex-direction: column;
         font-size: 0.8rem;
-        margin: 8px;
+        padding: 24px 0 0;
+      }
+
+      ion-datetime-button::part(native) {
+        background: rgba(var(--ion-color-success-rgb), 0.8);
+        border-radius: 16px;
+        color: var(--ion-color-success-contrast);
+        padding: 6px 12px 6px 10px;
+      }
+
+      .year-month {
+        align-items: center;
+        display: flex;
+        font-size: 0.75rem;
+        font-weight: 600;
+        gap: 6px;
+
+        ion-icon {
+          height: 1rem;
+          width: 1rem;
+        }
       }
 
       .chart-outer {
         box-shadow: 1px 5px 50px rgba(var(--ion-color-primary-rgb), 0.15);
         border-radius: 24px;
         box-sizing: border-box;
-        margin: 16px 16px 24px;
+        margin: 24px 16px 16px;
         padding: 16px;
       }
 
@@ -83,7 +103,12 @@ echarts.use([
     <ion-content>
       <div class="form-title ion-padding">Report</div>
       <form [formGroup]="form">
-        <ion-datetime-button datetime="datetime"></ion-datetime-button>
+        <ion-datetime-button datetime="datetime">
+          <div class="year-month" slot="date-target">
+            <ion-icon name="calendar"></ion-icon>
+            {{ selectedPeriode }}
+          </div>
+        </ion-datetime-button>
         <ion-modal [keepContentsMounted]="true">
           <ng-template>
             <ion-datetime
@@ -113,6 +138,7 @@ export class ReportComponent implements AfterViewInit, OnDestroy, OnInit {
   pieChart!: echarts.ECharts;
   destroy$ = new Subject<boolean>();
   form: ReportForm;
+  selectedPeriode = '';
 
   constructor(fb: FormBuilder, private reportService: ReportService) {
     this.form = fb.nonNullable.group({
@@ -138,11 +164,11 @@ export class ReportComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((sum) =>
         this.loadPieChart(sum.income, sum.outcome, sum.budget)
       );
-      this.reportService.expenseVsBudget$
-        .pipe(takeUntil(this.destroy$))
-        .subscribe((sum) =>
-          this.loadBarChart(sum.categories, sum.expenses, sum.budgets)
-        );
+    this.reportService.expenseVsBudget$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((sum) =>
+        this.loadBarChart(sum.categories, sum.expenses, sum.budgets)
+      );
     this.periodeChange(new Date().toISOString());
   }
 
@@ -153,7 +179,7 @@ export class ReportComponent implements AfterViewInit, OnDestroy, OnInit {
       distance: 12,
       align: 'left',
       verticalAlign: 'middle',
-      fontSize: 14
+      fontSize: 14,
     };
     const option = {
       title: {
@@ -198,8 +224,8 @@ export class ReportComponent implements AfterViewInit, OnDestroy, OnInit {
             ...labelOption,
             formatter: '{name|{b}}',
             rich: {
-              name: {}
-            }
+              name: {},
+            },
           },
           name: 'budget',
           type: 'bar',
@@ -254,10 +280,9 @@ export class ReportComponent implements AfterViewInit, OnDestroy, OnInit {
       return;
     }
     const date = new Date(ev);
-    this.reportService.setFilter({
-      month: date.getMonth(),
-      year: date.getFullYear(),
-    });
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    this.selectedPeriode = yearMonth(date);
+    this.reportService.setFilter({ month, year });
   }
 }
-

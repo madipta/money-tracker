@@ -30,18 +30,28 @@ type BudgetForm = FormGroup<{
   standalone: true,
   styles: [
     `
+      .budget-logo {
+        margin: 48px 0 32px;
+        text-align: center;
+
+        ion-icon {
+          color: var(--ion-color-tertiary);
+          font-size: 128px;
+        }
+      }
+
       ion-select {
         max-width: none;
       }
     `,
   ],
   template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <monic-page-layout>
-        <p pageTitle>Create Budget</p>
-        <div class="budget-logo">
-          <ion-icon name="calculator"></ion-icon>
-        </div>
+    <monic-page-layout>
+      <p pageTitle>Create Budget</p>
+      <div class="budget-logo">
+        <ion-icon name="calculator"></ion-icon>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <ion-list>
           <ion-item>
             <ion-label>Category</ion-label>
@@ -79,8 +89,8 @@ type BudgetForm = FormGroup<{
             ></ion-spinner>
           </ion-button>
         </div>
-      </monic-page-layout>
-    </form>
+      </form>
+    </monic-page-layout>
   `,
 })
 export class BudgetAddComponent implements OnDestroy, OnInit {
