@@ -12,20 +12,22 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
   standalone: true,
   styleUrls: ['./transaction-list.component.scss'],
   template: `
-    <ion-segment [value]="filter" *ngIf="filter$ | async as filter">
-      <ion-segment-button value="current" (click)="current()">
-        <ion-label>This Month</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="last" (click)="last()">
-        <ion-label>Last Month</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="prev" (click)="prev()">
-        <ion-label>Previous</ion-label>
-      </ion-segment-button>
+    <div class="tab-outer">
+      <ion-segment [value]="filter" *ngIf="filter$ | async as filter">
+        <ion-segment-button value="current" (click)="current()">
+          <ion-label>This Month</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="last" (click)="last()">
+          <ion-label>Last Month</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="prev" (click)="prev()">
+          <ion-label>Previous</ion-label>
+        </ion-segment-button>
+      </ion-segment>
       <ion-button (click)="search()" color="tertiary" fill="clear">
         <ion-icon name="search" slot="icon-only"></ion-icon>
       </ion-button>
-    </ion-segment>
+    </div>
     <ion-content>
       <ion-list *ngIf="transactions$ | async as transactions">
         <monic-transaction-item
