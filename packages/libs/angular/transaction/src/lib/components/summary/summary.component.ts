@@ -3,7 +3,6 @@ import {
   keyframes,
   query,
   stagger,
-  state,
   style,
   transition,
   trigger,
@@ -50,31 +49,36 @@ echarts.use([
 
 @Component({
   animations: [
-    trigger('currentBalanceAnimate', [
-      transition(':enter', [
-        style({ top: '-100%' }),
-        animate('300ms ease-out', style({ top: '0' })),
-      ]),
-    ]),
     trigger('totalSaldoAnimate', [
-      state('init', style({ marginTop: '-100%', opacity: 0 })),
-      state('anim', style({ marginTop: '0', opacity: 1 })),
-      transition('init => anim', animate('1200ms ease-out')),
+      transition(
+        '* => *',
+        animate(
+          '1200ms ease-out',
+          keyframes([
+            style({ opacity: 0, transform: 'translateY(-24px)' }),
+            style({ opacity: 0.3, transform: 'translateY(12px)' }),
+            style({ opacity: 1, transform: 'translateY(0)' }),
+          ])
+        )
+      ),
     ]),
     trigger('sumChartAnimate', [
       transition(':enter', [
         style({ left: '100%' }),
-        animate('600ms 200ms ease-out', style({ left: '0' })),
+        animate('1000ms ease-out', style({ left: '0' })),
       ]),
     ]),
     trigger('historyAnimate', [
       transition(':enter', [
         style({ top: '70%' }),
-        animate('1200ms 200ms ease-out', keyframes([
-          style({ top: '-50%' }),
-          style({ top: '25%' }),
-          style({ top: '0' })
-        ])),
+        animate(
+          '1200ms 200ms ease-out',
+          keyframes([
+            style({ top: '-50%' }),
+            style({ top: '25%' }),
+            style({ top: '0' }),
+          ])
+        ),
       ]),
       transition('* => *', [
         query(':enter', style({ opacity: 0 }), { optional: true }),
@@ -94,13 +98,6 @@ echarts.use([
             optional: true,
           }
         ),
-        query(
-          ':leave',
-          stagger(500, [animate('1s ease-in', style({ opacity: 0 }))]),
-          {
-            optional: true,
-          }
-        ),
       ]),
     ]),
   ],
@@ -111,8 +108,8 @@ echarts.use([
   template: `
     <ion-content>
       <div class="total-saldo">
-        <p @currentBalanceAnimate>Current Balance</p>
-        <h1 [@totalSaldoAnimate]="totalSaldoState">
+        <p>Current Balance</p>
+        <h1 [@totalSaldoAnimate]="totalSaldoState" *ngIf="!!sum && sum >= 0">
           {{ sum | number }}
         </h1>
       </div>
@@ -150,10 +147,10 @@ export class SummaryComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('sumEcharts', { static: false }) private sumEcharts!: ElementRef;
   sumChart!: echarts.ECharts;
   destroy$ = new Subject<boolean>();
-  sum = 0;
+  sum: number | undefined;
   transactions: ITransaction[] = [];
   transactions$ = this.summaryService.last3$;
-  totalSaldoState = 'init';
+  totalSaldoState = '';
 
   constructor(
     private router: Router,

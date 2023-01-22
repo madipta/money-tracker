@@ -1,13 +1,46 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import {
+  animate,
+  keyframes,
+  query,
+  stagger,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { of, switchMap } from 'rxjs';
+import { ITransaction } from '@monic/libs/types';
+import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import { TransactionService } from '../../services/transaction-service';
 import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
 
 @Component({
-  imports: [AsyncPipe, IonicModule, NgFor, NgIf, TransactionItemComponent],
+  animations: [
+    trigger('listAnimate', [
+      transition('* => *', [
+        query(':enter', style({ opacity: 0 }), { optional: true }),
+        query(
+          ':enter',
+          stagger(200, [
+            animate(
+              '300ms ease-out',
+              keyframes([
+                style({ opacity: 0, transform: 'translateY(-24px)' }),
+                style({ opacity: 0.3, transform: 'translateY(12px)' }),
+                style({ opacity: 1, transform: 'translateY(0)' }),
+              ])
+            ),
+          ]),
+          {
+            optional: true,
+          }
+        ),
+      ]),
+    ]),
+  ],
+  imports: [CommonModule, IonicModule, TransactionItemComponent],
   selector: 'monic-transaction-list',
   standalone: true,
   styleUrls: ['./transaction-list.component.scss'],
@@ -29,7 +62,7 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
       </ion-button>
     </div>
     <ion-content>
-      <ion-list *ngIf="transactions$ | async as transactions">
+      <ion-list [@listAnimate]="transactions.length">
         <monic-transaction-item
           [transaction]="exp"
           *ngFor="let exp of transactions"
@@ -46,7 +79,8 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
     </div>
   `,
 })
-export class TransactionListComponent {
+export class TransactionListComponent implements OnDestroy, OnInit {
+  destroy$ = new Subject<boolean>();
   filter$ = this.transactionService.filter$.pipe(
     switchMap((f) => {
       const current = new Date();
@@ -64,16 +98,30 @@ export class TransactionListComponent {
     })
   );
   skeletons = new Array(10);
-  transactions$ = this.transactionService.filteredTransactions$;
   transOnLoad$ = this.transactionService.transOnLoad$;
+  transactions: ITransaction[] = [];
 
   constructor(
     private transactionService: TransactionService,
     public router: Router
   ) {}
 
+  ngOnInit(): void {
+    this.transactionService.filteredTransactions$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((val) => {
+        this.transactions = val;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
+  }
+
   current() {
     const current = new Date();
+    this.transactions = [];
     this.transactionService.filter({
       month: current.getMonth(),
       year: current.getFullYear(),
@@ -83,6 +131,7 @@ export class TransactionListComponent {
   last() {
     const current = new Date();
     const last = new Date(current.getFullYear(), current.getMonth() - 1, 1);
+    this.transactions = [];
     this.transactionService.filter({
       month: last.getMonth(),
       year: last.getFullYear(),
@@ -92,6 +141,7 @@ export class TransactionListComponent {
   prev() {
     const current = new Date();
     const prev = new Date(current.getFullYear(), current.getMonth() - 2, 1);
+    this.transactions = [];
     this.transactionService.filter({
       month: prev.getMonth(),
       year: prev.getFullYear(),
