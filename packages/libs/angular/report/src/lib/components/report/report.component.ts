@@ -5,6 +5,7 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import {
@@ -85,7 +86,7 @@ echarts.use([
     </ion-content>
   `,
 })
-export class ReportComponent implements AfterViewInit, OnDestroy {
+export class ReportComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('barCanvas', { static: false }) barCanvas!: ElementRef;
   barChart!: echarts.ECharts;
   @ViewChild('pieCanvas', { static: false }) pieCanvas!: ElementRef;
@@ -104,22 +105,25 @@ export class ReportComponent implements AfterViewInit, OnDestroy {
     });
   }
 
+  ngOnInit(): void {
+    this.reportService.summary$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((sum) =>
+        this.loadPieChart(sum.income, sum.outcome, sum.budget)
+      );
+    this.reportService.expenseVsBudget$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((sum) =>
+        this.loadBarChart(sum.categories, sum.expenses, sum.budgets)
+      );
+    this.periodeChange(new Date().toISOString());
+  }
+
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.zone.runOutsideAngular(() => {
         this.pieChart = echarts.init(this.pieCanvas.nativeElement);
         this.barChart = echarts.init(this.barCanvas.nativeElement);
-        this.reportService.summary$
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((sum) =>
-            this.loadPieChart(sum.income, sum.outcome, sum.budget)
-          );
-        this.reportService.expenseVsBudget$
-          .pipe(takeUntil(this.destroy$))
-          .subscribe((sum) =>
-            this.loadBarChart(sum.categories, sum.expenses, sum.budgets)
-          );
-        this.periodeChange(new Date().toISOString());
       });
     }, 100);
   }

@@ -50,7 +50,7 @@ echarts.use([
       </div>
       <div class="budget-list" *ngIf="budget$ | async as budgets">
         <ion-list>
-          <ion-item-sliding *ngFor="let budget of budgets">
+          <ion-item-sliding *ngFor="let budget of budgets; trackBy: trackById">
             <ion-item>
               <ion-icon
                 color="secondary"
@@ -183,5 +183,9 @@ export class BudgetListComponent implements AfterViewInit, OnDestroy {
 
   onEdit(budget: IBudgetWithId) {
     this.router.navigate([`budget/edit/${budget.id}`]);
+  }
+
+  trackById(index: number, trans: { id: string }) {
+    return trans.id;
   }
 }

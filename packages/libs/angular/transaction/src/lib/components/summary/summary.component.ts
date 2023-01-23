@@ -14,7 +14,6 @@ import {
   ElementRef,
   NgZone,
   OnDestroy,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -34,7 +33,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { SummaryService } from '../../services/summary.service';
 import { TransactionService } from '../../services/transaction-service';
 import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
-import { ITransaction } from '@monic/libs/types';
 
 echarts.use([
   CanvasRenderer,
@@ -50,8 +48,8 @@ echarts.use([
 @Component({
   animations: [
     trigger('totalSaldoAnimate', [
-      transition(
-        '* => *',
+      transition('* => *', [
+        style({ opacity: 0 }),
         animate(
           '1200ms ease-out',
           keyframes([
@@ -59,8 +57,8 @@ echarts.use([
             style({ opacity: 0.3, transform: 'translateY(12px)' }),
             style({ opacity: 1, transform: 'translateY(0)' }),
           ])
-        )
-      ),
+        ),
+      ]),
     ]),
     trigger('sumChartAnimate', [
       transition(':enter', [
@@ -69,24 +67,13 @@ echarts.use([
       ]),
     ]),
     trigger('historyAnimate', [
-      transition(':enter', [
-        style({ top: '70%' }),
-        animate(
-          '1200ms 200ms ease-out',
-          keyframes([
-            style({ top: '-50%' }),
-            style({ top: '25%' }),
-            style({ top: '0' }),
-          ])
-        ),
-      ]),
       transition('* => *', [
         query(':enter', style({ opacity: 0 }), { optional: true }),
         query(
           ':enter',
-          stagger(600, [
+          stagger(200, [
             animate(
-              '1s ease-in',
+              '300ms ease-in',
               keyframes([
                 style({ opacity: 0, transform: 'translateY(-24px)' }),
                 style({ opacity: 0.3, transform: 'translateY(12px)' }),
@@ -109,7 +96,7 @@ echarts.use([
     <ion-content>
       <div class="total-saldo">
         <p>Current Balance</p>
-        <h1 [@totalSaldoAnimate]="totalSaldoState" *ngIf="!!sum && sum >= 0">
+        <h1 @totalSaldoAnimate *ngIf="summaryService.sum$ | async as sum">
           {{ sum | number }}
         </h1>
       </div>
@@ -134,42 +121,31 @@ echarts.use([
           <span>AddNew</span>
         </button>
       </div>
-      <div class="history" [@historyAnimate]="transactions.length">
-        <monic-transaction-item
-          [transaction]="exp"
-          *ngFor="let exp of transactions"
-        ></monic-transaction-item>
+      <div class="history">
+        <div
+          *ngIf="summaryService.last3$ | async as transactions"
+          [@historyAnimate]="transactions.length"
+        >
+          <monic-transaction-item
+            [transaction]="exp"
+            *ngFor="let exp of transactions; trackBy: trackById"
+          ></monic-transaction-item>
+        </div>
       </div>
     </ion-content>
   `,
 })
-export class SummaryComponent implements AfterViewInit, OnDestroy, OnInit {
+export class SummaryComponent implements AfterViewInit, OnDestroy {
   @ViewChild('sumEcharts', { static: false }) private sumEcharts!: ElementRef;
   sumChart!: echarts.ECharts;
   destroy$ = new Subject<boolean>();
-  sum: number | undefined;
-  transactions: ITransaction[] = [];
-  transactions$ = this.summaryService.last3$;
-  totalSaldoState = '';
 
   constructor(
     private router: Router,
-    private summaryService: SummaryService,
+    public summaryService: SummaryService,
     private transService: TransactionService,
     private zone: NgZone
   ) {}
-
-  ngOnInit(): void {
-    this.summaryService.sum$.pipe(takeUntil(this.destroy$)).subscribe((sum) => {
-      this.sum = sum;
-      this.totalSaldoState = 'anim';
-    });
-    this.summaryService.last3$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((trans) => {
-        this.transactions = trans;
-      });
-  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -185,7 +161,7 @@ export class SummaryComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next(false);
+    this.destroy$.next(true);
     this.destroy$.unsubscribe();
   }
 
@@ -234,5 +210,9 @@ export class SummaryComponent implements AfterViewInit, OnDestroy, OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   periodeChange(e: any) {
     this.summaryService.ioChartFilterChange(e.detail.value);
+  }
+
+  trackById(index: number, trans: { id: string }) {
+    return trans.id;
   }
 }

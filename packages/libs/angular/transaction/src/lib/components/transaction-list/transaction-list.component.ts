@@ -8,11 +8,10 @@ import {
   trigger,
 } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
-import { ITransaction } from '@monic/libs/types';
-import { of, Subject, switchMap, takeUntil } from 'rxjs';
+import { of, Subject, switchMap } from 'rxjs';
 import { TransactionService } from '../../services/transaction-service';
 import { TransactionItemComponent } from '../transaction-item/transaction-item.component';
 
@@ -23,9 +22,9 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
         query(':enter', style({ opacity: 0 }), { optional: true }),
         query(
           ':enter',
-          stagger(200, [
+          stagger(80, [
             animate(
-              '300ms ease-out',
+              '300ms ease-in',
               keyframes([
                 style({ opacity: 0, transform: 'translateY(-24px)' }),
                 style({ opacity: 0.3, transform: 'translateY(12px)' }),
@@ -35,6 +34,7 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
           ]),
           {
             optional: true,
+            limit: 12
           }
         ),
       ]),
@@ -62,10 +62,13 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
       </ion-button>
     </div>
     <ion-content>
-      <ion-list [@listAnimate]="transactions.length">
+      <ion-list
+        *ngIf="transService.filteredTransactions$ | async as transactions"
+        [@listAnimate]="transactions.length"
+      >
         <monic-transaction-item
           [transaction]="exp"
-          *ngFor="let exp of transactions"
+          *ngFor="let exp of transactions; trackBy: trackById"
         ></monic-transaction-item>
       </ion-list>
       <ion-fab vertical="bottom" horizontal="center" slot="fixed">
@@ -74,14 +77,14 @@ import { TransactionItemComponent } from '../transaction-item/transaction-item.c
         </ion-fab-button>
       </ion-fab>
     </ion-content>
-    <div class="loading" *ngIf="transOnLoad$ | async">
+    <div class="loading" *ngIf="transService.transOnLoad$ | async">
       <ion-spinner name="lines"></ion-spinner>
     </div>
   `,
 })
-export class TransactionListComponent implements OnDestroy, OnInit {
+export class TransactionListComponent {
   destroy$ = new Subject<boolean>();
-  filter$ = this.transactionService.filter$.pipe(
+  filter$ = this.transService.filter$.pipe(
     switchMap((f) => {
       const current = new Date();
       const currentMonth = current.getMonth();
@@ -98,62 +101,42 @@ export class TransactionListComponent implements OnDestroy, OnInit {
     })
   );
   skeletons = new Array(10);
-  transOnLoad$ = this.transactionService.transOnLoad$;
-  transactions: ITransaction[] = [];
 
-  constructor(
-    private transactionService: TransactionService,
-    public router: Router
-  ) {}
+  constructor(public transService: TransactionService, public router: Router) {}
 
-  ngOnInit(): void {
-    this.transactionService.filteredTransactions$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((val) => {
-        this.transactions = val;
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.unsubscribe();
+  filter(date: Date) {
+    this.transService.filter({
+      month: date.getMonth(),
+      year: date.getFullYear(),
+    });
   }
 
   current() {
-    const current = new Date();
-    this.transactions = [];
-    this.transactionService.filter({
-      month: current.getMonth(),
-      year: current.getFullYear(),
-    });
+    this.filter(new Date());
   }
 
   last() {
     const current = new Date();
     const last = new Date(current.getFullYear(), current.getMonth() - 1, 1);
-    this.transactions = [];
-    this.transactionService.filter({
-      month: last.getMonth(),
-      year: last.getFullYear(),
-    });
+    this.filter(last);
   }
 
   prev() {
     const current = new Date();
     const prev = new Date(current.getFullYear(), current.getMonth() - 2, 1);
-    this.transactions = [];
-    this.transactionService.filter({
-      month: prev.getMonth(),
-      year: prev.getFullYear(),
-    });
+    this.filter(prev);
   }
 
   search() {
     this.router.navigate(['trans/search']);
   }
 
+  trackById(index: number, trans: { id: string; }) {
+    return trans.id;
+  }
+
   onAdd() {
-    this.transactionService.unselect();
+    this.transService.unselect();
     this.router.navigate(['trans/edit']);
   }
 }
