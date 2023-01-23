@@ -2435,13 +2435,13 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@ionic/angular@^6.4.0":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-6.4.0.tgz#84501ca5e2538fb1eaeb1862980c5d85cdc35261"
-  integrity sha512-ZcMtcSk0WQzw8vxfBpBSMD8g96EqdhGVoCKmBTQsMqYhnRMGCa5518p3vLSe7KiK64G+zSzXpAuuCkz6u12UgA==
+"@ionic/angular@^6.5.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-6.5.0.tgz#85b1f3d32bfdb983fc1ecf5ebfdc04990c8514f5"
+  integrity sha512-zO9f3SKVFUlswxeEBu7bIfNbFJzQ6QoLrKTRpgzdbhKmDQp3+opKNYVXeGASaoycmxeJn2/ahmSzXJAPudoGmQ==
   dependencies:
-    "@ionic/core" "6.4.0"
-    ionicons "^6.0.4"
+    "@ionic/core" "6.5.0"
+    ionicons "^6.1.1"
     jsonc-parser "^3.0.0"
     tslib "^2.0.0"
 
@@ -2454,13 +2454,13 @@
     debug "^4.0.0"
     tslib "^2.0.1"
 
-"@ionic/core@6.4.0":
-  version "6.4.0"
-  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-6.4.0.tgz#c7afb2b52cc6c343bfb948de2f5a19034c56c325"
-  integrity sha512-rWqXX67bWDD5r5Kleacy4dTBIXcB1gX+2Q5AK7LAtmtHUUuJPqGw/bAWE8hGKlF7ehJTyzb5CYV9XDzb8/00Zw==
+"@ionic/core@6.5.0":
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-6.5.0.tgz#60095211c15609218855a924117d65764db69334"
+  integrity sha512-vefrnd1WYZJnjSXwsY1sn3HJpBDKPGnwtO2US55Qrjz0d9HyUwocHgVvkvLAAKZG+LGErJbVeV8aTmdYEydRgg==
   dependencies:
     "@stencil/core" "^2.18.0"
-    ionicons "^6.0.4"
+    ionicons "^6.1.1"
     tslib "^2.1.0"
 
 "@ionic/utils-array@2.1.5":
@@ -7143,10 +7143,10 @@ inquirer@^8.1.1:
     through "^2.3.6"
     wrap-ansi "^7.0.0"
 
-ionicons@^6.0.4:
-  version "6.0.4"
-  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-6.0.4.tgz#ab7aa439b7f17f29e0ef0a28568b4920c3167bfd"
-  integrity sha512-uDNOkBo0OVYV+kIhb51g9mb7r3Z0b+78GPZQBsjXuaetNmrB/mNTqN/uFtO+vxL/rQySKjzk8qeKJI5NWL9Ueg==
+ionicons@^6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-6.1.1.tgz#4c24c29aaf9ec235d741e7fe692e47ea814b1a7d"
+  integrity sha512-Qe6mx25DFNwA9UL1rhewI5StI3uD4+BqB2KdvLjyWhtvoUXwyAsmfHLZuDANAHQowIKtTt6BZCt5/g5NIQ635Q==
   dependencies:
     "@stencil/core" "^2.18.0"
 
@@ -11656,10 +11656,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-zone.js@~0.11.4:
-  version "0.11.8"
-  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.11.8.tgz#40dea9adc1ad007b5effb2bfed17f350f1f46a21"
-  integrity sha512-82bctBg2hKcEJ21humWIkXRlLBBmrc3nN7DFh5LGGhcyycO2S7FN8NmdvlcKaGFDNVL4/9kFLmwmInTavdJERA==
+zone.js@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/zone.js/-/zone.js-0.12.0.tgz#a4a6e5fab6d34bd37d89c77e89ac2e6f4a3d2c30"
+  integrity sha512-XtC+I5dXU14HrzidAKBNMqneIVUykLEAA1x+v4KVrd6AUPWlwYORF8KgsVqvgdHiKZ4BkxxjvYi/ksEixTPR0Q==
   dependencies:
     tslib "^2.3.0"
 
