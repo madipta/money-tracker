@@ -8,7 +8,7 @@ ion-item.trans-item {
   --inner-padding-end: 12px;
   --padding-start: 12px;
   --min-height: 0;
-  border-bottom: 1px solid rgba(var(--ion-color-medium-rgb), 0.15);
+  border-bottom: 1px solid rgba(var(--ion-color-medium-rgb), .15);
   padding: 4px 0;
 }
 
@@ -20,14 +20,14 @@ ion-item.trans-item {
   padding-top: 3px;
 
   .trans-day {
-    color: rgba(var(--ion-color-tertiary-rgb), 0.7);
+    color: rgba(var(--ion-color-tertiary-rgb), .7);
     font-size: 1.5rem;
     font-weight: 600;
   }
 
   .trans-month {
-    color: rgba(var(--ion-color-medium-rgb), 0.7);
-    font-size: 0.6rem;
+    color: rgba(var(--ion-color-medium-rgb), .7);
+    font-size: .6rem;
     letter-spacing: 2px;
   }
 }
@@ -39,24 +39,20 @@ ion-item.trans-item {
 
 .trans-budget,
 .trans-income {
-  color: rgba(var(--ion-color-dark-rgb), 0.6);
-  font-size: 0.7rem;
+  color: rgba(var(--ion-color-dark-rgb), .58);
+  font-size: .67rem;
   letter-spacing: 1px;
   margin-bottom: 2px;
 }
 
-.trans-income {
-  color: rgba(var(--ion-color-primary-rgb), 0.8);
-}
-
 .trans-notes {
-  color: rgba(var(--ion-color-dark-rgb), 0.85);
-  font-size: 0.8rem;
+  color: rgba(var(--ion-color-dark-rgb), 1);
+  font-size: .9rem;
   margin: 0;
 }
 
 .trans-amount {
-  font-size: 0.8rem;
+  font-size: .9rem;
 
   &.expense {
     color: rgba(var(--ion-color-danger-rgb), 1);

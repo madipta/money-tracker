@@ -1,4 +1,5 @@
-import { AsyncPipe } from '@angular/common';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -50,7 +51,21 @@ echarts.use([
 ]);
 
 @Component({
-  imports: [AsyncPipe, IonicModule, ReactiveFormsModule],
+  animations: [
+    trigger('chartAnimate', [
+      transition(':enter', [
+        style({ left: '100%' }),
+        animate('1000ms ease-out', style({ left: '0' })),
+      ]),
+    ]),
+    trigger('vsChartAnimate', [
+      transition(':enter', [
+        style({ top: '100%' }),
+        animate('1000ms 200ms ease-out', style({ top: '0' })),
+      ]),
+    ]),
+  ],
+  imports: [CommonModule, IonicModule, ReactiveFormsModule],
   selector: 'monic-report',
   standalone: true,
   styleUrls: ['./report.component.scss'],
@@ -77,10 +92,10 @@ echarts.use([
           </ng-template>
         </ion-modal>
       </form>
-      <div class="chart-outer sumCharts">
+      <div class="chart-outer" @chartAnimate>
         <div class="pieCanvas" #pieCanvas></div>
       </div>
-      <div class="chart-outer compCharts">
+      <div class="chart-outer" @vsChartAnimate>
         <div class="barCanvas" #barCanvas></div>
       </div>
     </ion-content>

@@ -33,36 +33,6 @@ ion-datetime-button::part(native) {
   margin: 24px 16px 16px;
   padding: 16px;
   position: relative;
-
-  &.sumCharts {
-    animation-duration: 800ms;
-    animation-name: sumCharts-anim;
-    animation-timing-function: ease-out;
-  }
-
-  &.compCharts {
-    animation-duration: 800ms;
-    animation-name: compCharts-anim;
-    animation-timing-function: ease-out;
-  }
-}
-
-@keyframes sumCharts-anim {
-  from {
-    left: 100%;
-  }
-  to {
-    left: 0;
-  }
-}
-
-@keyframes compCharts-anim {
-  from {
-    top: 50%;
-  }
-  to {
-    top: 0;
-  }
 }
 
 .pieCanvas {

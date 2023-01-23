@@ -1,4 +1,13 @@
-import { AsyncPipe, DecimalPipe, NgFor, NgIf } from '@angular/common';
+import {
+  animate,
+  keyframes,
+  query,
+  stagger,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -38,17 +47,53 @@ echarts.use([
 ]);
 
 @Component({
-  imports: [AsyncPipe, DecimalPipe, IonicModule, NgFor, NgIf],
+  animations: [
+    trigger('chartAnimate', [
+      transition(':enter', [
+        style({ left: '100%' }),
+        animate('1000ms ease-out', style({ left: '0' })),
+      ]),
+    ]),
+    trigger('listAnimate', [
+      transition('* => *', [
+        query(':enter', style({ opacity: 0 }), { optional: true }),
+        query(':self', style({ opacity: 0, top: '100%' }), { optional: true }),
+        query(':self', animate('1000ms ease-out', style({ opacity: 1, top: '0' })), { optional: true }),
+        query(
+          ':enter',
+          stagger(200, [
+            animate(
+              '300ms ease-in',
+              keyframes([
+                style({ opacity: 0, transform: 'translateY(-24px)' }),
+                style({ opacity: 0.3, transform: 'translateY(12px)' }),
+                style({ opacity: 1, transform: 'translateY(0)' }),
+              ])
+            ),
+          ]),
+          {
+            optional: true,
+            limit: 12,
+          }
+        ),
+      ]),
+    ]),
+  ],
+  imports: [CommonModule, IonicModule],
   selector: 'monic-budget',
   standalone: true,
   styleUrls: ['./budget-list.component.scss'],
   template: `
     <ion-content>
       <div class="form-title ion-padding">Budget</div>
-      <div class="charts-outer">
+      <div class="charts-outer" @chartAnimate>
         <div class="canvas" #canvas></div>
       </div>
-      <div class="budget-list" *ngIf="budget$ | async as budgets">
+      <div
+        class="budget-list"
+        *ngIf="budgetService.budget$ | async as budgets"
+        [@listAnimate]="budgets.length"
+      >
         <ion-list>
           <ion-item-sliding *ngFor="let budget of budgets; trackBy: trackById">
             <ion-item>
@@ -93,14 +138,13 @@ export class BudgetListComponent implements AfterViewInit, OnDestroy {
   @ViewChild('canvas', { static: false })
   canvas!: ElementRef;
   charts!: echarts.ECharts;
-  budget$ = this.budgetService.budget$;
   categoryIcons = CategoryIcons;
   destroy$ = new Subject<boolean>();
 
   constructor(
     private alertController: AlertController,
     private chatService: BudgetChartService,
-    private budgetService: BudgetService,
+    public budgetService: BudgetService,
     public router: Router,
     private zone: NgZone
   ) {}

@@ -69,6 +69,8 @@ echarts.use([
     trigger('historyAnimate', [
       transition('* => *', [
         query(':enter', style({ opacity: 0 }), { optional: true }),
+        query(':self', style({ opacity: 0, top: '100%' }), { optional: true }),
+        query(':self', animate('1000ms ease-out', style({ opacity: 1, top: '0' })), { optional: true }),
         query(
           ':enter',
           stagger(200, [
@@ -121,16 +123,15 @@ echarts.use([
           <span>AddNew</span>
         </button>
       </div>
-      <div class="history">
-        <div
-          *ngIf="summaryService.last3$ | async as transactions"
-          [@historyAnimate]="transactions.length"
-        >
-          <monic-transaction-item
-            [transaction]="exp"
-            *ngFor="let exp of transactions; trackBy: trackById"
-          ></monic-transaction-item>
-        </div>
+      <div
+        class="history"
+        *ngIf="summaryService.last3$ | async as transactions"
+        [@historyAnimate]="transactions.length"
+      >
+        <monic-transaction-item
+          [transaction]="exp"
+          *ngFor="let exp of transactions; trackBy: trackById"
+        ></monic-transaction-item>
       </div>
     </ion-content>
   `,
