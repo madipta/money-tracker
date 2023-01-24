@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -17,10 +17,9 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   imports: [
-    AsyncPipe,
+    CommonModule,
     HideBackButtonDirective,
     IonicModule,
-    NgIf,
     PageLayoutComponent,
     ReactiveFormsModule,
   ],
@@ -28,8 +27,16 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   styles: [
     `
+      form {
+        display: flex;
+        flex-direction: column;
+        margin-top: 10vh;
+        max-width: 340px;
+        position: relative;
+        justify-content: center;
+      }
       .login-logo {
-        margin: 48px 0 32px;
+        margin-bottom: 24px;
         text-align: center;
 
         ion-icon {
@@ -37,70 +44,56 @@ import { AuthService } from '../../services/auth.service';
           font-size: 128px;
         }
       }
-
-      ion-grid {
-        max-width: 340px;
-      }
     `,
   ],
   template: `
-    <monic-page-layout monicHideBackButton>
-      <p pageTitle>User Login</p>
-      <div class="login-logo">
-        <ion-icon name="finger-print-outline"></ion-icon>
-      </div>
+    <monic-page-layout subTitle="User Login" monicHideBackButton>
       <form [formGroup]="form" (ngSubmit)="login()">
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-list>
-                <ion-item class="ion-margin-top">
-                  <ion-label position="floating">Email</ion-label>
-                  <ion-input
-                    formControlName="email"
-                    placeholder="user@mail.com"
-                    required
-                  ></ion-input>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="floating">Password</ion-label>
-                  <ion-input
-                    formControlName="password"
-                    placeholder="123456"
-                    required
-                    type="password"
-                  ></ion-input>
-                </ion-item>
-              </ion-list>
-            </ion-col>
-          </ion-row>
-          <ion-row class="ion-margin-top">
-            <ion-col>
-              <ion-button
-                type="submit"
-                color="success"
-                expand="block"
-                [disabled]="isOnLoginProcess | async"
-              >
-                <ion-text *ngIf="(isOnLoginProcess | async) === false">
-                  Submit
-                </ion-text>
-                <ion-spinner
-                  name="lines-small"
-                  *ngIf="isOnLoginProcess | async"
-                ></ion-spinner>
-              </ion-button>
-              <ion-button
-                (click)="register()"
-                color="tertiary"
-                expand="block"
-                fill="clear"
-              >
-                Register
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <div class="login-logo">
+          <ion-icon name="finger-print-outline"></ion-icon>
+        </div>
+        <ion-list>
+          <ion-item class="ion-margin-top">
+            <ion-label position="floating">Email</ion-label>
+            <ion-input
+              formControlName="email"
+              placeholder="user@mail.com"
+              required
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Password</ion-label>
+            <ion-input
+              formControlName="password"
+              placeholder="123456"
+              required
+              type="password"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-button
+          type="submit"
+          color="success"
+          expand="block"
+          [disabled]="isOnLoginProcess | async"
+        >
+          <ion-text *ngIf="(isOnLoginProcess | async) === false">
+            Submit
+          </ion-text>
+          <ion-spinner
+            name="lines-small"
+            *ngIf="isOnLoginProcess | async"
+          ></ion-spinner>
+        </ion-button>
+        <ion-button
+          (click)="register()"
+          color="tertiary"
+          expand="block"
+          fill="clear"
+        >
+          Register
+        </ion-button>
       </form>
     </monic-page-layout>
   `,

@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -27,12 +27,9 @@ type TransactionForm = FormGroup<{
 
 @Component({
   imports: [
-    AsyncPipe,
-    DatePipe,
+    CommonModule,
     FormLayoutComponent,
     IonicModule,
-    NgFor,
-    NgIf,
     PageLayoutComponent,
     ReactiveFormsModule,
   ],
@@ -50,7 +47,7 @@ export class TransactionFormComponent implements OnInit {
   isOnSavingProcess = this.transactionService.saveOnProcess$;
   form: TransactionForm;
   selectedId = '';
-  title = '';
+  title = 'Transaction';
 
   constructor(fb: FormBuilder) {
     this.form = fb.nonNullable.group({

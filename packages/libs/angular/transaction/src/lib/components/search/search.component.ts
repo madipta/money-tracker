@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -25,27 +25,18 @@ type SearchForm = FormGroup<{
 
 @Component({
   imports: [
-    AsyncPipe,
+    CommonModule,
     FormLayoutComponent,
     IonicModule,
-    NgIf,
     PageLayoutComponent,
     ReactiveFormsModule,
   ],
   selector: 'monic-search',
   standalone: true,
   template: `
-    <monic-page-layout>
-      <p pageTitle>Search</p>
+    <monic-page-layout subTitle="Search Transactions">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <monic-form-layout>
-          <ng-container slot="header">
-            <ion-list-header class="ion-no-padding">
-              <ion-label>
-                <ion-text>Filter Transaction</ion-text>
-              </ion-label>
-            </ion-list-header>
-          </ng-container>
+        <ion-list>
           <ion-item>
             <ion-label position="fixed">Word</ion-label>
             <ion-input formControlName="word"></ion-input>
@@ -85,23 +76,22 @@ type SearchForm = FormGroup<{
               <ion-select-option [value]="11">December</ion-select-option>
             </ion-select>
           </ion-item>
-          <ng-container slot="footer">
-            <ion-button
-              type="submit"
-              color="success"
-              expand="block"
-              [disabled]="isOnSavingProcess | async"
-            >
-              <ion-text *ngIf="(isOnSavingProcess | async) === false">
-                Submit
-              </ion-text>
-              <ion-spinner
-                name="lines-small"
-                *ngIf="isOnSavingProcess | async"
-              ></ion-spinner>
-            </ion-button>
-          </ng-container>
-        </monic-form-layout>
+        </ion-list>
+
+        <ion-button
+          type="submit"
+          color="success"
+          expand="block"
+          [disabled]="isOnSavingProcess | async"
+        >
+          <ion-text *ngIf="(isOnSavingProcess | async) === false">
+            Submit
+          </ion-text>
+          <ion-spinner
+            name="lines-small"
+            *ngIf="isOnSavingProcess | async"
+          ></ion-spinner>
+        </ion-button>
       </form>
     </monic-page-layout>
   `,

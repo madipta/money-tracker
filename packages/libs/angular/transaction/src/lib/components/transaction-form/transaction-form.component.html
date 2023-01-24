@@ -1,7 +1,5 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <monic-page-layout>
-    <p pageTitle>Transaction</p>
-    <div class="form-title ion-padding">{{ title }}</div>
+  <monic-page-layout [subTitle]="title">
     <ion-list class="ion-margin-top">
       <ion-item id="dateItem">
         <ion-label>Date</ion-label>

@@ -46,12 +46,11 @@ type BudgetForm = FormGroup<{
     `,
   ],
   template: `
-    <monic-page-layout>
-      <p pageTitle>Create Budget</p>
-      <div class="budget-logo">
-        <ion-icon name="calculator"></ion-icon>
-      </div>
+    <monic-page-layout subTitle="Create Budget">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="budget-logo">
+          <ion-icon name="calculator"></ion-icon>
+        </div>
         <ion-list>
           <ion-item>
             <ion-label>Category</ion-label>

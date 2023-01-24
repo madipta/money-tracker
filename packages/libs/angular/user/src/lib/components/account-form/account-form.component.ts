@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormGroup,
@@ -22,72 +22,53 @@ export type UserForm = FormGroup<{
 
 @Component({
   imports: [
-    AsyncPipe,
+    CommonModule,
     IonicModule,
-    NgIf,
     PageLayoutComponent,
     ReactiveFormsModule,
   ],
   selector: 'monic-account-form',
   standalone: true,
   template: `
-    <monic-page-layout>
-      <p pageTitle>My Account</p>
+    <monic-page-layout subTitle="My Account">
       <form [formGroup]="form" (ngSubmit)="save()">
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-list>
-                <ion-item class="ion-margin-top">
-                  <ion-label position="floating">Name</ion-label>
-                  <ion-input formControlName="name" required></ion-input>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="floating">Address</ion-label>
-                  <ion-textarea formControlName="address"></ion-textarea>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="floating">City</ion-label>
-                  <ion-input formControlName="city"></ion-input>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="floating">Country</ion-label>
-                  <ion-input formControlName="country"></ion-input>
-                </ion-item>
-                <ion-item>
-                  <ion-label position="floating">Phone</ion-label>
-                  <ion-input formControlName="phone"></ion-input>
-                </ion-item>
-              </ion-list>
-            </ion-col>
-          </ion-row>
-          <ion-row class="ion-margin-top">
-            <ion-col>
-              <ion-button
-                type="submit"
-                color="success"
-                expand="block"
-                [disabled]="onSavingProcess$ | async"
-              >
-                <ion-text *ngIf="(onSavingProcess$ | async) === false">
-                  Submit
-                </ion-text>
-                <ion-spinner
-                  name="lines-small"
-                  *ngIf="onSavingProcess$ | async"
-                ></ion-spinner>
-              </ion-button>
-              <ion-button
-                (click)="cancel()"
-                color="warning"
-                expand="block"
-                fill="clear"
-              >
-                Cancel
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <ion-list>
+          <ion-item class="ion-margin-top">
+            <ion-label position="floating">Name</ion-label>
+            <ion-input formControlName="name" required></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Address</ion-label>
+            <ion-textarea formControlName="address"></ion-textarea>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">City</ion-label>
+            <ion-input formControlName="city"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Country</ion-label>
+            <ion-input formControlName="country"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Phone</ion-label>
+            <ion-input formControlName="phone"></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-button
+          type="submit"
+          color="success"
+          expand="block"
+          [disabled]="onSavingProcess$ | async"
+        >
+          <ion-text *ngIf="(onSavingProcess$ | async) === false">
+            Submit
+          </ion-text>
+          <ion-spinner
+            name="lines-small"
+            *ngIf="onSavingProcess$ | async"
+          ></ion-spinner>
+        </ion-button>
       </form>
     </monic-page-layout>
   `,

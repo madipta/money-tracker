@@ -45,42 +45,31 @@ type ResetPasswordForm = FormGroup<{
     `,
   ],
   template: `
-    <monic-page-layout>
-      <p pageTitle>Password Reset</p>
-      <div class="reset-logo">
-        <ion-icon name="mail-outline"></ion-icon>
-      </div>
+    <monic-page-layout subTitle="Password Reset">
       <form [formGroup]="form" (ngSubmit)="send()">
-        <ion-grid>
-          <ion-row>
-            <ion-col>
-              <ion-list>
-                <ion-item class="ion-margin-top">
-                  <ion-label position="floating">Email Address</ion-label>
-                  <ion-input formControlName="email" required></ion-input>
-                </ion-item>
-              </ion-list>
-            </ion-col>
-          </ion-row>
-          <ion-row class="ion-margin-top">
-            <ion-col>
-              <ion-button
-                type="submit"
-                color="success"
-                expand="block"
-                [disabled]="onSendResetEmail$ | async"
-              >
-                <ion-text *ngIf="(onSendResetEmail$ | async) === false">
-                  Send
-                </ion-text>
-                <ion-spinner
-                  name="lines-small"
-                  *ngIf="onSendResetEmail$ | async"
-                ></ion-spinner>
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <div class="reset-logo">
+          <ion-icon name="mail-outline"></ion-icon>
+        </div>
+        <ion-list>
+          <ion-item class="ion-margin-top">
+            <ion-label position="floating">Email Address</ion-label>
+            <ion-input formControlName="email" required></ion-input>
+          </ion-item>
+        </ion-list>
+        <ion-button
+          type="submit"
+          color="success"
+          expand="block"
+          [disabled]="onSendResetEmail$ | async"
+        >
+          <ion-text *ngIf="(onSendResetEmail$ | async) === false">
+            Send
+          </ion-text>
+          <ion-spinner
+            name="lines-small"
+            *ngIf="onSendResetEmail$ | async"
+          ></ion-spinner>
+        </ion-button>
       </form>
     </monic-page-layout>
   `,

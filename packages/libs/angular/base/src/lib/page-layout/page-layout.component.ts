@@ -11,6 +11,13 @@ import { IonicModule } from '@ionic/angular';
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'monic-page-layout',
   standalone: true,
+  styles: [
+    `
+      ion-toolbar ion-title {
+        padding-inline: 16px;
+      }
+    `,
+  ],
   imports: [CommonModule, IonicModule],
   template: `
     <ion-header>
@@ -18,15 +25,13 @@ import { IonicModule } from '@ionic/angular';
         <ion-buttons slot="start" *ngIf="!hideBackButton">
           <ion-back-button defaultHref></ion-back-button>
         </ion-buttons>
-        <ion-title *ngIf="!hidePageTitle">
-          <ng-content select="[pageTitle]"></ng-content>
-        </ion-title>
+        <ion-title *ngIf="!hidePageTitle">{{ pageTitle }}</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-grid class="ion-no-padding">
       <ion-row>
         <ion-col>
-          <ng-content select=".form-title"></ng-content>
+          <div class="form-title ion-padding" *ngIf="subTitle">{{subTitle}}</div>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -45,6 +50,8 @@ import { IonicModule } from '@ionic/angular';
 })
 export class PageLayoutComponent {
   @Input() defaultHref = 'home';
+  @Input() pageTitle = 'Money Tracker';
+  @Input() subTitle = '';
   hidePageTitle = false;
   hideBackButton = false;
 }
@@ -60,7 +67,7 @@ export class HideBackButtonDirective {
 }
 
 @Directive({
-  selector: 'monic-page-layout[monicHideBackButton]',
+  selector: 'monic-page-layout[monicHidePageTitle]',
   standalone: true,
 })
 export class HidePageTitleDirective {
