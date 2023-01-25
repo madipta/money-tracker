@@ -9,10 +9,7 @@ import {
 } from '@angular/forms';
 import { AlertController, IonicModule, NavController } from '@ionic/angular';
 import { BudgetService } from '@monic/libs/angular/budget';
-import {
-  FormLayoutComponent,
-  PageLayoutComponent,
-} from '@monic/libs/angular/base';
+import { PageLayoutComponent } from '@monic/libs/angular/base';
 import { TransactionType } from '@monic/libs/types';
 import { take } from 'rxjs';
 import { TransactionService } from '../../services/transaction-service';
@@ -28,7 +25,6 @@ type TransactionForm = FormGroup<{
 @Component({
   imports: [
     CommonModule,
-    FormLayoutComponent,
     IonicModule,
     PageLayoutComponent,
     ReactiveFormsModule,

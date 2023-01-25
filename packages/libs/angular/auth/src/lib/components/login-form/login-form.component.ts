@@ -25,35 +25,11 @@ import { AuthService } from '../../services/auth.service';
   ],
   selector: 'monic-login-form',
   standalone: true,
-  styles: [
-    `
-      form {
-        display: flex;
-        flex-direction: column;
-        margin-top: 10vh;
-        max-width: 340px;
-        position: relative;
-        justify-content: center;
-      }
-      .login-logo {
-        margin-bottom: 24px;
-        text-align: center;
-
-        ion-icon {
-          color: var(--ion-color-tertiary);
-          font-size: 128px;
-        }
-      }
-    `,
-  ],
   template: `
-    <monic-page-layout subTitle="User Login" monicHideBackButton>
+    <monic-page-layout logoIcon="finger-print-outline" subTitle="User Login" monicHideBackButton>
       <form [formGroup]="form" (ngSubmit)="login()">
-        <div class="login-logo">
-          <ion-icon name="finger-print-outline"></ion-icon>
-        </div>
         <ion-list>
-          <ion-item class="ion-margin-top">
+          <ion-item>
             <ion-label position="floating">Email</ion-label>
             <ion-input
               formControlName="email"

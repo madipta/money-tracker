@@ -70,7 +70,11 @@ echarts.use([
       transition('* => *', [
         query(':enter', style({ opacity: 0 }), { optional: true }),
         query(':self', style({ opacity: 0, top: '100%' }), { optional: true }),
-        query(':self', animate('1000ms ease-out', style({ opacity: 1, top: '0' })), { optional: true }),
+        query(
+          ':self',
+          animate('1000ms ease-out', style({ opacity: 1, top: '0' })),
+          { optional: true }
+        ),
         query(
           ':enter',
           stagger(200, [
@@ -98,9 +102,11 @@ echarts.use([
     <ion-content>
       <div class="total-saldo">
         <p>Current Balance</p>
-        <h1 @totalSaldoAnimate *ngIf="summaryService.sum$ | async as sum">
-          {{ sum | number }}
-        </h1>
+        <ng-container *ngIf="summaryService.sum$ | async as sum">
+          <h1 @totalSaldoAnimate *ngIf="sum >= 0">
+            {{ sum | number }}
+          </h1>
+        </ng-container>
       </div>
       <ion-segment value="6" (ionChange)="periodeChange($event)">
         <ion-segment-button value="3">

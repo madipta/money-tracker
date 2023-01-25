@@ -30,10 +30,10 @@ export type UserForm = FormGroup<{
   selector: 'monic-account-form',
   standalone: true,
   template: `
-    <monic-page-layout subTitle="My Account">
+    <monic-page-layout logoIcon="person-outline" subTitle="My Account">
       <form [formGroup]="form" (ngSubmit)="save()">
         <ion-list>
-          <ion-item class="ion-margin-top">
+          <ion-item>
             <ion-label position="floating">Name</ion-label>
             <ion-input formControlName="name" required></ion-input>
           </ion-item>

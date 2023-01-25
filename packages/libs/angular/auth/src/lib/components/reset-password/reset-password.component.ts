@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormGroup,
@@ -19,37 +19,16 @@ type ResetPasswordForm = FormGroup<{
 
 @Component({
   imports: [
-    AsyncPipe,
+    CommonModule,
     IonicModule,
-    NgIf,
     PageLayoutComponent,
     ReactiveFormsModule,
   ],
   selector: 'monic-reset-password',
   standalone: true,
-  styles: [
-    `
-      .reset-logo {
-        margin: 48px 0 32px;
-        text-align: center;
-
-        ion-icon {
-          color: var(--ion-color-tertiary);
-          font-size: 128px;
-        }
-      }
-
-      ion-grid {
-        max-width: 340px;
-      }
-    `,
-  ],
   template: `
-    <monic-page-layout subTitle="Password Reset">
+    <monic-page-layout logoIcon="mail-outline" subTitle="Password Reset">
       <form [formGroup]="form" (ngSubmit)="send()">
-        <div class="reset-logo">
-          <ion-icon name="mail-outline"></ion-icon>
-        </div>
         <ion-list>
           <ion-item class="ion-margin-top">
             <ion-label position="floating">Email Address</ion-label>

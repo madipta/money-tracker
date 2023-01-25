@@ -34,7 +34,7 @@ type SearchForm = FormGroup<{
   selector: 'monic-search',
   standalone: true,
   template: `
-    <monic-page-layout subTitle="Search Transactions">
+    <monic-page-layout logoIcon="search" subTitle="Search Transactions">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <ion-list>
           <ion-item>

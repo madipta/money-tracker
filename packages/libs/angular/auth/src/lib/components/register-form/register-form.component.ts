@@ -25,33 +25,9 @@ import { AuthService } from '../../services/auth.service';
   ],
   selector: 'monic-register-form',
   standalone: true,
-  styles: [
-    `
-      form {
-        display: flex;
-        flex-direction: column;
-        margin-top: 10vh;
-        max-width: 340px;
-        position: relative;
-        justify-content: center;
-      }
-      .register-logo {
-        margin-bottom: 24px;
-        text-align: center;
-
-        ion-icon {
-          color: var(--ion-color-tertiary);
-          font-size: 128px;
-        }
-      }
-    `,
-  ],
   template: `
-    <monic-page-layout subTitle="User Register" monicHideBackButton>
+    <monic-page-layout logoIcon="sparkles-outline" subTitle="User Register" monicHideBackButton>
       <form [formGroup]="form" (ngSubmit)="register()">
-        <div class="register-logo">
-          <ion-icon name="sparkles-outline"></ion-icon>
-        </div>
         <ion-list>
           <ion-item>
             <ion-label position="floating">Name</ion-label>

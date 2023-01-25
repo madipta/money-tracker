@@ -1,6 +1,6 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <monic-page-layout [subTitle]="title">
-    <ion-list class="ion-margin-top">
+<monic-page-layout logoIcon="document-text-outline" [subTitle]="title">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <ion-list>
       <ion-item id="dateItem">
         <ion-label>Date</ion-label>
         <ion-text>{{ form.value.date | date : 'mediumDate' }}</ion-text>
@@ -69,5 +69,5 @@
         ></ion-spinner>
       </ion-button>
     </div>
-  </monic-page-layout>
-</form>
+  </form>
+</monic-page-layout>

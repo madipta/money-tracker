@@ -28,27 +28,14 @@ type BudgetForm = FormGroup<{
   standalone: true,
   styles: [
     `
-      .budget-logo {
-        margin: 48px 0 32px;
-        text-align: center;
-
-        ion-icon {
-          color: var(--ion-color-tertiary);
-          font-size: 128px;
-        }
-      }
-
       ion-select {
         max-width: none;
       }
     `,
   ],
   template: `
-    <monic-page-layout subTitle="Create Budget">
+    <monic-page-layout logoIcon="calculator" subTitle="Create Budget">
       <form [formGroup]="form" (ngSubmit)="onSubmit()">
-        <div class="budget-logo">
-          <ion-icon name="calculator"></ion-icon>
-        </div>
         <ion-list>
           <ion-item>
             <ion-label>Category</ion-label>

@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormGroup,
@@ -20,18 +20,33 @@ type BudgetForm = FormGroup<{
 
 @Component({
   imports: [
-    AsyncPipe,
+    CommonModule,
     IonicModule,
     PageLayoutComponent,
-    NgIf,
     ReactiveFormsModule,
   ],
   selector: 'monic-budget-form',
   standalone: true,
+  styles: [
+    `
+      .budget-logo {
+        margin: 48px 0 32px;
+        text-align: center;
+
+        ion-icon {
+          color: var(--ion-color-tertiary);
+          font-size: 128px;
+        }
+      }
+
+      ion-select {
+        max-width: none;
+      }
+    `,
+  ],
   template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <monic-page-layout>
-        <p pageTitle>Edit Budget</p>
+    <monic-page-layout subTitle="Edit Budget">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="budget-logo">
           <ion-icon name="calculator"></ion-icon>
         </div>
@@ -65,8 +80,8 @@ type BudgetForm = FormGroup<{
             ></ion-spinner>
           </ion-button>
         </div>
-      </monic-page-layout>
-    </form>
+      </form>
+    </monic-page-layout>
   `,
 })
 export class BudgetEditComponent implements OnDestroy, OnInit {
