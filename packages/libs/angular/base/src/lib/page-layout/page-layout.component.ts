@@ -1,4 +1,11 @@
 import {
+  animate,
+  keyframes,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import {
   ChangeDetectionStrategy,
   Component,
   Directive,
@@ -8,6 +15,21 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 
 @Component({
+  animations: [
+    trigger('contentEnter', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate(
+          '1000ms 300ms ease-out',
+          keyframes([
+            style({ opacity: 0, transform: 'translateY(-100%)' }),
+            style({ opacity: 0.2, transform: 'translateY(5%)' }),
+            style({ opacity: 1, transform: 'translateY(0)' }),
+          ])
+        ),
+      ]),
+    ]),
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'monic-page-layout',
   standalone: true,
@@ -15,6 +37,9 @@ import { IonicModule } from '@ionic/angular';
     `
       ion-toolbar ion-title {
         padding-inline: 16px;
+      }
+      .content {
+        position: relative;
       }
     `,
   ],
@@ -31,7 +56,9 @@ import { IonicModule } from '@ionic/angular';
     <ion-grid class="ion-no-padding">
       <ion-row>
         <ion-col>
-          <div class="form-title ion-padding" *ngIf="subTitle">{{subTitle}}</div>
+          <div class="form-title ion-padding" *ngIf="subTitle">
+            {{ subTitle }}
+          </div>
         </ion-col>
       </ion-row>
       <ion-row>
@@ -42,7 +69,9 @@ import { IonicModule } from '@ionic/angular';
           sizeMd="6"
           offsetMd="3"
         >
-          <ng-content></ng-content>
+          <div class="content" @contentEnter>
+            <ng-content></ng-content>
+          </div>
         </ion-col>
       </ion-row>
     </ion-grid>

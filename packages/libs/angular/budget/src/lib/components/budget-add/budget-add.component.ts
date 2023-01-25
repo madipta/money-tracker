@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormControl,
@@ -19,11 +19,9 @@ type BudgetForm = FormGroup<{
 
 @Component({
   imports: [
-    AsyncPipe,
+    CommonModule,
     IonicModule,
     PageLayoutComponent,
-    NgFor,
-    NgIf,
     ReactiveFormsModule,
   ],
   selector: 'monic-budget-form',
