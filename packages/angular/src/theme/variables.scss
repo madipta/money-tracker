@@ -238,6 +238,11 @@ ion-icon {
   pointer-events: none;
 }
 
+.ios ion-item::part(native) {
+  padding-inline-end: 10px;
+  padding-inline-start: 10px;
+}
+
 ion-label {
   --color: var(--ion-color-dark) !important;
 }
