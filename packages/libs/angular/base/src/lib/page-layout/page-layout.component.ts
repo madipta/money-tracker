@@ -67,6 +67,8 @@ import { IonicModule } from '@ionic/angular';
         }
       }
       .content {
+        margin: 0 auto;
+        max-width: 320px;
         position: relative;
       }
     `,
@@ -90,13 +92,7 @@ import { IonicModule } from '@ionic/angular';
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col
-          class="ion-padding"
-          sizeSm="8"
-          offsetSm="2"
-          sizeMd="6"
-          offsetMd="3"
-        >
+        <ion-col class="ion-padding">
           <div class="logo-icon" *ngIf="logoIcon" @iconEnter>
             <ion-icon [name]="logoIcon"></ion-icon>
           </div>
