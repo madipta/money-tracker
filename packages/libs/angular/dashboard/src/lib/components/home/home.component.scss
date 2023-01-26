@@ -34,10 +34,6 @@ ion-toolbar ion-title.md {
   }
 }
 
-ion-header.ios {
-  margin-bottom: 14px;
-}
-
 ion-content.home-menu-content {
   --ion-background-color: rgba(var(--ion-color-secondary-rgb), 0.95);
   --ion-item-background: transparent;
@@ -53,6 +49,10 @@ ion-content.home-menu-content {
       padding-left: 8px;
     }
   }
+}
+
+#main-content ion-header.ios {
+  margin-bottom: 14px;
 }
 
 .wave {
