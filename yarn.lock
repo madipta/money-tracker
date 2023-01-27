@@ -1466,10 +1466,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@capacitor/android@^4.6.1":
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-4.6.1.tgz#50e437934bf535eb839266df4d60204aace79561"
-  integrity sha512-Hnh1tmUr1SP67U6D6ry5I5BEBSN/1nkBAIjQIqf5tF82WNxKbpbC6GfkHE4hMJZinRTrCf36LkrdP8srh7SxoA==
+"@capacitor/android@^4.6.2":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-4.6.2.tgz#2589525479a07c153f7ffd610684c3145c322aff"
+  integrity sha512-PQpOJnMi0i/d4UrT8bPdfkwlKAlQLgsyo2YKj+iUYjEIu8sKQvqDirLYnpeKhj4cflIG2u9mh/eFncooA+u2gw==
 
 "@capacitor/cli@^3.6.0":
   version "3.9.0"
@@ -1493,10 +1493,10 @@
     tslib "^2.1.0"
     xml2js "^0.4.23"
 
-"@capacitor/cli@^4.6.1":
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-4.6.1.tgz#6fd109db9e96231bee638b0aab7be7c709666bf0"
-  integrity sha512-iFMK83B67RXEQyWi1kOzQmRdCFc/pPD924mjAXG7yFLVyMvVRGAwwf8LzWFzHyQDoKK+auPMHycVfzm9T6Iyyg==
+"@capacitor/cli@^4.6.2":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-4.6.2.tgz#7f471dfddaebc665a6936751fb91b1c43df3bb60"
+  integrity sha512-035RIynwnmusv9Z/1jPDP+i7Z54ZY3qxNtf6cA69TxZlnozAqBkjPyHGuaAugxSn+4jzCobSLE3456VHhHMx1g==
   dependencies:
     "@ionic/cli-framework-output" "^2.2.5"
     "@ionic/utils-fs" "^3.1.6"
@@ -1516,17 +1516,17 @@
     tslib "^2.4.0"
     xml2js "^0.4.23"
 
-"@capacitor/core@^4.6.1":
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-4.6.1.tgz#55428b1b2b8d8bb2839fff42f8dfcdbde8d17fb9"
-  integrity sha512-7A2IV9E8umgu9u0fChUTjQJq+Jp25GJZMmWxoQN/nVx/1rcpFJ4m1xo3NPBoIRs+aV7FR+BM17mPrnkKlA8N2g==
+"@capacitor/core@^4.6.2":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-4.6.2.tgz#9ea189218131ccf58f2b23fd3bdd69ed124dfe5b"
+  integrity sha512-M/KpAg+peft/HTb7svLiKHxjbll67ybs1vEqhZuvjXlwro53NxNXR4YJS7+wNXZSiA4Kxjtf+a754xGgZcMarA==
   dependencies:
     tslib "^2.1.0"
 
-"@capacitor/ios@^4.6.1":
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-4.6.1.tgz#e6c03bbf1c9bce116bfbc71cb231afbb1bd5b7fc"
-  integrity sha512-kH1nPG2jCk7w6ASf2VX+tIxHoc2Z/c5+7d89yvtiKmEZXoPLuVyAv/Yx4PhJP2r7KSyl5S2gZZkzQrMdAjDVKg==
+"@capacitor/ios@^4.6.2":
+  version "4.6.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/ios/-/ios-4.6.2.tgz#e0266a1998912b5e552c967c6053dc7c5d9d2851"
+  integrity sha512-3hQzbAOk+drCLyFjnytvkc20Mr077/9tQrv6iTghDXESDGR6EgcaYUXzKdVwuJscb0R459+5UQ2mYtkx6ES4TQ==
 
 "@colors/colors@1.5.0":
   version "1.5.0"
@@ -2511,12 +2511,12 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@ionic/angular@^6.5.0":
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-6.5.0.tgz#85b1f3d32bfdb983fc1ecf5ebfdc04990c8514f5"
-  integrity sha512-zO9f3SKVFUlswxeEBu7bIfNbFJzQ6QoLrKTRpgzdbhKmDQp3+opKNYVXeGASaoycmxeJn2/ahmSzXJAPudoGmQ==
+"@ionic/angular@^6.5.1":
+  version "6.5.1"
+  resolved "https://registry.yarnpkg.com/@ionic/angular/-/angular-6.5.1.tgz#91c6631288313585ac988b2fc512140ded6cf1a5"
+  integrity sha512-1QqnQgvF7p3iQw78/core0BYnORKFAo0gbGiJcvzA+bCLpJTQZ1g3LaiWZ0/YyhkMKy/T6VN+emG4uGDX1ry4A==
   dependencies:
-    "@ionic/core" "6.5.0"
+    "@ionic/core" "6.5.1"
     ionicons "^6.1.1"
     jsonc-parser "^3.0.0"
     tslib "^2.0.0"
@@ -2530,10 +2530,10 @@
     debug "^4.0.0"
     tslib "^2.0.1"
 
-"@ionic/core@6.5.0":
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-6.5.0.tgz#60095211c15609218855a924117d65764db69334"
-  integrity sha512-vefrnd1WYZJnjSXwsY1sn3HJpBDKPGnwtO2US55Qrjz0d9HyUwocHgVvkvLAAKZG+LGErJbVeV8aTmdYEydRgg==
+"@ionic/core@6.5.1":
+  version "6.5.1"
+  resolved "https://registry.yarnpkg.com/@ionic/core/-/core-6.5.1.tgz#36efef2d807d424ab5eae543555177044088ab16"
+  integrity sha512-O696r+4/f0Ly0XvPH1ZcsTBwiQLWf5gCDG1CoAn9W/F84DcvzGV9acV9nmpEDcrqaSLFYjJHGpeCec9y7L50iw==
   dependencies:
     "@stencil/core" "^2.18.0"
     ionicons "^6.1.1"
@@ -3066,17 +3066,18 @@
     dotenv "~10.0.0"
     semver "7.3.4"
 
-"@nrwl/devkit@14.5.2":
-  version "14.5.2"
-  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-14.5.2.tgz#13f8d302072026da1ed37bd5f9ecc3eab9392635"
-  integrity sha512-li94W0D5SQZ7tjMiq+CZLHTx6/Gos5l3lc6jAzW/FHfoiAaaWN2zOPoydBQY7uw5TC+MH1jBbv/49Nf4wmXGVA==
+"@nrwl/devkit@15.4.1":
+  version "15.4.1"
+  resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-15.4.1.tgz#312ad812dfe6b2f9ace9f8a21b04ef10cd625392"
+  integrity sha512-6AWWXyUpoqWkVARgUeARSmFanvgqlb81GN8SBwUQhezTbalOPmi0TsUN6n7MHAc611MAFE9eZBd+29UM+sFXeg==
   dependencies:
+    "@phenomnomnominal/tsquery" "4.1.1"
     ejs "^3.1.7"
     ignore "^5.0.4"
     semver "7.3.4"
     tslib "^2.3.0"
 
-"@nrwl/devkit@15.6.2":
+"@nrwl/devkit@15.6.2", "@nrwl/devkit@^15.4.1":
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/@nrwl/devkit/-/devkit-15.6.2.tgz#954b0dab1639011bbc872e421917ce7140f201a4"
   integrity sha512-RcPwjr1btr16wz/ZTnLeKMLu4zATWoh5E94qrFxw3n8hXbC5cIW0Hs/D3ho7cuJQCtQmItTD21M7akjvgHsniA==
@@ -3241,20 +3242,20 @@
     yargs "^17.6.2"
     yargs-parser "21.1.1"
 
-"@nxext/capacitor@^14.0.0":
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/@nxext/capacitor/-/capacitor-14.0.0.tgz#1a8944d1836ce748a4c3e088987dccc11f516394"
-  integrity sha512-st6D0H47oNm7AhY9iyHoa3M+legnuGJySCv2mWH7DYdseiJKIMDaP+0mKqsokazx6MYuduVHkOITcAPwDuNyOg==
+"@nxext/capacitor@^15.2.0":
+  version "15.2.0"
+  resolved "https://registry.yarnpkg.com/@nxext/capacitor/-/capacitor-15.2.0.tgz#4a2c9895e6da96c87d95d56f8d9894deacfb286c"
+  integrity sha512-4t+fRn2wagxKhwvEJXwbGBi9r8/TA2M+Wh5WFimak61K6Ll7TYCe0Muvsd5QrAnX7nCy2/RL3MnfjNbS+tqRKg==
   dependencies:
-    "@nrwl/devkit" "14.5.2"
+    "@nrwl/devkit" "^15.4.1"
 
-"@nxext/ionic-angular@^14.0.0":
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/@nxext/ionic-angular/-/ionic-angular-14.0.0.tgz#7925db7623f4afc4739aa0177bbcb82b96462584"
-  integrity sha512-bxGvfrsn+XmD/QOqhcE6MOBGE5SdivG3EeBvEf8EugN7nt+oHCyo6ozCISD8ch6WjVAEkqCJvMPYJw/2ik9srQ==
+"@nxext/ionic-angular@^15.1.0":
+  version "15.1.0"
+  resolved "https://registry.yarnpkg.com/@nxext/ionic-angular/-/ionic-angular-15.1.0.tgz#f61e5a429bb96893ff9be6efcb6bbb0494273cd5"
+  integrity sha512-MvuBtPwnKr9miIQ0xQVzbtEAcelhZMfEgNmWul1vrPo24GpLOuLv3ghgElKLB5pPbWl5kn4saKp+F8151bwWbw==
   dependencies:
-    "@nrwl/devkit" "14.5.2"
-    "@nxext/capacitor" "^14.0.0"
+    "@nrwl/devkit" "15.4.1"
+    "@nxext/capacitor" "^15.2.0"
 
 "@parcel/watcher@2.0.4":
   version "2.0.4"
