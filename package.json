@@ -58,7 +58,7 @@
     "@capacitor/core": "^4.6.2",
     "@ionic/angular": "^6.5.1",
     "echarts": "^5.4.1",
-    "firebase": "^9.15.0",
+    "firebase": "^9.16.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "^0.12.0"
