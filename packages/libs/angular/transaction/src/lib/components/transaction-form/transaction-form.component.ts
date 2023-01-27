@@ -48,7 +48,7 @@ export class TransactionFormComponent implements OnInit {
   constructor(fb: FormBuilder) {
     this.form = fb.nonNullable.group({
       amount: fb.nonNullable.control(0, [Validators.required]),
-      budget: fb.nonNullable.control('', [Validators.required]),
+      budget: fb.nonNullable.control(''),
       date: fb.nonNullable.control('', [Validators.required]),
       notes: fb.nonNullable.control(''),
       type: fb.nonNullable.control<TransactionType>('expense'),
